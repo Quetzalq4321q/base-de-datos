@@ -110,7 +110,7 @@ La cabecera permite alternar entre tema claro y oscuro. El portal sigue la prefe
 
 El recorrido abre en **Guía de ventas**. Las tarjetas muestran el cliente, el pedido, el detalle y su total. Para practicar, pulsa **Nuevo pedido**, elige cliente y modalidad, agrega un producto y edita su cantidad. El panel **Qué cambió en los datos** compara las filas antes y después de la última operación. Puedes mover una línea, borrarla o deshacer el último cambio durante la sesión.
 
-**Modelo entidad–relación** muestra un mapa interactivo de las ocho tablas y sus siete conexiones. Selecciona una entidad para resaltar sus relaciones y consultar sus claves. **Explorar tablas** permite buscar y seguir claves foráneas. **Editar pedidos** permite cambiar los datos de una comanda, sus líneas y su estado. **Resumen del pedido** muestra las unidades y el total. En `diseno/stitch/` se conserva el diseño histórico.
+**Modelo entidad–relación** muestra un mapa interactivo de las ocho tablas y sus siete conexiones. El mapa usa una distribución vertical en pantallas estrechas. Selecciona una entidad para resaltar sus relaciones y consultar sus claves. **Explorar tablas** permite buscar y seguir claves foráneas. **Editar pedidos** permite cambiar los datos de una comanda, sus líneas y su estado. **Resumen del pedido** muestra las unidades y el total. En `diseno/stitch/` se conserva el diseño histórico.
 
 ## Archivos y verificación
 
