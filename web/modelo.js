@@ -1,4 +1,4 @@
-import { estados, modalidades, seriePrueba } from './datos.js';
+import { estados, modalidades, seriePrueba } from './datos.js?v=20261123c';
 
 const relacion = (tabla, columna, cardinalidad) => ({ tabla, columna, cardinalidad });
 

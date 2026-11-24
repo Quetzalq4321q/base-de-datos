@@ -1,5 +1,5 @@
-import { comprobanteTexto, crearBase, estados, modalidades } from './datos.js';
-import { conciliar, dividirPago, documentoDe, esquema, lineasDe, operar, totalLineas } from './modelo.js';
+import { clientes, comprobanteTexto, crearBase, estados, modalidades } from './datos.js?v=20261123c';
+import { conciliar, dividirPago, documentoDe, esquema, lineasDe, operar, totalLineas } from './modelo.js?v=20261123c';
 
 const pasos = [
   ['Modelo de datos', 'Sigue una venta desde la persona que pide hasta el último abono.', 'account_tree', 'modelo', 'Modelo'],
@@ -22,7 +22,13 @@ const referencias = {
 function cargar() {
   try {
     const anterior = JSON.parse(localStorage.getItem(claveLocal));
-    if (anterior?.secuencias && Array.isArray(anterior.cambios) && Object.keys(esquema).every((tabla) => Array.isArray(anterior.tablas?.[tabla]))) return anterior;
+    if (anterior?.secuencias && Array.isArray(anterior.cambios) && Object.keys(esquema).every((tabla) => Array.isArray(anterior.tablas?.[tabla]))) {
+      for (const cliente of anterior.tablas.clientes) {
+        const ficha = clientes.find((muestra) => muestra.numero_documento === cliente.numero_documento && muestra.tipo_documento === cliente.tipo_documento);
+        if (ficha) Object.assign(cliente, { nombres: ficha.nombres, apellidos: ficha.apellidos });
+      }
+      return anterior;
+    }
   } catch {
     // El laboratorio puede iniciarse aunque el almacenamiento no esté disponible.
   }
@@ -297,6 +303,7 @@ function mostrarPedido() {
   const documento = documentoDe(base.tablas, pedidoActivo);
   const editable = !documento && pedido.estado !== 'Anulado';
   const lineas = lineasDe(base.tablas, pedidoActivo);
+  const cliente = base.tablas.clientes.find((c) => c.id_cliente === pedido.id_cliente);
   selectorPedidos(id('pedido-editar'));
   id('agregar').hidden = !editable;
   id('borrar-pedido').disabled = Boolean(documento);
@@ -317,7 +324,10 @@ function mostrarPedido() {
     return fila;
   });
   const pie = nodo('div', '', 'pie-tabla');
-  pie.append(nodo('span', documento ? `Emitido · ${comprobanteTexto(documento)}` : `Estado · ${pedido.estado}`, 'estado-texto'), nodo('strong', soles(totalLineas(lineas)), 'numero'));
+  const identificacion = nodo('div', '', 'estado-texto');
+  if (cliente) identificacion.append(nodo('p', `${cliente.nombres} ${cliente.apellidos}`));
+  identificacion.append(nodo('p', documento ? `Emitido · ${comprobanteTexto(documento)}` : `Estado · ${pedido.estado}`));
+  pie.append(identificacion, nodo('strong', soles(totalLineas(lineas)), 'numero'));
   id('pedido-lineas').replaceChildren(registros(columnas, filas, 'Líneas del pedido'), pie);
 
   const lista = nodo('ul', '', 'cambios');
@@ -414,7 +424,7 @@ id('nuevo-pedido').addEventListener('click', () => {
   opciones(cliente, base.tablas.clientes, (c) => c.id_cliente, (c) => `${c.nombres} ${c.apellidos}`);
   opciones(modalidad, modalidades, (x) => x, (x) => x);
   dialogo('Nuevo pedido', 'Crea una cabecera para empezar a agregar productos.', 'Crear pedido',
-    [formularioCampo('Cliente de prueba', cliente, 'cliente'), formularioCampo('Modalidad', modalidad, 'modalidad')],
+    [formularioCampo('Cliente', cliente, 'cliente'), formularioCampo('Modalidad', modalidad, 'modalidad')],
     (datos) => ({ tipo: 'crear', cliente: Number(datos.get('cliente')), modalidad: datos.get('modalidad') }));
 });
 id('agregar').addEventListener('submit', (evento) => {

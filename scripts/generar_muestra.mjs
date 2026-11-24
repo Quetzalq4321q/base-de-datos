@@ -50,7 +50,7 @@ ${valores(categorias.map((c) => [sql(c.id_categoria), sql(c.nombre), sql(c.tipo_
 ON CONFLICT (id_categoria) DO NOTHING;
 
 INSERT INTO clientes (nombres, apellidos, tipo_documento, numero_documento) VALUES
-${valores(clientes.map((c) => [sql(c.nombres), sql(c.apellidos), sql(c.tipo_documento), sql(c.numero_documento)]))}
+${valores(clientes.map((c) => [sql('Cliente'), sql(`De prueba ${String(c.id_cliente).padStart(2, '0')}`), sql(c.tipo_documento), sql(c.numero_documento)]))}
 ON CONFLICT (tipo_documento, numero_documento) DO NOTHING;
 
 INSERT INTO telefonos_cliente (id_cliente, numero)
@@ -143,3 +143,34 @@ COMMIT;
 `;
 
 await writeFile(new URL('../sql/06_catalogo_y_ventas.sql', import.meta.url), migracion, 'utf8');
+
+const identidades = `-- Generado por scripts/generar_muestra.mjs a partir de las identidades ficticias versionadas en web/datos.js.
+BEGIN;
+CREATE TEMP TABLE rp_identidades (
+    documento varchar(20) PRIMARY KEY, nombres varchar(60), apellidos varchar(60)
+) ON COMMIT DROP;
+INSERT INTO rp_identidades VALUES
+${valores(clientes.map((cliente) => [sql(cliente.numero_documento), sql(cliente.nombres), sql(cliente.apellidos)]))};
+
+DO $validar$
+BEGIN
+    IF (SELECT count(*) FROM salchipaperia.clientes c JOIN rp_identidades i
+        ON c.tipo_documento = 'CE' AND c.numero_documento = i.documento) <> ${clientes.length} THEN
+        RAISE EXCEPTION 'Aplica primero la muestra de ventas RP01';
+    END IF;
+END;
+$validar$;
+
+UPDATE salchipaperia.clientes c SET nombres = i.nombres, apellidos = i.apellidos
+FROM rp_identidades i
+WHERE c.tipo_documento = 'CE' AND c.numero_documento = i.documento
+  AND (c.nombres, c.apellidos) IS DISTINCT FROM (i.nombres, i.apellidos);
+
+SELECT count(*) AS clientes_ficticios
+FROM salchipaperia.clientes c JOIN rp_identidades i
+ON c.tipo_documento = 'CE' AND c.numero_documento = i.documento
+   AND (c.nombres, c.apellidos) = (i.nombres, i.apellidos);
+COMMIT;
+`;
+
+await writeFile(new URL('../sql/08_nombres_ficticios.sql', import.meta.url), identidades, 'utf8');

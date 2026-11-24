@@ -49,8 +49,15 @@ export const bebidas = productos.filter((p) => p.id_categoria === 'RPBEB').map((
   id_producto, volumen_ml: null, temperatura: null, envase: null,
 }));
 
-export const clientes = Array.from({ length: 12 }, (_, indice) => ({
-  id_cliente: indice + 1, nombres: 'Cliente', apellidos: `De prueba ${String(indice + 1).padStart(2, '0')}`,
+const identidadesFicticias = [
+  ['Lucía Elena', 'Salazar Vega'], ['Diego Alonso', 'Huamán Paredes'], ['Camila', 'Rojas Quispe'],
+  ['Mateo Andrés', 'Cáceres Flores'], ['Valeria Inés', 'Mendoza Rivas'], ['Sebastián', 'Torres Zavaleta'],
+  ['Adriana Milagros', 'Condori Núñez'], ['Nicolás', 'Chávez Medina'], ['Mariana Sofía', 'Vargas León'],
+  ['Gabriel Andrés', 'Benavides Soto'], ['Renata', 'Ponce Aguilar'], ['Joaquín', 'Velásquez Campos'],
+];
+
+export const clientes = identidadesFicticias.map(([nombres, apellidos], indice) => ({
+  id_cliente: indice + 1, nombres, apellidos,
   tipo_documento: 'CE', numero_documento: `RPDEMO${String(indice + 1).padStart(3, '0')}`,
 }));
 
