@@ -1,16 +1,16 @@
 # Base de Datos · Red Pepper
 
-Laboratorio de base de datos para la carta de Red Pepper, sus pedidos, comprobantes de práctica y pagos mixtos. El informe documenta la normalización, el catálogo, la instalación y los resultados.
+Laboratorio de base de datos para la carta de Red Pepper y el recorrido de sus pedidos. El informe documenta la normalización, el catálogo, la instalación y los resultados.
 
 - [Informe técnico](informe/informe_red_pepper.pdf)
-- [Excel de la muestra RP01](outputs/red-pepper/ventas_red_pepper.xlsx)
+- [Excel de los 100 pedidos de muestra](outputs/red-pepper/ventas_red_pepper.xlsx)
 - [Portal de demostración](https://nexlabsgroup.com/basededatos/)
 - [Identidad y brief de diseño](BRANDING.md)
-- [Diseño de las cuatro pantallas en Stitch](https://stitch.withgoogle.com/projects/14029965516649664019)
+- [Diseño original del laboratorio en Stitch](https://stitch.withgoogle.com/projects/14029965516649664019)
 
 ## 1. Base de datos
 
-Ejecutar desde la raíz del repositorio en una base de pruebas con acceso para crear el esquema `salchipaperia`.
+Para reproducir el esquema y la muestra desde cero, ejecutar desde la raíz del repositorio en una base de pruebas vacía. Los primeros scripts recrean la carga histórica. La migración `10` produce el esquema vigente.
 
 ```sh
 psql -X -v ON_ERROR_STOP=1 -f sql/01_modelo.sql
@@ -20,28 +20,27 @@ psql -X -v ON_ERROR_STOP=1 -f sql/04_pruebas.sql
 psql -X -v ON_ERROR_STOP=1 -f sql/06_catalogo_y_ventas.sql
 psql -X -v ON_ERROR_STOP=1 -f sql/08_nombres_ficticios.sql
 psql -X -v ON_ERROR_STOP=1 -f sql/09_presentaciones_y_celulares.sql
+psql -X -v ON_ERROR_STOP=1 -f sql/10_simplificar_pedidos.sql
 psql -X -v ON_ERROR_STOP=1 -f sql/07_validar_datagrip.sql
 ```
 
-`psql` usa los parámetros de conexión del entorno. Para Supabase, tomar host, usuario y puerto de **Connect**, descargar su CA desde **Database Settings** y usar `sslmode=verify-full`. Los scripts `01` y `02` se aplican una vez por esquema. `04` restaura sus filas temporales en `ROLLBACK`. El script `06` añade la carta y las ventas de la serie `RP01`. Una segunda ejecución conserva las mismas 100 ventas. Los contadores de identidad pueden quedar con saltos.
+`psql` usa los parámetros de conexión del entorno. Para Supabase, tomar host, usuario y puerto de **Connect**, descargar su CA desde **Database Settings** y usar `sslmode=verify-full`. En un esquema original que ya contiene la muestra y las correcciones hasta `09`, respaldar primero `salchipaperia` y aplicar solo `10`. La migración se ejecuta como una transacción. El script `07` se puede ejecutar por bloques después de migrar.
 
 ### Resultados en PostgreSQL local y Supabase
 
-| Muestra | Productos de carta | Ventas | Cobrado | Saldo |
+| Muestra | Productos de carta | Pedidos | Líneas | Importe |
 | --- | ---: | ---: | ---: | ---: |
-| `RP01`, del 24 de octubre al 22 de noviembre de 2026 | 38 | 100 | S/ 2,303.50 | S/ 0.00 |
+| Del 24 de octubre al 22 de noviembre de 2026 | 38 | 100 | 186 | S/ 2,303.50 |
 
-La carta adjunta aporta los nombres y precios de venta. Los ocho rellenos de empanadas y las opciones de res y pollo cuentan como variantes individuales. El ejemplo usa precios de venta sin membresía. Se usa `NULL` para atributos que la carta no especifica, como volumen y envase. Los importes incluyen el IGV del ejercicio.
+El esquema tiene ocho tablas y cero vistas. Conserva `clientes`, `categorias`, `productos`, `pedidos`, `detalle_pedido`, `snacks` y `bebidas`, y añade `hamburguesas` con las ocho variantes de res y pollo. Cada producto tiene un solo subtipo. La columna `tipo_bebida` acepta `Gaseosa` o `Chicha`. Agua y maracuyá conservan un valor `NULL` en esa columna.
 
-`web/datos.js` contiene la muestra reproducible. Ejecutar `node scripts/generar_muestra.mjs` desde la raíz para reconstruir la migración `06` a partir de esa fuente. Las 100 ventas se cargaron en el esquema `salchipaperia` de Supabase 17.12. Las pruebas de carga, repetición y compatibilidad se ejecutaron en PostgreSQL local 18.4.
+La carta aporta los precios de venta sin membresía. El total se calcula multiplicando la cantidad por el precio aplicado a cada línea. `web/datos.js` contiene la muestra reproducible y `scripts/muestra_historica.mjs` completa los datos requeridos por las cargas anteriores. Ejecutar `node scripts/generar_muestra.mjs` desde la raíz para regenerar las cargas históricas `06`, `08` y `09`.
 
-`08_nombres_ficticios.sql` actualiza nombres y apellidos de los 12 clientes asociados a los códigos `RPDEMO001` a `RPDEMO012`. Las ventas y sus comprobantes conservan sus asociaciones. El Excel enlaza los clientes por código e integra el detalle y los pagos por número de comprobante. El resumen concilia importes en PEN y muestra los totales por modalidad de pedido y medio de pago.
-
-`09_presentaciones_y_celulares.sql` actualiza las presentaciones de los snacks de la carta y sustituye los números ficticios de la muestra. La base guarda los nueve dígitos consecutivos como texto. El portal y el Excel muestran los celulares en grupos de tres. La columna de presentación del catálogo describe conos, platos, bandejas y otros formatos de venta.
+El Excel enlaza las hojas Ventas y Detalle por su código de muestra y la hoja Clientes por el identificador interno de cada cliente. Sus códigos de pedido identifican filas de la muestra de Excel. DataGrip usa la identidad de cada pedido de PostgreSQL.
 
 ### Ver el esquema en DataGrip
 
-En **Database Explorer**, abrir **Data Sources and Drivers**, seleccionar la conexión Supabase de NexLabs y marcar `salchipaperia` en **Schemas**. Aplicar y sincronizar la conexión. La base es `postgres`. Abrir una consola de esa conexión y ejecutar `sql/07_validar_datagrip.sql` por bloques. La primera consulta confirma la conexión aunque la consola use `public` de esquema activo. Las demás usan nombres calificados y muestran las tablas, el catálogo, las ventas y el recorrido de un comprobante. El bloque de `RP01` debe devolver 100 ventas, S/ 2,303.50 y saldo S/ 0.00.
+En **Database Explorer**, seleccionar la conexión Supabase de NexLabs y sincronizar `salchipaperia`. La base es `postgres`. Abrir una consola y ejecutar `sql/07_validar_datagrip.sql` por bloques. La consulta de inventario devuelve ocho tablas. El bloque de la muestra devuelve 100 pedidos, 186 líneas y S/ 2,303.50. Las consultas de detalle y total usan las tablas directamente.
 
 ## 2. Portal en cPanel
 
@@ -51,9 +50,9 @@ El portal carga la muestra como parte de su aplicación estática. Los borradore
 
 La cabecera permite alternar entre tema claro y oscuro. El portal sigue la preferencia del sistema hasta elegir un modo y guarda la elección en el navegador. La pantalla de carga aparece mientras se prepara el laboratorio. El movimiento reducido del sistema desactiva el pulso y las transiciones.
 
-El recorrido abre en **Guía de ventas**. Las tarjetas muestran el pedido seleccionado, sus productos, el comprobante y el saldo, con enlaces filtrados a las filas relacionadas. Para practicar, pulsa **Nuevo pedido**, elige cliente y modalidad, agrega un producto y edita su cantidad. El panel **Qué cambió en los datos** compara las filas antes y después de la última operación. También puedes mover una línea a otro borrador, borrarla o deshacer el último cambio durante la sesión. Emite el comprobante y registra un pago mixto para ver las nuevas filas de pago.
+El recorrido abre en **Guía de ventas**. Las tarjetas muestran el cliente, el pedido, el detalle y su total. Para practicar, pulsa **Nuevo pedido**, elige cliente y modalidad, agrega un producto y edita su cantidad. El panel **Qué cambió en los datos** compara las filas antes y después de la última operación. Puedes mover una línea, borrarla o deshacer el último cambio durante la sesión.
 
-**Modelo** explica las relaciones de las 13 tablas. **Explorar tablas** permite buscar y seguir claves foráneas. **Editar pedidos** permite cambiar los datos de una comanda, sus líneas y su estado. **Comprobantes y pagos** concilia efectivo y Yape en céntimos. Los comprobantes emitidos protegen sus líneas. El script `05` corresponde a una API opcional de la versión anterior y la publicación actual funciona con los datos de práctica incluidos.
+**Modelo** explica las relaciones de las ocho tablas. **Explorar tablas** permite buscar y seguir claves foráneas. **Editar pedidos** permite cambiar los datos de una comanda, sus líneas y su estado. **Resumen del pedido** muestra las unidades y el total. En el directorio `diseno/stitch/` se conserva el diseño histórico.
 
 ## 3. Archivos y verificación
 

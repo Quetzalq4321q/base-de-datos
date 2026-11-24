@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises';
-import { bebidas, categorias, clientes, productos, snacks, ventas, seriePrueba, telefonos } from '../web/datos.js';
+import { bebidas, categorias, clientes, productos, snacks, ventas, seriePrueba, telefonos } from './muestra_historica.mjs';
 
 const sql = (valor) => valor === null ? 'NULL' : `'${String(valor).replaceAll("'", "''")}'`;
 const valores = (filas) => filas.map((fila) => `    (${fila.join(', ')})`).join(',\n');

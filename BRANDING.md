@@ -1,6 +1,6 @@
 # Red Pepper | Identidad del laboratorio
 
-Red Pepper es un local peruano de comida rápida. Su carta reúne salchipapas, hamburguesas, sánguches, empanadas y bebidas. El laboratorio usa su catálogo para enseñar cómo se registra, recorre y concilia una venta. El nombre visible es **Red Pepper** y el descriptor es **Laboratorio de base de datos**.
+Red Pepper es un local peruano de comida rápida. Su carta reúne salchipapas, hamburguesas, sánguches, empanadas y bebidas. El laboratorio usa su catálogo para enseñar cómo se registra y calcula el importe de un pedido. El nombre visible es **Red Pepper** y el descriptor es **Laboratorio de base de datos**.
 
 ## Color
 
@@ -27,19 +27,19 @@ El azul eléctrico es el único acento cromático. Usar bloques sólidos, bordes
 
 ## Iconos, superficies y contenido
 
-- Iconos lineales de 20 px con trazo consistente y texto visible para acciones. Utilizar base de datos, relaciones, tabla, edición, transferencia, papelera y recibo. La cabecera y la pestaña usan el [ají blanco sobre azul eléctrico](web/icono-red-pepper.svg), acompañado del nombre Red Pepper en la cabecera.
+- Iconos lineales de 20 px con trazo consistente y texto visible para acciones. Utilizar base de datos, relaciones, tabla, edición, transferencia, papelera y resumen. La cabecera y la pestaña usan una [bandeja de salchipapas blanca sobre azul eléctrico](web/icono-red-pepper.svg), acompañada del nombre Red Pepper en la cabecera.
 - Superficies definidas por el tema, borde gris azulado y radio medio de 12 px. Evitar gradientes, sombras pesadas, fotografías genéricas, logotipos inventados del restaurante y elementos que aparenten telemetría.
-- La carta es la referencia para nombres y precios. Mantener las variantes cuando están explícitas y marcar como desconocidos los atributos ausentes. Las ventas, clientes y referencias de pago de ejercicio son ficticios.
+- La carta es la referencia para nombres y precios. Mantener las variantes cuando están explícitas y marcar como desconocidos los atributos ausentes. Los pedidos y clientes del ejercicio son ficticios.
 
 ## Brief para Stitch
 
 Diseñar un portal tipo presentación interactiva con navegación lateral en escritorio y navegación compacta en móvil. Crear cinco pasos con **Guía de ventas** como punto de entrada. El paso activo usa el azul de marca. El área principal presenta el título, una frase que indica qué hacer y una superficie de trabajo. El contenido real de datos pasa por los mismos componentes en todos los pasos.
 
-- **Guía de ventas** muestra cuatro etapas con controles y enlaces a las tablas del pedido activo. Identificar la acción siguiente con texto y un borde azul. El panel de cambios muestra campo, valor anterior y valor nuevo en columnas legibles. [Referencia visual en Stitch](https://stitch.withgoogle.com/projects/14029965516649664019).
-- **Modelo** muestra el recorrido Clientes → Pedidos → Detalle → Productos y el de Pedidos → Comprobantes → Pagos. Las entidades tienen un inspector con su clave primaria, foráneas y cardinalidad.
-- **Explorar tablas** muestra el selector de las 13 tablas, búsqueda, filas con claves e importes, y paginación.
+- **Guía de ventas** muestra Cliente → Pedido → Detalle → Total con controles y enlaces a las filas del pedido activo. Identificar la acción siguiente con texto y un borde azul. El panel de cambios muestra campo, valor anterior y valor nuevo en columnas legibles. [Referencia del diseño original en Stitch](https://stitch.withgoogle.com/projects/14029965516649664019).
+- **Modelo** muestra el recorrido Clientes → Pedidos → Detalle → Productos y las tablas de categorías y subtipos. Las entidades tienen un inspector con su clave primaria, foráneas y cardinalidad.
+- **Explorar tablas** muestra el selector de las ocho tablas, búsqueda, filas con claves e importes, y paginación.
 - **Editar pedidos** incluye un selector, líneas, cantidades y acciones para agregar, mover, cambiar estado o borrar. Los avisos explican qué relaciones cambian.
-- **Comprobantes y pagos** muestra la emisión de prueba, total, abonos y saldo. El simulador usa efectivo y Yape y mantiene visible el contexto ficticio.
+- **Resumen del pedido** muestra las líneas, las unidades y el total calculado desde el detalle.
 
 Cada control interactivo tiene un nombre legible, foco visible y un resultado comprensible. Usar una columna en móvil y conservar las tablas desplazables dentro de su contenedor cuando las columnas no entren. Mantener accesos a **Anterior**, **Siguiente** e **Informe técnico**. El portal utiliza la ruta `/basededatos/`.
 

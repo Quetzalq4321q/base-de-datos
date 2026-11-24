@@ -176,7 +176,6 @@ th.codigo { font-size: .875rem; }
 .valor-guia { overflow-wrap: anywhere; }
 .tabla-guia { margin-top: auto; min-height: 2.4rem; align-self: start; font-size: .8rem; }
 .guia-detalle { margin-top: 1rem; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
-.cobro-lateral { display: grid; gap: 1rem; min-width: 0; }
 .cambio-fila { margin: .65rem 0; border: 1px solid var(--line); border-radius: .5rem; }
 .cambio-fila summary, .historial summary { cursor: pointer; padding: .55rem .65rem; }
 .cambio-fila summary .apagado { display: block; padding-left: .85rem; overflow-wrap: anywhere; }
@@ -187,12 +186,10 @@ th.codigo { font-size: .875rem; }
 .valor-cambiado { color: var(--accent); font-weight: 700; }
 .cambio-fila[open] .registros { animation: entrar .2s ease-out; }
 .historial { margin-top: .65rem; border-top: 1px solid var(--line); }
-.saldo-grid { display: grid; gap: .45rem; padding: .7rem 1rem; border-top: 1px solid var(--line); }
-.saldo-grid div { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
-.saldo-grid dt { color: var(--muted); }
-.saldo-grid dd { font-variant-numeric: tabular-nums; }
-.pago { padding: .75rem 1rem 1rem; display: grid; gap: .75rem; }
-.cobro-titulo { padding: .55rem 1rem; }
+.resumen-grid { display: grid; gap: .45rem; padding: .7rem 1rem; border-top: 1px solid var(--line); }
+.resumen-grid div { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
+.resumen-grid dt { color: var(--muted); }
+.resumen-grid dd { font-variant-numeric: tabular-nums; }
 
 dialog { width: min(calc(100% - 1.5rem), 29rem); border: 1px solid var(--line); border-radius: var(--radio); padding: 1.25rem; color: var(--ink); background: var(--paper); }
 dialog::backdrop { background: rgb(19 27 50 / .5); }

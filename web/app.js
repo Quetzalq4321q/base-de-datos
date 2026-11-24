@@ -1,12 +1,12 @@
-import { clientes, comprobanteTexto, crearBase, estados, modalidades, mostrarCelular, snacks, telefonos } from './datos.js?v=20261124b';
-import { conciliar, dividirPago, documentoDe, esquema, lineasDe, operar, totalLineas } from './modelo.js?v=20261124b';
+import { crearBase, estados, modalidades } from './datos.js?v=20261124d';
+import { esquema, lineasDe, operar, totalLineas } from './modelo.js?v=20261124d';
 
 const pasos = [
-  ['Guía de ventas', 'Crea una comanda, agrega productos y sigue cada cambio hasta el pago.', 'route', 'guia', 'Guía de ventas', mostrarGuia],
-  ['Modelo de datos', 'Sigue una venta desde la persona que pide hasta el último abono.', 'account_tree', 'modelo', 'Modelo', mostrarModelo],
-  ['Explorar tablas', 'Abre las 13 tablas, busca registros y sigue sus claves foráneas.', 'table_view', 'tablas', 'Explorar tablas', mostrarTablas],
+  ['Guía de ventas', 'Crea una comanda, agrega productos y revisa cómo se calcula su importe.', 'route', 'guia', 'Guía de ventas', mostrarGuia],
+  ['Modelo de datos', 'Sigue un pedido desde el cliente hasta los productos de la carta.', 'account_tree', 'modelo', 'Modelo', mostrarModelo],
+  ['Explorar tablas', 'Busca registros en las ocho tablas y sigue sus claves foráneas.', 'table_view', 'tablas', 'Explorar tablas', mostrarTablas],
   ['Editar pedidos', 'Practica con una comanda y observa qué filas cambian en el modelo.', 'edit_note', 'editar', 'Editar pedidos', mostrarPedido],
-  ['Comprobantes y pagos', 'Emite un comprobante de práctica y reparte el saldo entre efectivo y Yape.', 'receipt_long', 'cobros', 'Comprobantes y pagos', mostrarCobros],
+  ['Resumen del pedido', 'Comprueba las cantidades, el precio aplicado y el total de la comanda.', 'summarize', 'resumen', 'Resumen del pedido', mostrarResumen],
 ];
 const indicePaso = (ruta) => pasos.findIndex((etapa) => etapa[3] === ruta);
 
@@ -14,29 +14,29 @@ const id = (nombre) => document.getElementById(nombre);
 const moneda = new Intl.NumberFormat('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fechaLima = new Intl.DateTimeFormat('es-PE', { timeZone: 'America/Lima', dateStyle: 'short', timeStyle: 'short' });
 const soles = (centavos) => `S/ ${moneda.format(centavos / 100)}`;
-const camposMoneda = new Set(['precio', 'precio_unitario', 'monto']);
+const camposMoneda = new Set(['precio', 'precio_unitario']);
 const claveLocal = 'red-pepper-laboratorio-v2';
 const referencias = {
   id_cliente: 'clientes', id_categoria: 'categorias', id_producto: 'productos', id_pedido: 'pedidos',
-  id_comprobante: 'comprobantes', id_tipo_comprobante: 'tipos_comprobante', serie: 'series_comprobante', id_metodo_pago: 'metodos_pago',
 };
+const tablasSubtipo = new Set(['snacks', 'bebidas', 'hamburguesas']);
 
 function cargar() {
+  const inicio = crearBase();
   try {
     const anterior = JSON.parse(localStorage.getItem(claveLocal));
-    if (anterior?.secuencias && Array.isArray(anterior.cambios) && Object.keys(esquema).every((tabla) => Array.isArray(anterior.tablas?.[tabla]))) {
-      for (const cliente of anterior.tablas.clientes) {
-        const ficha = clientes.find((muestra) => muestra.numero_documento === cliente.numero_documento && muestra.tipo_documento === cliente.tipo_documento);
-        if (ficha) Object.assign(cliente, { nombres: ficha.nombres, apellidos: ficha.apellidos });
-      }
-      anterior.tablas.snacks = structuredClone(snacks);
-      anterior.tablas.telefonos_cliente = structuredClone(telefonos);
-      return anterior;
+    if (Number.isSafeInteger(anterior?.secuencias?.pedido) && Array.isArray(anterior.cambios) &&
+        Array.isArray(anterior.tablas?.pedidos) && Array.isArray(anterior.tablas.detalle_pedido)) {
+      inicio.tablas.pedidos = anterior.tablas.pedidos;
+      inicio.tablas.detalle_pedido = anterior.tablas.detalle_pedido;
+      inicio.secuencias.pedido = anterior.secuencias.pedido;
+      inicio.cambios = anterior.cambios.filter(({ tabla }) => tabla.split(', ').every((nombre) => Object.hasOwn(esquema, nombre)));
+      inicio.pedidoActivo = anterior.pedidoActivo;
     }
   } catch {
     // El laboratorio puede iniciarse aunque el almacenamiento no esté disponible.
   }
-  return crearBase();
+  return inicio;
 }
 
 let base = cargar();
@@ -46,7 +46,7 @@ let tablaModelo = 'pedidos';
 let tablaDatos = 'pedidos';
 let filtroClave = null;
 let pagina = 0;
-let pedidoActivo = base.tablas.pedidos.find((p) => p.id_pedido === (base.pedidoActivo ?? 101))?.id_pedido ?? base.tablas.pedidos.at(-1).id_pedido;
+let pedidoActivo = base.tablas.pedidos.find((p) => p.id_pedido === (base.pedidoActivo ?? 101))?.id_pedido ?? base.tablas.pedidos.at(-1)?.id_pedido;
 let accionDialogo;
 
 function nodo(etiqueta, texto = '', clase = '') {
@@ -160,7 +160,7 @@ function elegirTabla(tabla, clave = null) {
 function mostrarModelo() {
   id('cantidad-tablas').textContent = Object.keys(esquema).length;
   id('cantidad-productos').textContent = base.tablas.productos.length;
-  id('cantidad-ventas').textContent = base.tablas.comprobantes.length;
+  id('cantidad-ventas').textContent = base.tablas.pedidos.filter((pedido) => pedido.estado === 'Entregado').length;
   for (const control of id('mapa').querySelectorAll('[data-tabla]')) {
     control.setAttribute('aria-pressed', String(control.dataset.tabla === tablaModelo));
   }
@@ -186,8 +186,7 @@ function mostrarModelo() {
 function crearMapa() {
   const grupos = [
     ['De la carta al pedido', ['clientes', 'pedidos', 'detalle_pedido', 'productos'], true],
-    ['Del pedido al cobro', ['pedidos', 'comprobantes', 'pagos'], true],
-    ['Catálogos y datos relacionados', ['telefonos_cliente', 'categorias', 'snacks', 'bebidas', 'tipos_comprobante', 'series_comprobante', 'metodos_pago'], false],
+    ['Categorías y subtipos', ['categorias', 'snacks', 'bebidas', 'hamburguesas'], false],
   ];
   for (const [titulo, tablas, cadena] of grupos) {
     const grupo = nodo('section', '', 'grupo-mapa');
@@ -211,8 +210,6 @@ function mostrarValor(campo, valor) {
   if (valor === null || valor === undefined) return '—';
   if (camposMoneda.has(campo)) return soles(valor);
   if (campo.startsWith('fecha_')) return fechaLima.format(new Date(valor));
-  if (campo === 'tasa_igv') return `${valor}%`;
-  if (campo === 'numero' && typeof valor === 'string') return mostrarCelular(valor);
   if (typeof valor === 'boolean') return valor ? 'Sí' : 'No';
   return String(valor);
 }
@@ -228,8 +225,7 @@ function mostrarTablas() {
   const filas = base.tablas[tablaDatos].filter((registro) => {
     if (filtroClave) return registro[filtroClave.campo] === filtroClave.valor;
     const valores = ficha.columnas.map((campo) => mostrarValor(campo, registro[campo]));
-    if (tablaDatos === 'snacks') valores.push(nombreProducto(registro.id_producto));
-    if (tablaDatos === 'telefonos_cliente') valores.push(registro.numero);
+    if (tablasSubtipo.has(tablaDatos)) valores.push(nombreProducto(registro.id_producto));
     const texto = simplificar(valores.join(' '));
     return palabras.every((palabra) => texto.includes(palabra));
   });
@@ -242,7 +238,7 @@ function mostrarTablas() {
     const texto = mostrarValor(campo, valor);
     const destino = referencias[campo];
     if (destino && destino !== tablaDatos && valor !== null && valor !== undefined) {
-      const etiqueta = tablaDatos === 'snacks' && campo === 'id_producto' ? `${texto} · ${nombreProducto(valor)}` : texto;
+      const etiqueta = tablasSubtipo.has(tablaDatos) && campo === 'id_producto' ? `${texto} · ${nombreProducto(valor)}` : texto;
       const enlace = boton(etiqueta, () => elegirTabla(destino, { campo, valor }), null, 'enlace-boton codigo');
       enlace.setAttribute('aria-label', `Ver ${esquema[destino].titulo} con id ${etiqueta}`);
       return enlace;
@@ -261,6 +257,7 @@ const pedidoVigente = () => base.tablas.pedidos.find((fila) => fila.id_pedido ==
 
 function selectorPedidos(control) {
   opciones(control, [...base.tablas.pedidos].reverse(), (p) => p.id_pedido, etiquetaPedido, pedidoActivo);
+  control.disabled = base.tablas.pedidos.length === 0;
 }
 
 function formularioCampo(texto, control, nombre) {
@@ -286,9 +283,9 @@ function confirmarBorrado(titulo, texto, accion) {
 }
 
 function moverLinea(linea) {
-  const disponibles = base.tablas.pedidos.filter((p) => p.id_pedido !== pedidoActivo && p.estado !== 'Anulado' && !documentoDe(base.tablas, p.id_pedido));
+  const disponibles = base.tablas.pedidos.filter((p) => p.id_pedido !== pedidoActivo && p.estado !== 'Anulado').reverse();
   if (!disponibles.length) {
-    mostrarAviso('Crea otro pedido sin comprobante para recibir la línea.', true);
+    mostrarAviso('Crea otro pedido vigente para recibir la línea.', true);
     return;
   }
   const control = nodo('select');
@@ -336,7 +333,7 @@ function borrarPedido() {
     { tipo: 'borrar-pedido', id: pedidoActivo });
 }
 
-function tablaLineas(pedido, documento, lineas, editable) {
+function tablaLineas(pedido, lineas, editable) {
   const cliente = base.tablas.clientes.find((c) => c.id_cliente === pedido.id_cliente);
   const columnas = [{ texto: 'Producto' }, { texto: 'Cant.', clase: 'numero' }, { texto: 'Importe', clase: 'numero' }];
   if (editable) columnas.push({ texto: 'Acciones' });
@@ -355,7 +352,7 @@ function tablaLineas(pedido, documento, lineas, editable) {
   const pie = nodo('div', '', 'pie-tabla');
   const identificacion = nodo('div', '', 'estado-texto');
   if (cliente) identificacion.append(nodo('p', `${cliente.nombres} ${cliente.apellidos}`));
-  identificacion.append(nodo('p', documento ? `Emitido · ${comprobanteTexto(documento)}` : `Estado · ${pedido.estado}`));
+  identificacion.append(nodo('p', `Estado · ${pedido.estado}`));
   pie.append(identificacion, nodo('strong', soles(totalLineas(lineas)), 'numero'));
   return [registros(columnas, filas, 'Líneas del pedido'), pie];
 }
@@ -400,95 +397,82 @@ function mostrarCambios(contenedor) {
 function mostrarGuia() {
   const pedido = pedidoVigente();
   selectorPedidos(id('pedido-guia'));
-  const { comprobante, pagos, saldo, total } = conciliar(base.tablas, pedidoActivo);
+  mostrarCambios(id('guia-cambios'));
+  if (!pedido) {
+    id('flujo-guia').replaceChildren();
+    id('guia-acciones').replaceChildren();
+    id('guia-lineas').replaceChildren(nodo('p', 'Crea un pedido para empezar.', 'sin-lineas apagado'));
+    return;
+  }
   const lineas = lineasDe(base.tablas, pedidoActivo);
   const cliente = base.tablas.clientes.find((c) => c.id_cliente === pedido.id_cliente);
-  const editable = !comprobante && pedido.estado !== 'Anulado';
-  const etapa = pedido.estado === 'Anulado' ? -1 : !lineas.length ? 1 : !comprobante ? 2 : saldo > 0 ? 3 : 4;
-  const agregar = () => boton('Agregar producto', agregarDesdeGuia, 'add_shopping_cart', 'boton primario');
+  const editable = pedido.estado !== 'Anulado';
+  const etapa = lineas.length ? 3 : 2;
   const tarjetas = [
-    ['pedidos', 'Pedido', `#${pedidoActivo} · ${pedido.tipo_pedido}`, `${cliente.nombres} ${cliente.apellidos}`, { campo: 'id_pedido', valor: pedidoActivo },
+    ['clientes', 'Cliente', `${cliente.nombres} ${cliente.apellidos}`, 'El pedido guarda el identificador del cliente.', { campo: 'id_cliente', valor: pedido.id_cliente }],
+    ['pedidos', 'Pedido', `#${pedidoActivo} · ${pedido.tipo_pedido}`, `Estado · ${pedido.estado}`, { campo: 'id_pedido', valor: pedidoActivo },
       editable && boton('Editar pedido', () => formularioPedido(pedido), 'edit')],
-    ['detalle_pedido', 'Detalle', `${lineas.length} ${lineas.length === 1 ? 'línea' : 'líneas'} · ${soles(total)}`, 'La línea relaciona el pedido con un producto.', { campo: 'id_pedido', valor: pedidoActivo },
-      editable && agregar()],
-    ['comprobantes', 'Comprobante', comprobante ? comprobanteTexto(comprobante) : 'Por emitir', 'La boleta toma un correlativo de la serie RP01.', { campo: 'id_pedido', valor: pedidoActivo },
-      editable && lineas.length > 0 && boton('Emitir comprobante', () => ejecutar({ tipo: 'emitir', id: pedidoActivo }), 'receipt_long', 'boton primario')],
-    ['pagos', 'Pago', comprobante ? `Saldo ${soles(saldo)}` : 'Por cobrar', `${pagos.length} ${pagos.length === 1 ? 'abono asociado' : 'abonos asociados'} al comprobante.`,
-      { campo: 'id_comprobante', valor: comprobante?.id_comprobante ?? 'Por emitir' },
-      comprobante && boton(saldo > 0 ? 'Registrar pago' : 'Ver cobro', () => ir(indicePaso('cobros')), 'payments', saldo > 0 ? 'boton primario' : 'boton secundario')],
+    ['detalle_pedido', 'Detalle', `${lineas.length} ${lineas.length === 1 ? 'línea' : 'líneas'}`, 'Cada línea enlaza un producto con el pedido.', { campo: 'id_pedido', valor: pedidoActivo },
+      editable && boton('Agregar producto', agregarDesdeGuia, 'add_shopping_cart', 'boton primario')],
+    [null, 'Total', soles(totalLineas(lineas)), 'Suma la cantidad por el precio aplicado de cada línea.', null,
+      boton('Ver resumen', () => ir(indicePaso('resumen')), 'summarize')],
   ];
   id('flujo-guia').replaceChildren(...tarjetas.map(([tabla, titulo, valor, texto, filtro, accion], indice) => {
     const tarjeta = nodo('li', '', 'tarjeta-guia');
-    if (indice === etapa) tarjeta.setAttribute('aria-current', 'step');
+    const siguiente = editable && indice === etapa;
+    if (siguiente) tarjeta.setAttribute('aria-current', 'step');
     const cabecera = nodo('div', '', 'etapa-guia');
-    cabecera.append(icono(esquema[tabla].icono), nodo('h3', titulo));
-    if (indice === etapa) cabecera.append(nodo('span', 'Siguiente', 'siguiente-guia'));
+    cabecera.append(icono(esquema[tabla]?.icono ?? 'summarize'), nodo('h3', titulo));
+    if (siguiente) cabecera.append(nodo('span', 'Siguiente', 'siguiente-guia'));
     tarjeta.append(cabecera, nodo('strong', valor, 'valor-guia'), nodo('p', texto, 'apagado'));
     if (accion) tarjeta.append(accion);
-    const enlace = boton(tabla, () => elegirTabla(tabla, filtro), 'table_view', 'enlace-boton codigo tabla-guia');
-    enlace.setAttribute('aria-label', `Ver tabla ${tabla}`);
-    tarjeta.append(enlace);
+    if (tabla) {
+      const enlace = boton(tabla, () => elegirTabla(tabla, filtro), 'table_view', 'enlace-boton codigo tabla-guia');
+      enlace.setAttribute('aria-label', `Ver tabla ${tabla}`);
+      tarjeta.append(enlace);
+    }
     return tarjeta;
   }));
-  id('guia-lineas').replaceChildren(...tablaLineas(pedido, comprobante, lineas, editable));
-  const acciones = id('guia-acciones');
-  acciones.replaceChildren();
-  if (!comprobante) acciones.append(boton('Borrar pedido', borrarPedido, 'delete'));
-  acciones.append(boton('Abrir editor de pedidos', () => ir(indicePaso('editar')), 'edit_note'));
-  mostrarCambios(id('guia-cambios'));
+  id('guia-lineas').replaceChildren(...tablaLineas(pedido, lineas, editable));
+  id('guia-acciones').replaceChildren(boton('Borrar pedido', borrarPedido, 'delete'),
+    boton('Abrir editor de pedidos', () => ir(indicePaso('editar')), 'edit_note'));
 }
 
 function mostrarPedido() {
   const pedido = pedidoVigente();
-  const documento = documentoDe(base.tablas, pedidoActivo);
-  const editable = !documento && pedido.estado !== 'Anulado';
+  const editable = Boolean(pedido) && pedido.estado !== 'Anulado';
   selectorPedidos(id('pedido-editar'));
   id('agregar').hidden = !editable;
   id('editar-cabecera').disabled = !editable;
-  id('borrar-pedido').disabled = Boolean(documento);
-  opciones(id('estado'), documento ? estados.filter((estado) => estado !== 'Anulado') : estados, (x) => x, (x) => x, pedido.estado);
-  id('pedido-lineas').replaceChildren(...tablaLineas(pedido, documento, lineasDe(base.tablas, pedidoActivo), editable));
+  id('cambiar-estado').hidden = !pedido;
   mostrarCambios(id('aprendizaje'));
+  if (!pedido) {
+    id('pedido-lineas').replaceChildren(nodo('p', 'Crea un pedido para empezar.', 'sin-lineas apagado'));
+    return;
+  }
+  opciones(id('estado'), estados, (x) => x, (x) => x, pedido.estado);
+  id('pedido-lineas').replaceChildren(...tablaLineas(pedido, lineasDe(base.tablas, pedidoActivo), editable));
   id('aprendizaje').append(boton('Ver tabla de detalle', () => elegirTabla('detalle_pedido', { campo: 'id_pedido', valor: pedidoActivo }), 'table_view'));
 }
 
-function mostrarPartes() {
-  const campo = id('efectivo');
-  const { saldo, comprobante } = conciliar(base.tablas, pedidoActivo);
-  campo.max = (saldo / 100).toFixed(2);
-  campo.disabled = !comprobante || saldo === 0;
-  id('registrar-pago').disabled = campo.disabled || !campo.validity.valid;
-  let texto = comprobante ? soles(0) : 'Por emitir';
-  if (!campo.disabled) {
-    texto = campo.validity.valid ? soles(dividirPago(saldo, Math.round(Number(campo.value) * 100)).yape) : 'Importe fuera del saldo';
-  }
-  id('yape').textContent = texto;
-}
-
-function mostrarCobros() {
+function mostrarResumen() {
   const pedido = pedidoVigente();
-  const { comprobante, pagos, saldo, base: importeBase, igv, total, cobrado } = conciliar(base.tablas, pedidoActivo);
-  selectorPedidos(id('pedido-cobrar'));
-  const detalle = nodo('dl', '', 'saldo-grid');
-  const importes = [['Total de la venta', total], ['Total abonado', cobrado], ['Saldo pendiente', saldo]];
-  if (comprobante) importes.splice(0, 0, ['Base imponible', importeBase], ['IGV del ejercicio', igv]);
-  for (const [concepto, valor] of importes) {
+  selectorPedidos(id('pedido-resumen'));
+  mostrarCambios(id('resumen-cambios'));
+  const contenedor = id('resumen-pedido');
+  if (!pedido) {
+    contenedor.replaceChildren(nodo('p', 'Crea un pedido desde la guía para ver su total.', 'sin-lineas apagado'));
+    return;
+  }
+  const lineas = lineasDe(base.tablas, pedidoActivo);
+  const detalle = nodo('dl', '', 'resumen-grid');
+  const unidades = lineas.reduce((suma, linea) => suma + linea.cantidad, 0);
+  for (const [concepto, valor] of [['Líneas del pedido', lineas.length], ['Unidades', unidades], ['Total de la comanda', soles(totalLineas(lineas))]]) {
     const fila = nodo('div');
-    fila.append(nodo('dt', concepto), nodo('dd', soles(valor)));
+    fila.append(nodo('dt', concepto), nodo('dd', String(valor)));
     detalle.append(fila);
   }
-  const titulo = comprobante ? comprobanteTexto(comprobante) : 'Por emitir';
-  const contenedor = id('resumen-cobro');
-  contenedor.replaceChildren(nodo('h3', titulo, 'cobro-titulo codigo'), detalle);
-  if (pagos.length) {
-    const filas = pagos.map((p) => [base.tablas.metodos_pago.find((m) => m.id_metodo_pago === p.id_metodo_pago).nombre, soles(p.monto)]);
-    contenedor.append(registros([{ texto: 'Medio de pago' }, { texto: 'Abono', clase: 'numero' }], filas, 'Abonos registrados'));
-  }
-  id('emitir-zona').hidden = Boolean(comprobante);
-  id('emitir').disabled = pedido.estado === 'Anulado' || lineasDe(base.tablas, pedidoActivo).length === 0;
-  id('efectivo').value = '0.00';
-  mostrarPartes();
-  mostrarCambios(id('cobro-cambios'));
+  contenedor.replaceChildren(detalle, ...tablaLineas(pedido, lineas, false));
 }
 
 function ejecutar(accion) {
@@ -525,7 +509,7 @@ id('tabla-elegida').addEventListener('change', (evento) => elegirTabla(evento.ta
 id('buscar').addEventListener('input', () => { filtroClave = null; pagina = 0; mostrarTablas(); });
 id('pagina-ant').addEventListener('click', () => { pagina--; mostrarTablas(); });
 id('pagina-sig').addEventListener('click', () => { pagina++; mostrarTablas(); });
-for (const control of ['pedido-guia', 'pedido-editar', 'pedido-cobrar']) {
+for (const control of ['pedido-guia', 'pedido-editar', 'pedido-resumen']) {
   id(control).addEventListener('change', (evento) => { pedidoActivo = Number(evento.target.value); mostrarPantalla(); });
 }
 for (const control of ['nuevo-guia', 'nuevo-pedido']) id(control).addEventListener('click', () => formularioPedido());
@@ -540,13 +524,7 @@ id('cambiar-estado').addEventListener('submit', (evento) => {
   ejecutar({ tipo: 'estado', id: pedidoActivo, estado: id('estado').value });
 });
 id('borrar-pedido').addEventListener('click', borrarPedido);
-id('emitir').addEventListener('click', () => ejecutar({ tipo: 'emitir', id: pedidoActivo }));
 id('volver-guia').addEventListener('click', () => ir(indicePaso('guia')));
-id('pago').addEventListener('submit', (evento) => {
-  evento.preventDefault();
-  ejecutar({ tipo: 'abonar', id: pedidoActivo, efectivo: Math.round(Number(id('efectivo').value) * 100) });
-});
-id('efectivo').addEventListener('input', mostrarPartes);
 id('dialogo-form').addEventListener('submit', (evento) => {
   evento.preventDefault();
   const accion = accionDialogo(new FormData(evento.currentTarget));
@@ -558,4 +536,5 @@ id('cancelar-dialogo').addEventListener('click', () => id('dialogo').close());
 opciones(id('tabla-elegida'), Object.entries(esquema), ([tabla]) => tabla, ([tabla, ficha]) => `${ficha.titulo} (${tabla})`);
 opciones(id('producto'), base.tablas.productos, (p) => p.id_producto, (p) => `${p.nombre} · ${soles(p.precio)}`);
 crearMapa();
-ir(Math.max(0, indicePaso(location.hash.slice(1))), false);
+const ruta = location.hash === '#cobros' ? 'resumen' : location.hash.slice(1);
+ir(Math.max(0, indicePaso(ruta)), false);
