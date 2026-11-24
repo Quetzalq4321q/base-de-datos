@@ -1,31 +1,29 @@
-# Base de Datos · Red Pepper
+# Red Pepper · Base de datos
 
-Laboratorio de base de datos para la carta de Red Pepper y el recorrido de sus pedidos. El informe documenta la normalización, el catálogo, la instalación y los resultados.
+Laboratorio de pedidos para la carta de Red Pepper. El proyecto reúne un esquema PostgreSQL, una muestra de ventas ficticias y un portal para consultar tablas, recorrer sus relaciones y practicar con los datos.
 
-- [Tablas y relaciones](#tablas-y-relaciones)
-- [Guía paso a paso y comandos](#paso-a-paso)
-- [Informe técnico](informe/informe_red_pepper.pdf)
-- [Excel de los 100 pedidos de muestra](outputs/red-pepper/ventas_red_pepper.xlsx)
-- [Portal de demostración](https://nexlabsgroup.com/basededatos/)
-- [Identidad y brief de diseño](BRANDING.md)
-- [Diseño original del laboratorio en Stitch](https://stitch.withgoogle.com/projects/14029965516649664019)
+## Documentación
 
-## Tablas y relaciones
-
-El [modelo entidad–relación](MODELO_ENTIDAD_RELACION.md) reúne el diagrama de las ocho tablas, las claves y las cardinalidades. También puedes abrir el [modelo interactivo del portal](https://nexlabsgroup.com/basededatos/#modelo).
+| Recurso | Contenido |
+| --- | --- |
+| [Modelo entidad–relación](MODELO_ENTIDAD_RELACION.md) | Diagrama de las ocho tablas, claves y cardinalidades. |
+| [Informe técnico](informe/informe_red_pepper.pdf) | Normalización, integridad y verificación del esquema. |
+| [Libro de ventas](outputs/red-pepper/ventas_red_pepper.xlsx) | Resumen, pedidos, líneas de venta, clientes y catálogo. |
+| [Consultas para DataGrip](sql/07_validar_datagrip.sql) | Inventario de tablas, clasificación del catálogo, detalle y totales de pedidos. |
+| [Identidad visual](BRANDING.md) | Colores, tipografía, navegación y comportamiento del portal. |
 
 ## Paso a paso
 
-### 1. Clonar el repositorio
+### 1. Descargar el proyecto
 
-El repositorio es privado. Usa una cuenta de GitHub con acceso y ejecuta estos comandos en PowerShell o en una terminal con Git.
+Necesitas Git y acceso al repositorio privado. Ejecuta estos comandos en una terminal.
 
 ```sh
 git clone https://github.com/Quetzalq4321q/base-de-datos.git
 cd base-de-datos
 ```
 
-Si ya lo clonaste, ejecuta este comando dentro del proyecto para traer los cambios.
+Si ya tienes una copia, actualízala desde su carpeta.
 
 ```sh
 git pull --ff-only
@@ -33,24 +31,26 @@ git pull --ff-only
 
 ### 2. Abrir el portal en tu equipo
 
-Desde la carpeta del proyecto, inicia el servidor con Python 3.
+Con Python 3 instalado, ejecuta este comando desde la raíz del proyecto.
 
 ```sh
 python -m http.server 8000 --bind 127.0.0.1 --directory web
 ```
 
-En Windows también puedes usar `py -3` en lugar de `python`. Abre la [guía local](http://127.0.0.1:8000/) o el [modelo entidad–relación local](http://127.0.0.1:8000/#modelo). Para detener el servidor pulsa Ctrl+C.
+En Windows puedes sustituir `python` por `py -3`. Abre la [guía de ventas](http://127.0.0.1:8000/) o el [modelo interactivo](http://127.0.0.1:8000/#modelo). Pulsa **Ctrl+C** en la terminal para detener el servidor.
 
-### 3. Crear una base local de prueba
+El portal incluye su propia muestra. Puedes crear un pedido, editar su cliente y modalidad, añadir o mover líneas y revisar qué cambió. El **Resumen del pedido** calcula el total con el precio aplicado a cada línea. Las operaciones de práctica se guardan en el navegador.
 
-Con PostgreSQL iniciado y las herramientas `createdb` y `psql` instaladas, crea una base nueva. Usa tu usuario de PostgreSQL si es distinto de `postgres`.
+### 3. Cargar la muestra en PostgreSQL local
+
+Inicia PostgreSQL y comprueba que tengas `createdb` y `psql`. Estos comandos crean una base de prueba vacía. Sustituye `postgres` por tu usuario si corresponde.
 
 ```sh
 createdb -h localhost -U postgres red_pepper_prueba
 psql -X -h localhost -U postgres -d red_pepper_prueba -v ON_ERROR_STOP=1
 ```
 
-Dentro de `psql`, ejecuta los siguientes comandos desde la carpeta del proyecto. Los primeros scripts preparan la muestra y el `10` deja el esquema vigente.
+Ejecuta los siguientes comandos dentro de `psql`, desde una sesión iniciada en la raíz del repositorio. Los scripts anteriores a `10` preparan la carga histórica y `10` aplica el esquema vigente.
 
 ```text
 \encoding UTF8
@@ -65,11 +65,11 @@ Dentro de `psql`, ejecuta los siguientes comandos desde la carpeta del proyecto.
 \i sql/07_validar_datagrip.sql
 ```
 
-Para actualizar una copia histórica que ya tiene las cargas hasta `09`, respalda `salchipaperia` y ejecuta solo `10` antes de consultar con `07`.
+Si tu base ya tiene la carga hasta `09`, respalda el esquema `salchipaperia` y aplica la [migración `10`](sql/10_simplificar_pedidos.sql) antes de ejecutar las consultas.
 
-### 4. Consultar tablas y relaciones
+### 4. Consultar las tablas
 
-En `psql`, `\dt` lista las tablas y `\d` muestra las columnas y claves de una tabla.
+En la consola de `psql`, `\dt` lista las tablas del esquema, `\d` muestra las columnas y claves de una tabla, y `\q` cierra la sesión.
 
 ```text
 \dt salchipaperia.*
@@ -77,51 +77,45 @@ En `psql`, `\dt` lista las tablas y `\d` muestra las columnas y claves de una ta
 \q
 ```
 
-En **DataGrip**, abre la conexión a Supabase, selecciona el esquema `salchipaperia` y sincronízalo. Ejecuta en la consola SQL la consulta de inventario.
+Para consultar Supabase desde **DataGrip**, crea o abre una conexión PostgreSQL. Usa el host, puerto y usuario del panel **Connect**, la base `postgres` y el modo `verify-full` con el certificado CA del proyecto. Selecciona el esquema `salchipaperia` en **Schemas** y sincroniza el explorador.
+
+Ejecuta este bloque en una consola SQL para verificar el inventario.
 
 ```sql
 SELECT table_name
 FROM information_schema.tables
-WHERE table_schema = 'salchipaperia' AND table_type = 'BASE TABLE'
+WHERE table_schema = 'salchipaperia'
+  AND table_type = 'BASE TABLE'
 ORDER BY table_name;
 ```
 
-Ejecuta por bloques [07_validar_datagrip.sql](sql/07_validar_datagrip.sql) para ver el catálogo, las líneas y el total de los pedidos. La base de Supabase ya contiene el esquema vigente. Para configurar una conexión nueva, toma el host, el usuario y el puerto de **Connect** y usa la CA descargada de **Database Settings** con `sslmode=verify-full`.
+El resultado esperado es **8 tablas**. Los bloques de [07_validar_datagrip.sql](sql/07_validar_datagrip.sql) también permiten consultar el catálogo, calcular los importes y ver las líneas de un pedido.
 
-## Resultados en PostgreSQL local y Supabase
+## Datos de referencia
 
-| Muestra | Productos de carta | Pedidos | Líneas | Importe |
-| --- | ---: | ---: | ---: | ---: |
-| Del 24 de octubre al 22 de noviembre de 2026 | 38 | 100 | 186 | S/ 2,303.50 |
+La muestra cubre del **24 de octubre al 22 de noviembre de 2026**, hora de Lima. Contiene **100 pedidos**, **186 líneas** y **38 productos de la carta**. El importe de la muestra suma **S/ 2,303.50**. Los dos pedidos de la carga inicial de PostgreSQL quedan fuera de ese periodo.
 
-El esquema tiene ocho tablas y cero vistas. Conserva `clientes`, `categorias`, `productos`, `pedidos`, `detalle_pedido`, `snacks` y `bebidas`, y añade `hamburguesas` con las ocho variantes de res y pollo. Cada producto tiene un solo subtipo. La columna `tipo_bebida` acepta `Gaseosa` o `Chicha`. Agua y maracuyá conservan un valor `NULL` en esa columna.
+El total de un pedido se calcula como la suma de `cantidad × precio_unitario` de sus líneas. El precio unitario se conserva en el detalle, mientras que `productos.precio` representa el precio vigente. Los códigos de pedido del Excel identifican filas del libro. En DataGrip, las consultas usan `id_pedido`.
 
-La carta aporta los precios de venta sin membresía. El total se calcula multiplicando la cantidad por el precio aplicado a cada línea. `web/datos.js` contiene la muestra reproducible y `scripts/muestra_historica.mjs` completa los datos requeridos por las cargas anteriores. Ejecutar `node scripts/generar_muestra.mjs` desde la raíz para regenerar las cargas históricas `06`, `08` y `09`.
-
-El Excel enlaza las hojas Ventas y Detalle por su código de muestra y la hoja Clientes por el identificador interno de cada cliente. Sus códigos de pedido identifican filas de la muestra de Excel. DataGrip usa la identidad de cada pedido de PostgreSQL.
-
-## Portal en cPanel
-
-El directorio público es `public_html/basededatos`. Publicar allí los archivos de `web/`, incluido `.htaccess`, y una copia de `informe/informe_red_pepper.pdf` con el nombre `informe-red-pepper.pdf`. Las rutas de navegación son `/basededatos/` y `/basededatos/informe`. La interfaz puede abrirse en un servidor estático local desde la carpeta `web`. La ruta del informe utiliza el rewrite de Apache o LiteSpeed.
-
-El portal carga la muestra como parte de su aplicación estática. Los borradores de práctica 101 y 102 permiten ensayar operaciones inmediatamente. Los cambios se guardan en el almacenamiento local del navegador. Para volver a la muestra inicial se puede usar un navegador o perfil nuevo. Supabase conserva su carga independiente en PostgreSQL.
-
-La cabecera permite alternar entre tema claro y oscuro. El portal sigue la preferencia del sistema hasta elegir un modo y guarda la elección en el navegador. La pantalla de carga aparece mientras se prepara el laboratorio. El movimiento reducido del sistema desactiva el pulso y las transiciones.
-
-El recorrido abre en **Guía de ventas**. Las tarjetas muestran el cliente, el pedido, el detalle y su total. Para practicar, pulsa **Nuevo pedido**, elige cliente y modalidad, agrega un producto y edita su cantidad. El panel **Qué cambió en los datos** compara las filas antes y después de la última operación. Puedes mover una línea, borrarla o deshacer el último cambio durante la sesión.
-
-**Modelo entidad–relación** muestra un mapa interactivo de las ocho tablas y sus siete conexiones. El mapa usa una distribución vertical en pantallas estrechas. Selecciona una entidad para resaltar sus relaciones y consultar sus claves. **Explorar tablas** permite buscar y seguir claves foráneas. **Editar pedidos** permite cambiar los datos de una comanda, sus líneas y su estado. **Resumen del pedido** muestra las unidades y el total. En `diseno/stitch/` se conserva el diseño histórico.
-
-## Archivos y verificación
+## Estructura y publicación
 
 | Ruta | Contenido |
 | --- | --- |
-| `MODELO_ENTIDAD_RELACION.md` | Diagrama y reglas de las ocho entidades |
-| `sql/` | Esquema, migraciones, datos ficticios, consultas y pruebas |
-| `BRANDING.md` | Tokens de color, tipografía, iconos y brief usado en Stitch |
-| `diseno/stitch/` | Exportaciones de las pantallas y de los dos temas de Stitch |
-| `web/` | Portal, operaciones del laboratorio y datos de práctica |
-| `scripts/generar_muestra.mjs` | Generador reproducible de la carga PostgreSQL |
-| `informe/` | PDF y fuente editable LaTeX |
+| [`web/`](web/) | Portal, mapa adaptable y datos de práctica. |
+| [`sql/`](sql/) | Esquema PostgreSQL, migraciones, carga y consultas. |
+| [`informe/`](informe/) | Informe en PDF y fuente LaTeX. |
+| [`outputs/red-pepper/`](outputs/red-pepper/) | Libro de ventas de la muestra. |
 
-Para regenerar el informe, ejecutar `xelatex -halt-on-error informe/informe_red_pepper.tex` con Calibri y Consolas disponibles. Las pantallas de Stitch derivan de `BRANDING.md`. El HTML publicado adopta su navegación, retícula y componentes, con etiquetas y datos vinculados a las operaciones del laboratorio.
+En cPanel, publica el contenido de `web/`, incluido `.htaccess`, en `public_html/basededatos`. Copia el PDF de `informe/` como `informe-red-pepper.pdf` en esa carpeta. La ruta `/basededatos/informe` usa las reglas de Apache o LiteSpeed. [Portal publicado](https://nexlabsgroup.com/basededatos/)
+
+Para regenerar las cargas históricas `06`, `08` y `09`, usa Node.js desde la raíz del proyecto.
+
+```sh
+node scripts/generar_muestra.mjs
+```
+
+Para compilar el informe, usa XeLaTeX con Calibri y Consolas instaladas.
+
+```sh
+xelatex -halt-on-error informe/informe_red_pepper.tex
+```

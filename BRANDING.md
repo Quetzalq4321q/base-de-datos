@@ -31,11 +31,11 @@ El azul eléctrico es el único acento cromático. Usar bloques sólidos, bordes
 - Superficies definidas por el tema, borde gris azulado y radio medio de 12 px. Evitar gradientes, sombras pesadas, fotografías genéricas, logotipos inventados del restaurante y elementos que aparenten telemetría.
 - La carta es la referencia para nombres y precios. Mantener las variantes cuando están explícitas y marcar como desconocidos los atributos ausentes. Los pedidos y clientes del ejercicio son ficticios.
 
-## Brief para Stitch
+## Navegación y pantallas
 
-Diseñar un portal tipo presentación interactiva con navegación lateral en escritorio y navegación compacta en móvil. Crear cinco pasos con **Guía de ventas** como punto de entrada. El paso activo usa el azul de marca. El área principal presenta el título, una frase que indica qué hacer y una superficie de trabajo. El contenido real de datos pasa por los mismos componentes en todos los pasos.
+El portal tiene cinco apartados y abre en **Guía de ventas**. La navegación es lateral en escritorio y compacta en móvil. El apartado activo se distingue por el fondo azul. Cada pantalla presenta su título, una instrucción breve y los controles necesarios para trabajar con los datos.
 
-- **Guía de ventas** muestra Cliente → Pedido → Detalle → Total con controles y enlaces a las filas del pedido activo. Identificar la acción siguiente con texto y un borde azul. El panel de cambios muestra campo, valor anterior y valor nuevo en columnas legibles. [Referencia del diseño original en Stitch](https://stitch.withgoogle.com/projects/14029965516649664019).
+- **Guía de ventas** muestra Cliente → Pedido → Detalle → Total con controles y enlaces a las filas del pedido activo. Un borde azul indica la acción siguiente. El panel de cambios presenta el campo y sus valores antes y después.
 - **Modelo entidad–relación** presenta ocho tarjetas conectadas en horizontal o en vertical, según el ancho disponible. Las líneas indican la cardinalidad y se resaltan al seleccionar una entidad. El inspector muestra los campos, las marcas PK y FK y la clave de cada relación. En pantallas estrechas, **Volver al mapa** lleva a la tarjeta seleccionada.
 - **Explorar tablas** muestra el selector de las ocho tablas, búsqueda, filas con claves e importes, y paginación.
 - **Editar pedidos** incluye un selector, líneas, cantidades y acciones para agregar, mover, cambiar estado o borrar. Los avisos explican qué relaciones cambian.
