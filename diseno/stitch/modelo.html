@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary-container":"#b82c00","on-background":"#191b25","on-primary-container":"#d7dbff","on-secondary-fixed":"#0f1b31","ink":"#131B32","on-primary-fixed-variant":"#0031c6","inverse-primary":"#bac3ff","on-tertiary-fixed-variant":"#891e00","on-primary":"#ffffff","tertiary-fixed-dim":"#ffb4a1","surface-container-highest":"#e2e1ef","brand":"#1648FF","secondary-fixed":"#d7e2ff","tertiary":"#8e2000","inverse-surface":"#2e303a","inverse-on-surface":"#f0effe","secondary":"#525e78","on-primary-fixed":"#00115a","on-error-container":"#93000a","on-secondary-container":"#57637c","paper":"#FFFFFF","on-tertiary":"#ffffff","canvas":"#F5F7FC","surface-container-high":"#e8e7f5","on-secondary":"#ffffff","surface-dim":"#d9d9e7","on-tertiary-container":"#ffd3c9","surface-variant":"#e2e1ef","primary-container":"#1648ff","surface":"#fbf8ff","on-surface":"#191b25","on-surface-variant":"#434657","primary-fixed-dim":"#bac3ff","line":"#D9E0F0","primary":"#0033cd","secondary-fixed-dim":"#bac7e4","surface-container-low":"#f4f2ff","tint":"#EEF2FF","surface-container-lowest":"#ffffff","on-error":"#ffffff","tertiary-fixed":"#ffdbd2","surface-bright":"#fbf8ff","primary-fixed":"#dee1ff","on-secondary-fixed-variant":"#3b475f","muted":"#525E77","surface-container":"#edecfb","secondary-container":"#d3e0fd","background":"#fbf8ff","outline":"#747688","on-tertiary-fixed":"#3c0800","surface-tint":"#0d44fc","error":"#ba1a1a","on-brand":"#FFFFFF","error-container":"#ffdad6","outline-variant":"#c4c5da"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin":"2rem","space-sm":"0.5rem","gutter":"1.5rem","space-md":"1rem","space-xl":"2.5rem","space-lg":"1.5rem","space-xs":"0.25rem"},"fontFamily":{"headline-lg-mobile":["Manrope"],"body-sm":["Inter"],"body-md":["Inter"],"code-md":["JetBrains Mono"],"body-md-medium":["Inter"],"headline-lg":["Manrope"],"label-md":["Inter"],"headline-sm":["Manrope"],"headline-md":["Manrope"]},"fontSize":{"headline-lg-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"800"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"code-md":["14px",{"lineHeight":"20px","fontWeight":"500"}],"body-md-medium":["16px",{"lineHeight":"24px","fontWeight":"500"}],"headline-lg":["42px",{"lineHeight":"52px","letterSpacing":"-0.02em","fontWeight":"800"}],"label-md":["14px",{"lineHeight":"20px","fontWeight":"600"}],"headline-sm":["22px",{"lineHeight":"28px","fontWeight":"700"}],"headline-md":["26px",{"lineHeight":"34px","fontWeight":"700"}]}}}}</script></head><body class="bg-canvas font-body-md text-ink antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-paper z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center justify-between bg-paper"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-on-brand"><span class="material-symbols-outlined text-[20px]">database</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-ink leading-none">Red Pepper</span><span class="font-body-sm text-[11px] text-muted leading-tight mt-0.5">Laboratorio SQL</span></div></div></div><div class="px-space-md py-space-sm"><span class="px-space-sm font-label-md text-[11px] uppercase tracking-wider text-muted">Pasos del Laboratorio</span></div><nav class="flex flex-col gap-space-xs px-space-md" data-active-classes="bg-brand text-on-brand font-label-md"><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full transition-colors bg-brand text-on-brand font-label-md" data-path="modelo" href="#"><span class="material-symbols-outlined text-[20px]">schema</span><div class="flex flex-col"><span class="font-label-md text-label-md">1. Modelo</span><span class="font-body-sm text-[12px] opacity-80">Entidad-Relación y DDL</span></div></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="explorar-tablas" href="#"><span class="material-symbols-outlined text-[20px]">table_chart</span><div class="flex flex-col"><span class="font-label-md text-label-md">2. Explorar tablas</span><span class="font-body-sm text-[12px] opacity-80">Estructura y registros</span></div></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="editar-pedidos" href="#"><span class="material-symbols-outlined text-[20px]">edit_note</span><div class="flex flex-col"><span class="font-label-md text-label-md">3. Editar pedidos</span><span class="font-body-sm text-[12px] opacity-80">Operaciones DML</span></div></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="comprobantes-y-pagos" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><div class="flex flex-col"><span class="font-label-md text-label-md">4. Comprobantes y pagos</span><span class="font-body-sm text-[12px] opacity-80">Consistencia transaccional</span></div></a></nav></div><div class="p-space-md bg-canvas m-space-md rounded-full flex flex-col gap-space-sm"><div class="flex items-center justify-between text-muted"><span class="font-label-md text-[12px] uppercase">Recorrido</span><span class="font-code-md text-code-md text-ink">Paso interactivo</span></div><div class="grid grid-cols-2 gap-space-xs"><button class="flex items-center justify-center gap-1 py-space-xs px-space-sm rounded-lg bg-paper text-ink font-label-md text-label-md hover:bg-tint transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">arrow_back</span><span>Anterior</span></button><button class="flex items-center justify-center gap-1 py-space-xs px-space-sm rounded-lg bg-brand text-on-brand font-label-md text-label-md hover:bg-primary transition-colors" type="button"><span>Siguiente</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span></button></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-16 bg-paper/90 backdrop-blur-xl z-40 flex items-center justify-between px-margin shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-ink">Red Pepper</span><span class="text-muted">·</span><span class="font-body-md text-body-md text-muted">Laboratorio de base de datos</span></div><span class="font-code-md text-code-md text-brand bg-tint px-space-sm py-0.5 rounded-lg">/basededatos/</span></div><div class="flex items-center gap-space-lg"><nav class="flex items-center gap-space-md" data-active-classes="text-brand font-label-md"><a class="font-label-md text-label-md text-muted hover:text-ink transition-colors" data-path="informe-tecnico" href="#">Informe técnico</a></nav><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 w-full flex-1 px-margin py-margin"><div class="flex flex-col w-full">
+<!-- Banner superior sólido Azul Eléctrico Brand -->
+<header class="w-full bg-brand text-on-brand rounded-full p-space-xl mb-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-lg shadow-sm">
+<div class="max-w-3xl flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm text-on-primary-container">
+<span class="material-symbols-outlined text-[20px]">schema</span>
+<span class="font-code-md text-code-md uppercase tracking-wider">Laboratorio SQL · Paso 1 / 4</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg tracking-tight text-on-brand">
+        Modelo relacional y flujos de datos
+      </h1>
+<p class="font-body-md text-body-md text-on-primary-container opacity-90 max-w-2xl">
+        Inspecciona cómo se relacionan las entidades del catálogo de Red Pepper desde la toma del pedido hasta la conciliación contable.
+      </p>
+</div>
+<!-- Navegación contextual accesible -->
+<div class="flex items-center gap-space-sm self-stretch md:self-auto justify-end">
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-surface-container/20 text-on-brand opacity-40 cursor-not-allowed font-label-md text-label-md" disabled="" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span>Anterior</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-lg bg-paper text-brand font-label-md text-label-md hover:bg-tint transition-all shadow-sm" onclick="navigateStep()" type="button">
+<span>Siguiente paso: Explorar tablas</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</header>
+<!-- Métricas y meta-información del schema DDL -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-lg">
+<div class="bg-paper p-space-md rounded-full shadow-sm flex items-center justify-between">
+<div>
+<p class="font-body-sm text-body-sm text-muted">Entidades Activas</p>
+<p class="font-headline-md text-headline-md text-ink">6 Tablas</p>
+</div>
+<div class="w-10 h-10 rounded-lg bg-tint text-brand flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">dataset</span>
+</div>
+</div>
+<div class="bg-paper p-space-md rounded-full shadow-sm flex items-center justify-between">
+<div>
+<p class="font-body-sm text-body-sm text-muted">Integridad Referencial</p>
+<p class="font-headline-md text-headline-md text-ink">ON DELETE RESTRICT</p>
+</div>
+<div class="w-10 h-10 rounded-lg bg-tint text-brand flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">lock_reset</span>
+</div>
+</div>
+<div class="bg-paper p-space-md rounded-full shadow-sm flex items-center justify-between">
+<div>
+<p class="font-body-sm text-body-sm text-muted">Motor Relacional</p>
+<p class="font-headline-md text-headline-md text-ink">PostgreSQL 16</p>
+</div>
+<div class="w-10 h-10 rounded-lg bg-tint text-brand flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">database</span>
+</div>
+</div>
+<div class="bg-paper p-space-md rounded-full shadow-sm flex items-center justify-between">
+<div>
+<p class="font-body-sm text-body-sm text-muted">Estado Transaccional</p>
+<p class="font-headline-md text-headline-md text-ink">ACID Serializado</p>
+</div>
+<div class="w-10 h-10 rounded-lg bg-tint text-brand flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">verified</span>
+</div>
+</div>
+</section>
+<!-- Layout Principal: Recorridos de Datos + Inspector Lateral Interactivo -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg">
+<!-- Columna Izquierda: Dos flujos de datos diagramados -->
+<div class="xl:col-span-8 flex flex-col gap-space-lg">
+<!-- Recorrido A: Pedido y Carta Fast-Food -->
+<section class="bg-paper p-space-lg rounded-full shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="px-space-sm py-0.5 rounded-lg bg-tint text-brand font-code-md text-code-md">Recorrido A</span>
+<h2 class="font-headline-sm text-headline-sm text-ink">Cadena del Pedido: Clientes a Productos</h2>
+</div>
+<span class="font-body-sm text-body-sm text-muted">Transaccional / Carrito</span>
+</div>
+<p class="font-body-sm text-body-sm text-muted">
+          Flujo de registro desde la identificación del comensal hasta la asignación de porciones y bebidas de la cocina peruana.
+        </p>
+<!-- Diagrama interactivo de tarjetas lineales Recorrido A -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-space-sm items-stretch">
+<!-- Card: Clientes -->
+<div class="cursor-pointer bg-canvas p-space-md rounded-full transition-all flex flex-col justify-between hover:bg-tint" id="card-clientes" onclick="selectEntity('clientes')">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md font-bold text-ink">clientes</span>
+<span class="px-space-xs py-0.5 text-[11px] rounded bg-surface-container-highest text-ink font-code-md">1:N</span>
+</div>
+<p class="font-body-sm text-[12px] text-muted">Comensales registrados</p>
+</div>
+<div class="mt-space-sm flex flex-col gap-1 font-code-md text-[12px]">
+<div class="text-brand flex items-center justify-between"><span>PK: id_cliente</span><span class="material-symbols-outlined text-[14px]">key</span></div>
+<div class="text-muted">dni_ruc · nombre</div>
+</div>
+</div>
+<!-- Card: Pedidos -->
+<div class="cursor-pointer bg-canvas p-space-md rounded-full transition-all flex flex-col justify-between hover:bg-tint" id="card-pedidos" onclick="selectEntity('pedidos')">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md font-bold text-ink">pedidos</span>
+<span class="px-space-xs py-0.5 text-[11px] rounded bg-surface-container-highest text-ink font-code-md">1:N</span>
+</div>
+<p class="font-body-sm text-[12px] text-muted">Cabecera de comanda</p>
+</div>
+<div class="mt-space-sm flex flex-col gap-1 font-code-md text-[12px]">
+<div class="text-brand flex items-center justify-between"><span>PK: id_pedido</span><span class="material-symbols-outlined text-[14px]">key</span></div>
+<div class="text-secondary flex items-center justify-between"><span>FK: id_cliente</span><span class="material-symbols-outlined text-[14px]">link</span></div>
+</div>
+</div>
+<!-- Card: Detalle_pedidos (Activo por defecto) -->
+<div class="cursor-pointer bg-tint p-space-md rounded-full transition-all flex flex-col justify-between shadow-sm" id="card-detalle_pedidos" onclick="selectEntity('detalle_pedidos')">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md font-bold text-brand">detalle_pedidos</span>
+<span class="px-space-xs py-0.5 text-[11px] rounded bg-brand text-on-brand font-code-md">SELECCIÓN</span>
+</div>
+<p class="font-body-sm text-[12px] text-muted">Línea de items consumidos</p>
+</div>
+<div class="mt-space-sm flex flex-col gap-1 font-code-md text-[12px]">
+<div class="text-brand flex items-center justify-between"><span>PK: id_detalle</span><span class="material-symbols-outlined text-[14px]">key</span></div>
+<div class="text-secondary flex items-center justify-between"><span>FK: id_pedido</span><span class="material-symbols-outlined text-[14px]">link</span></div>
+<div class="text-secondary flex items-center justify-between"><span>FK: id_producto</span><span class="material-symbols-outlined text-[14px]">link</span></div>
+</div>
+</div>
+<!-- Card: Productos -->
+<div class="cursor-pointer bg-canvas p-space-md rounded-full transition-all flex flex-col justify-between hover:bg-tint" id="card-productos" onclick="selectEntity('productos')">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md font-bold text-ink">productos</span>
+<span class="px-space-xs py-0.5 text-[11px] rounded bg-surface-container-highest text-ink font-code-md">1:N</span>
+</div>
+<p class="font-body-sm text-[12px] text-muted">Carta Red Pepper</p>
+</div>
+<div class="mt-space-sm flex flex-col gap-1 font-code-md text-[12px]">
+<div class="text-brand flex items-center justify-between"><span>PK: id_producto</span><span class="material-symbols-outlined text-[14px]">key</span></div>
+<div class="text-muted">categoria · stock</div>
+</div>
+</div>
+</div>
+<div class="p-space-sm bg-canvas rounded-lg flex items-center justify-between text-muted text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-brand">info</span>
+<span>Relación central: <strong>detalle_pedidos</strong> resuelve el muchos a muchos (N:M) entre comanda y catálogo.</span>
+</div>
+<span class="font-code-md text-[12px]">ON UPDATE CASCADE</span>
+</div>
+</section>
+<!-- Recorrido B: Facturación SUNAT y Pasarelas -->
+<section class="bg-paper p-space-lg rounded-full shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="px-space-sm py-0.5 rounded-lg bg-tint text-brand font-code-md text-code-md">Recorrido B</span>
+<h2 class="font-headline-sm text-headline-sm text-ink">Cadena Fiscal y Liquidación: Pedidos a Pagos</h2>
+</div>
+<span class="font-body-sm text-body-sm text-muted">Caja y Contabilidad</span>
+</div>
+<p class="font-body-sm text-body-sm text-muted">
+          Emisión de comprobante legal (Boleta o Factura electrónica) y registro de desembolsos monetarios (Efectivo, Tarjetas, Yape/Plin).
+        </p>
+<!-- Diagrama interactivo de tarjetas lineales Recorrido B -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm items-stretch">
+<!-- Card: Pedidos (Origen de cobro) -->
+<div class="cursor-pointer bg-canvas p-space-md rounded-full transition-all flex flex-col justify-between hover:bg-tint" onclick="selectEntity('pedidos')">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md font-bold text-ink">pedidos</span>
+<span class="px-space-xs py-0.5 text-[11px] rounded bg-surface-container-highest text-ink font-code-md">1:1</span>
+</div>
+<p class="font-body-sm text-[12px] text-muted">Origen del consumo consolidado</p>
+</div>
+<div class="mt-space-sm flex flex-col gap-1 font-code-md text-[12px]">
+<div class="text-brand flex items-center justify-between"><span>PK: id_pedido</span><span class="material-symbols-outlined text-[14px]">key</span></div>
+<div class="text-muted">estado · total_calculado</div>
+</div>
+</div>
+<!-- Card: Comprobantes -->
+<div class="cursor-pointer bg-canvas p-space-md rounded-full transition-all flex flex-col justify-between hover:bg-tint" id="card-comprobantes" onclick="selectEntity('comprobantes')">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md font-bold text-ink">comprobantes</span>
+<span class="px-space-xs py-0.5 text-[11px] rounded bg-surface-container-highest text-ink font-code-md">1:N</span>
+</div>
+<p class="font-body-sm text-[12px] text-muted">Boleta / Factura SUNAT</p>
+</div>
+<div class="mt-space-sm flex flex-col gap-1 font-code-md text-[12px]">
+<div class="text-brand flex items-center justify-between"><span>PK: id_comprobante</span><span class="material-symbols-outlined text-[14px]">key</span></div>
+<div class="text-secondary flex items-center justify-between"><span>FK: id_pedido (UNIQUE)</span><span class="material-symbols-outlined text-[14px]">lock</span></div>
+</div>
+</div>
+<!-- Card: Pagos -->
+<div class="cursor-pointer bg-canvas p-space-md rounded-full transition-all flex flex-col justify-between hover:bg-tint" id="card-pagos" onclick="selectEntity('pagos')">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md font-bold text-ink">pagos</span>
+<span class="px-space-xs py-0.5 text-[11px] rounded bg-surface-container-highest text-ink font-code-md">N:1</span>
+</div>
+<p class="font-body-sm text-[12px] text-muted">Transacciones y pasarelas</p>
+</div>
+<div class="mt-space-sm flex flex-col gap-1 font-code-md text-[12px]">
+<div class="text-brand flex items-center justify-between"><span>PK: id_pago</span><span class="material-symbols-outlined text-[14px]">key</span></div>
+<div class="text-secondary flex items-center justify-between"><span>FK: id_comprobante</span><span class="material-symbols-outlined text-[14px]">link</span></div>
+</div>
+</div>
+</div>
+<div class="p-space-sm bg-canvas rounded-lg flex items-center justify-between text-muted text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-brand">rule</span>
+<span>Un comprobante puede liquidarse en múltiples pagos fraccionados (ej. Efectivo + Yape).</span>
+</div>
+<span class="font-code-md text-[12px]">SUM(monto) == total</span>
+</div>
+</section>
+<!-- Panel de Cardinalidad e Integridad Referencial Didáctica -->
+<section class="bg-paper p-space-lg rounded-full shadow-sm flex flex-col gap-space-md">
+<h3 class="font-headline-sm text-headline-sm text-ink flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-brand">assured_workload</span>
+          Reglas de Integridad &amp; DDL Estricto
+        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="p-space-md bg-canvas rounded-full flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-ink">Clave Foránea: pedidos.id_cliente</span>
+<p class="font-body-sm text-body-sm text-muted">
+              Garantiza que ningún pedido sea huérfano. La regla <code class="font-code-md text-brand">ON DELETE RESTRICT</code> impide dar de baja un cliente mientras conserve pedidos en histórico.
+            </p>
+</div>
+<div class="p-space-md bg-canvas rounded-full flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-ink">Restricción de Unicidad: comprobantes.id_pedido</span>
+<p class="font-body-sm text-body-sm text-muted">
+              Un pedido solo puede emitir un único comprobante legal activo. Evita la doble tributación y desfase contable en caja.
+            </p>
+</div>
+</div>
+</section>
+</div>
+<!-- Columna Derecha: Inspector Lateral de Entidad Seleccionada -->
+<aside class="xl:col-span-4 flex flex-col gap-space-md">
+<!-- Ficha de la Entidad Activa -->
+<div class="bg-paper p-space-lg rounded-full shadow-sm flex flex-col gap-space-md sticky top-20">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-brand">table_view</span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-muted">Inspector de Tabla</span>
+</div>
+<span class="px-space-sm py-0.5 rounded-lg bg-tint text-brand font-code-md text-code-md" id="inspector-tag">detalle_pedidos</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<h3 class="font-headline-md text-headline-md text-ink" id="inspector-title">detalle_pedidos</h3>
+<p class="font-body-sm text-body-sm text-muted" id="inspector-desc">
+            Registra cada ítem solicitado en un pedido específico, asociando el producto de la carta, la cantidad despachada y congelando el precio unitario pactado al instante de la venta.
+          </p>
+</div>
+<!-- Atributos y Diccionario DDL -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-md text-[12px] uppercase text-muted tracking-wider">Estructura de Columnas</span>
+<div class="rounded-lg bg-canvas p-space-sm flex flex-col gap-space-xs font-code-md text-[13px]" id="inspector-columns">
+<div class="flex items-center justify-between py-1 bg-paper px-2 rounded">
+<span class="text-ink font-semibold">id_detalle</span>
+<span class="text-brand">BIGSERIAL PK</span>
+</div>
+<div class="flex items-center justify-between py-1 bg-paper px-2 rounded">
+<span class="text-ink">id_pedido</span>
+<span class="text-secondary">INT FK → pedidos</span>
+</div>
+<div class="flex items-center justify-between py-1 bg-paper px-2 rounded">
+<span class="text-ink">id_producto</span>
+<span class="text-secondary">INT FK → productos</span>
+</div>
+<div class="flex items-center justify-between py-1 bg-paper px-2 rounded">
+<span class="text-ink">cantidad</span>
+<span class="text-muted">INT CHECK (&gt; 0)</span>
+</div>
+<div class="flex items-center justify-between py-1 bg-paper px-2 rounded">
+<span class="text-ink">precio_unitario</span>
+<span class="text-muted">NUMERIC(10,2)</span>
+</div>
+<div class="flex items-center justify-between py-1 bg-paper px-2 rounded">
+<span class="text-ink">subtotal</span>
+<span class="text-muted">NUMERIC(10,2)</span>
+</div>
+</div>
+</div>
+<!-- Muestra de Datos en Tiempo Real con Platos de Red Pepper -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-[12px] uppercase text-muted tracking-wider">Tuplas en Vivo (Red Pepper)</span>
+<span class="font-body-sm text-[11px] text-brand font-medium">Carta Peruana</span>
+</div>
+<div class="overflow-x-auto rounded-lg bg-canvas p-space-xs">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="text-muted font-code-md text-[11px] bg-paper">
+<th class="p-2">ID</th>
+<th class="p-2">ÍTEM</th>
+<th class="p-2 text-right">P. UNIT</th>
+<th class="p-2 text-right">STOCK</th>
+</tr>
+</thead>
+<tbody class="font-code-md text-[13px] text-ink" id="sample-table-body">
+<tr class="bg-paper hover:bg-tint transition-colors">
+<td class="p-2 text-brand">101</td>
+<td class="p-2 font-sans font-medium text-ink">Salchipapa clásica</td>
+<td class="p-2 text-right text-ink">S/ 8.00</td>
+<td class="p-2 text-right text-secondary">45 un.</td>
+</tr>
+<tr class="bg-paper hover:bg-tint transition-colors">
+<td class="p-2 text-brand">102</td>
+<td class="p-2 font-sans font-medium text-ink">Jugo Maracuyá 500ml</td>
+<td class="p-2 text-right text-ink">S/ 3.00</td>
+<td class="p-2 text-right text-secondary">80 un.</td>
+</tr>
+<tr class="bg-paper hover:bg-tint transition-colors">
+<td class="p-2 text-brand">103</td>
+<td class="p-2 font-sans font-medium text-ink">Hamburguesa Doble</td>
+<td class="p-2 text-right text-ink">S/ 12.50</td>
+<td class="p-2 text-right text-secondary">30 un.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Botón de acción para el inspector -->
+<button class="w-full py-space-sm px-space-md rounded-lg bg-canvas text-ink font-label-md text-label-md flex items-center justify-center gap-space-xs hover:bg-tint transition-colors" onclick="inspectSQL()" type="button">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span>Ver DDL CREATE TABLE completo</span>
+</button>
+</div>
+</aside>
+</div>
+<!-- Modal didáctico rápido para SQL DDL -->
+<dialog class="p-0 rounded-full bg-paper max-w-2xl w-full shadow-2xl backdrop:bg-ink/50" id="ddlModal">
+<div class="p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-brand">code</span>
+<h4 class="font-headline-sm text-headline-sm text-ink">Definición DDL (PostgreSQL)</h4>
+</div>
+<button class="p-1 rounded hover:bg-canvas text-muted" onclick="document.getElementById('ddlModal').close()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="bg-canvas p-space-md rounded-lg font-code-md text-[13px] text-ink overflow-x-auto leading-relaxed">
+<pre id="ddlCodeContent">-- Esquema de Red Pepper Fast Food
+CREATE TABLE detalle_pedidos (
+    id_detalle BIGSERIAL PRIMARY KEY,
+    id_pedido INT NOT NULL REFERENCES pedidos(id_pedido) ON DELETE RESTRICT,
+    id_producto INT NOT NULL REFERENCES productos(id_producto) ON DELETE RESTRICT,
+    cantidad INT NOT NULL CHECK (cantidad &gt; 0),
+    precio_unitario NUMERIC(10, 2) NOT NULL,
+    subtotal NUMERIC(10, 2) GENERATED ALWAYS AS (cantidad * precio_unitario) STORED
+);</pre>
+</div>
+<div class="flex justify-end gap-space-sm">
+<button class="px-space-md py-space-sm rounded-lg bg-brand text-on-brand font-label-md text-label-md" onclick="document.getElementById('ddlModal').close()">Entendido</button>
+</div>
+</div>
+</dialog>
+<!-- Script interactivo del laboratorio -->
+<script>
+    const entities = {
+      'detalle_pedidos': {
+        title: 'detalle_pedidos',
+        tag: 'detalle_pedidos',
+        desc: 'Registra cada ítem solicitado en un pedido específico, asociando el producto de la carta, la cantidad despachada y congelando el precio unitario pactado al instante de la venta.',
+        columns: [
+          { name: 'id_detalle', type: 'BIGSERIAL PK', isPk: true },
+          { name: 'id_pedido', type: 'INT FK → pedidos', isFk: true },
+          { name: 'id_producto', type: 'INT FK → productos', isFk: true },
+          { name: 'cantidad', type: 'INT CHECK (> 0)' },
+          { name: 'precio_unitario', type: 'NUMERIC(10,2)' },
+          { name: 'subtotal', type: 'NUMERIC(10,2)' }
+        ],
+        rows: [
+          { id: '101', name: 'Salchipapa clásica', price: 'S/ 8.00', stock: '45 un.' },
+          { id: '102', name: 'Jugo Maracuyá 500ml', price: 'S/ 3.00', stock: '80 un.' },
+          { id: '103', name: 'Hamburguesa Doble', price: 'S/ 12.50', stock: '30 un.' }
+        ],
+        ddl: `-- Esquema de Red Pepper Fast Food\nCREATE TABLE detalle_pedidos (\n    id_detalle BIGSERIAL PRIMARY KEY,\n    id_pedido INT NOT NULL REFERENCES pedidos(id_pedido) ON DELETE RESTRICT,\n    id_producto INT NOT NULL REFERENCES productos(id_producto) ON DELETE RESTRICT,\n    cantidad INT NOT NULL CHECK (cantidad > 0),\n    precio_unitario NUMERIC(10, 2) NOT NULL,\n    subtotal NUMERIC(10, 2) GENERATED ALWAYS AS (cantidad * precio_unitario) STORED\n);`
+      },
+      'productos': {
+        title: 'productos',
+        tag: 'productos',
+        desc: 'Catálogo oficial de preparaciones y bebidas de Red Pepper. Contiene el precio comercial actual y el inventario disponible en tiempo real.',
+        columns: [
+          { name: 'id_producto', type: 'SERIAL PK', isPk: true },
+          { name: 'nombre', type: 'VARCHAR(100) NOT NULL' },
+          { name: 'categoria', type: 'VARCHAR(50)' },
+          { name: 'precio_unitario', type: 'NUMERIC(10,2) NOT NULL' },
+          { name: 'stock_actual', type: 'INT NOT NULL CHECK (stock >= 0)' }
+        ],
+        rows: [
+          { id: '1', name: 'Salchipapa clásica', price: 'S/ 8.00', stock: '45 un.' },
+          { id: '2', name: 'Jugo de Maracuyá', price: 'S/ 3.00', stock: '80 un.' },
+          { id: '3', name: 'Broaster Especial', price: 'S/ 14.00', stock: '25 un.' }
+        ],
+        ddl: `CREATE TABLE productos (\n    id_producto SERIAL PRIMARY KEY,\n    nombre VARCHAR(100) NOT NULL,\n    categoria VARCHAR(50) NOT NULL,\n    precio_unitario NUMERIC(10, 2) NOT NULL CHECK (precio_unitario > 0),\n    stock_actual INT NOT NULL DEFAULT 0 CHECK (stock_actual >= 0)\n);`
+      },
+      'pedidos': {
+        title: 'pedidos',
+        tag: 'pedidos',
+        desc: 'Cabecera de la orden. Coordina el comensal, estado de cocina (Pendiente, En Preparación, Entregado) y la fecha exacta del despacho.',
+        columns: [
+          { name: 'id_pedido', type: 'SERIAL PK', isPk: true },
+          { name: 'id_cliente', type: 'INT FK → clientes', isFk: true },
+          { name: 'fecha_hora', type: 'TIMESTAMP DEFAULT NOW()' },
+          { name: 'estado', type: 'VARCHAR(20)' },
+          { name: 'total_calculado', type: 'NUMERIC(10,2)' }
+        ],
+        rows: [
+          { id: '501', name: 'Orden Salón #12', price: 'S/ 11.00', stock: 'Entregado' },
+          { id: '502', name: 'Orden Para Llevar #04', price: 'S/ 8.00', stock: 'En cocina' }
+        ],
+        ddl: `CREATE TABLE pedidos (\n    id_pedido SERIAL PRIMARY KEY,\n    id_cliente INT NOT NULL REFERENCES clientes(id_cliente) ON DELETE RESTRICT,\n    fecha_hora TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    estado VARCHAR(20) NOT NULL DEFAULT 'PENDIENTE',\n    total_calculado NUMERIC(10, 2) DEFAULT 0.00\n);`
+      },
+      'clientes': {
+        title: 'clientes',
+        tag: 'clientes',
+        desc: 'Registro de clientes fidelizados o con emisión formal de factura y boleta en mostrador.',
+        columns: [
+          { name: 'id_cliente', type: 'SERIAL PK', isPk: true },
+          { name: 'dni_ruc', type: 'VARCHAR(15) UNIQUE' },
+          { name: 'nombre_completo', type: 'VARCHAR(150) NOT NULL' },
+          { name: 'telefono', type: 'VARCHAR(20)' }
+        ],
+        rows: [
+          { id: '1', name: 'Carlos Ramos Quispe', price: 'DNI: 74218901', stock: 'Activo' },
+          { id: '2', name: 'Lucía Mendoza Farfán', price: 'DNI: 45129983', stock: 'Activo' }
+        ],
+        ddl: `CREATE TABLE clientes (\n    id_cliente SERIAL PRIMARY KEY,\n    dni_ruc VARCHAR(15) UNIQUE NOT NULL,\n    nombre_completo VARCHAR(150) NOT NULL,\n    telefono VARCHAR(20)\n);`
+      },
+      'comprobantes': {
+        title: 'comprobantes',
+        tag: 'comprobantes',
+        desc: 'Entidad de validez tributaria. Emite Boletas Electrónicas (B001) o Facturas (F001) ligadas unívocamente a cada pedido.',
+        columns: [
+          { name: 'id_comprobante', type: 'SERIAL PK', isPk: true },
+          { name: 'id_pedido', type: 'INT UNIQUE FK → pedidos', isFk: true },
+          { name: 'tipo', type: 'VARCHAR(10) CHECK in (BOLETA, FACTURA)' },
+          { name: 'serie_numero', type: 'VARCHAR(20) UNIQUE' },
+          { name: 'total_igv', type: 'NUMERIC(10,2)' }
+        ],
+        rows: [
+          { id: '1', name: 'B001-000452', price: 'S/ 11.00', stock: 'Emitido' },
+          { id: '2', name: 'F001-000120', price: 'S/ 48.00', stock: 'Emitido' }
+        ],
+        ddl: `CREATE TABLE comprobantes (\n    id_comprobante SERIAL PRIMARY KEY,\n    id_pedido INT UNIQUE NOT NULL REFERENCES pedidos(id_pedido),\n    tipo VARCHAR(10) NOT NULL,\n    serie_numero VARCHAR(20) UNIQUE NOT NULL,\n    total_igv NUMERIC(10, 2) NOT NULL\n);`
+      },
+      'pagos': {
+        title: 'pagos',
+        tag: 'pagos',
+        desc: 'Desglose del pago del comprobante. Permite transacciones multimodales (ej. S/ 5 en Efectivo y S/ 6 vía Yape).',
+        columns: [
+          { name: 'id_pago', type: 'SERIAL PK', isPk: true },
+          { name: 'id_comprobante', type: 'INT FK → comprobantes', isFk: true },
+          { name: 'metodo', type: 'VARCHAR(20)' },
+          { name: 'monto', type: 'NUMERIC(10,2)' },
+          { name: 'fecha_pago', type: 'TIMESTAMP' }
+        ],
+        rows: [
+          { id: '901', name: 'Efectivo Caja #1', price: 'S/ 8.00', stock: 'Liquidado' },
+          { id: '902', name: 'Yape Móvil', price: 'S/ 3.00', stock: 'Liquidado' }
+        ],
+        ddl: `CREATE TABLE pagos (\n    id_pago SERIAL PRIMARY KEY,\n    id_comprobante INT NOT NULL REFERENCES comprobantes(id_comprobante) ON DELETE RESTRICT,\n    metodo VARCHAR(20) NOT NULL,\n    monto NUMERIC(10, 2) NOT NULL CHECK (monto > 0),\n    fecha_pago TIMESTAMP DEFAULT NOW()\n);`
+      }
+    };
+
+    let activeEntityKey = 'detalle_pedidos';
+
+    function selectEntity(key) {
+      const data = entities[key];
+      if (!data) return;
+      activeEntityKey = key;
+
+      // Resaltar tarjeta seleccionada
+      document.querySelectorAll('[id^="card-"]').forEach(el => {
+        el.classList.remove('bg-tint', 'shadow-sm');
+        el.classList.add('bg-canvas');
+      });
+
+      const selectedCard = document.getElementById('card-' + key);
+      if (selectedCard) {
+        selectedCard.classList.remove('bg-canvas');
+        selectedCard.classList.add('bg-tint', 'shadow-sm');
+      }
+
+      // Actualizar Inspector
+      document.getElementById('inspector-tag').innerText = data.tag;
+      document.getElementById('inspector-title').innerText = data.title;
+      document.getElementById('inspector-desc').innerText = data.desc;
+      document.getElementById('ddlCodeContent').innerText = data.ddl;
+
+      // Renderizar Columnas
+      const colContainer = document.getElementById('inspector-columns');
+      colContainer.innerHTML = '';
+      data.columns.forEach(col => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between py-1 bg-paper px-2 rounded';
+
+        let typeColor = 'text-muted';
+        if (col.isPk) typeColor = 'text-brand font-semibold';
+        else if (col.isFk) typeColor = 'text-secondary font-medium';
+
+        div.innerHTML = `<span class="text-ink font-semibold">${col.name}</span><span class="${typeColor}">${col.type}</span>`;
+        colContainer.appendChild(div);
+      });
+
+      // Renderizar Filas de muestra
+      const tableBody = document.getElementById('sample-table-body');
+      tableBody.innerHTML = '';
+      data.rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = 'bg-paper hover:bg-tint transition-colors';
+        tr.innerHTML = `
+          <td class="p-2 text-brand">${r.id}</td>
+          <td class="p-2 font-sans font-medium text-ink">${r.name}</td>
+          <td class="p-2 text-right text-ink">${r.price}</td>
+          <td class="p-2 text-right text-secondary">${r.stock}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function inspectSQL() {
+      const modal = document.getElementById('ddlModal');
+      modal.showModal();
+    }
+
+    function navigateStep() {
+      // Simulación de navegación a la etapa 2 en el shell
+      const target = document.querySelector('a[data-path="explorar-tablas"]');
+      if (target) {
+        target.click();
+      } else {
+        alert("Navegando al Paso 2: Explorar tablas");
+      }
+    }
+  </script>
+</div></main></div></body></html>

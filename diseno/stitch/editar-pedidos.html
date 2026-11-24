@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary-container":"#b82c00","on-background":"#191b25","on-primary-container":"#d7dbff","on-secondary-fixed":"#0f1b31","ink":"#131B32","on-primary-fixed-variant":"#0031c6","inverse-primary":"#bac3ff","on-tertiary-fixed-variant":"#891e00","on-primary":"#ffffff","tertiary-fixed-dim":"#ffb4a1","surface-container-highest":"#e2e1ef","brand":"#1648FF","secondary-fixed":"#d7e2ff","tertiary":"#8e2000","inverse-surface":"#2e303a","inverse-on-surface":"#f0effe","secondary":"#525e78","on-primary-fixed":"#00115a","on-error-container":"#93000a","on-secondary-container":"#57637c","paper":"#FFFFFF","on-tertiary":"#ffffff","canvas":"#F5F7FC","surface-container-high":"#e8e7f5","on-secondary":"#ffffff","surface-dim":"#d9d9e7","on-tertiary-container":"#ffd3c9","surface-variant":"#e2e1ef","primary-container":"#1648ff","surface":"#fbf8ff","on-surface":"#191b25","on-surface-variant":"#434657","primary-fixed-dim":"#bac3ff","line":"#D9E0F0","primary":"#0033cd","secondary-fixed-dim":"#bac7e4","surface-container-low":"#f4f2ff","tint":"#EEF2FF","surface-container-lowest":"#ffffff","on-error":"#ffffff","tertiary-fixed":"#ffdbd2","surface-bright":"#fbf8ff","primary-fixed":"#dee1ff","on-secondary-fixed-variant":"#3b475f","muted":"#525E77","surface-container":"#edecfb","secondary-container":"#d3e0fd","background":"#fbf8ff","outline":"#747688","on-tertiary-fixed":"#3c0800","surface-tint":"#0d44fc","error":"#ba1a1a","on-brand":"#FFFFFF","error-container":"#ffdad6","outline-variant":"#c4c5da"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin":"2rem","space-sm":"0.5rem","gutter":"1.5rem","space-md":"1rem","space-xl":"2.5rem","space-lg":"1.5rem","space-xs":"0.25rem"},"fontFamily":{"headline-lg-mobile":["Manrope"],"body-sm":["Inter"],"body-md":["Inter"],"code-md":["JetBrains Mono"],"body-md-medium":["Inter"],"headline-lg":["Manrope"],"label-md":["Inter"],"headline-sm":["Manrope"],"headline-md":["Manrope"]},"fontSize":{"headline-lg-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"800"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"code-md":["14px",{"lineHeight":"20px","fontWeight":"500"}],"body-md-medium":["16px",{"lineHeight":"24px","fontWeight":"500"}],"headline-lg":["42px",{"lineHeight":"52px","letterSpacing":"-0.02em","fontWeight":"800"}],"label-md":["14px",{"lineHeight":"20px","fontWeight":"600"}],"headline-sm":["22px",{"lineHeight":"28px","fontWeight":"700"}],"headline-md":["26px",{"lineHeight":"34px","fontWeight":"700"}]}}}}</script></head><body class="bg-canvas font-body-md text-ink antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-paper z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center justify-between bg-paper"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-on-brand"><span class="material-symbols-outlined text-[20px]">database</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-ink leading-none">Red Pepper</span><span class="font-body-sm text-[11px] text-muted leading-tight mt-0.5">Laboratorio SQL</span></div></div></div><div class="px-space-md py-space-sm"><span class="px-space-sm font-label-md text-[11px] uppercase tracking-wider text-muted">Pasos del Laboratorio</span></div><nav class="flex flex-col gap-space-xs px-space-md" data-active-classes="bg-brand text-on-brand font-label-md"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="modelo" href="#"><span class="material-symbols-outlined text-[20px]">schema</span><div class="flex flex-col"><span class="font-label-md text-label-md">1. Modelo</span><span class="font-body-sm text-[12px] opacity-80">Entidad-Relación y DDL</span></div></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="explorar-tablas" href="#"><span class="material-symbols-outlined text-[20px]">table_chart</span><div class="flex flex-col"><span class="font-label-md text-label-md">2. Explorar tablas</span><span class="font-body-sm text-[12px] opacity-80">Estructura y registros</span></div></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full transition-colors bg-brand text-on-brand font-label-md" data-path="editar-pedidos" href="#"><span class="material-symbols-outlined text-[20px]">edit_note</span><div class="flex flex-col"><span class="font-label-md text-label-md">3. Editar pedidos</span><span class="font-body-sm text-[12px] opacity-80">Operaciones DML</span></div></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="comprobantes-y-pagos" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><div class="flex flex-col"><span class="font-label-md text-label-md">4. Comprobantes y pagos</span><span class="font-body-sm text-[12px] opacity-80">Consistencia transaccional</span></div></a></nav></div><div class="p-space-md bg-canvas m-space-md rounded-full flex flex-col gap-space-sm"><div class="flex items-center justify-between text-muted"><span class="font-label-md text-[12px] uppercase">Recorrido</span><span class="font-code-md text-code-md text-ink">Paso interactivo</span></div><div class="grid grid-cols-2 gap-space-xs"><button class="flex items-center justify-center gap-1 py-space-xs px-space-sm rounded-lg bg-paper text-ink font-label-md text-label-md hover:bg-tint transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">arrow_back</span><span>Anterior</span></button><button class="flex items-center justify-center gap-1 py-space-xs px-space-sm rounded-lg bg-brand text-on-brand font-label-md text-label-md hover:bg-primary transition-colors" type="button"><span>Siguiente</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span></button></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-16 bg-paper/90 backdrop-blur-xl z-40 flex items-center justify-between px-margin shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-ink">Red Pepper</span><span class="text-muted">·</span><span class="font-body-md text-body-md text-muted">Laboratorio de base de datos</span></div><span class="font-code-md text-code-md text-brand bg-tint px-space-sm py-0.5 rounded-lg">/basededatos/</span></div><div class="flex items-center gap-space-lg"><nav class="flex items-center gap-space-md" data-active-classes="text-brand font-label-md"><a class="font-label-md text-label-md text-muted hover:text-ink transition-colors" data-path="informe-tecnico" href="#">Informe técnico</a></nav><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 w-full flex-1 px-margin py-margin"><div class="flex flex-col w-full">
+<!-- Banner superior de Contexto & Metadatos de Integridad -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md mb-space-lg">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm mb-1">
+<span class="font-code-md text-code-md px-space-xs py-0.5 rounded bg-primary-fixed text-on-primary-fixed uppercase">DML · Paso 03</span>
+<span class="text-secondary text-body-sm">•</span>
+<span class="font-code-md text-code-md text-secondary">Transacción Activa #TX-8921</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-background tracking-tight">Editar pedidos en curso</h1>
+<p class="font-body-md text-body-md text-secondary mt-1">Gestiona líneas de detalle, cantidades y observa cómo impacta la integridad referencial en la base de datos.</p>
+</div>
+<!-- Selector de Pedido Activo -->
+<div class="flex items-center bg-paper shadow-sm rounded-full p-space-xs gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-tint flex items-center justify-center text-brand">
+<span class="material-symbols-outlined text-[22px]">receipt</span>
+</div>
+<div class="flex flex-col pr-space-md">
+<span class="font-body-sm text-secondary text-[11px] uppercase tracking-wider font-semibold">Instancia Seleccionada</span>
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-ink leading-tight">Pedido #104</span>
+<span class="text-secondary">•</span>
+<span class="font-label-md text-label-md text-secondary">Mesa 3</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-[11px] font-medium font-body-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+            En preparación
+          </span>
+</div>
+</div>
+<button class="w-9 h-9 rounded-full bg-canvas text-secondary hover:text-ink hover:bg-secondary-fixed transition-colors flex items-center justify-center" title="Cambiar pedido" type="button">
+<span class="material-symbols-outlined text-[18px]">unfold_more</span>
+</button>
+</div>
+</div>
+<!-- Contenedor Principal en Bento Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Columna Izquierda: Tabla y Acciones (8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-md">
+<!-- Card Principal: Editor de Líneas -->
+<div class="bg-paper rounded-full shadow-sm overflow-hidden flex flex-col">
+<!-- Barra de herramientas de la tabla -->
+<div class="p-space-lg flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-headline-sm text-ink">Líneas de la comanda</span>
+<span class="px-2 py-0.5 rounded-lg bg-tint text-brand font-code-md text-code-md font-semibold">2 registros</span>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm bg-brand text-on-brand rounded-lg font-label-md text-label-md hover:bg-primary transition-colors shadow-sm active:translate-y-0.5" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Agregar producto a la orden</span>
+</button>
+</div>
+<!-- Tabla DML -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left font-body-md text-body-md border-collapse">
+<thead>
+<tr class="bg-canvas text-secondary font-label-md text-[12px] uppercase tracking-wider">
+<th class="py-space-sm px-space-lg font-semibold">Item &amp; Categoría</th>
+<th class="py-space-sm px-space-md text-center font-semibold">Cantidad</th>
+<th class="py-space-sm px-space-md text-right font-semibold">P. Unitario</th>
+<th class="py-space-sm px-space-md text-right font-semibold">Subtotal</th>
+<th class="py-space-sm px-space-lg text-right font-semibold">Operaciones DML</th>
+</tr>
+</thead>
+<tbody class="divide-none text-ink">
+<!-- Item 1 -->
+<tr class="hover:bg-tint/40 transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-canvas flex-shrink-0 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[24px]">fastfood</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-ink group-hover:text-brand transition-colors">Salchipapa clásica</span>
+<span class="font-code-md text-[12px] text-secondary">SKU: PROD-004 · Cocina caliente</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-center">
+<div class="inline-flex items-center bg-canvas rounded-lg p-0.5">
+<button class="w-7 h-7 flex items-center justify-center rounded text-secondary hover:bg-paper hover:text-ink transition-colors font-semibold" type="button">-</button>
+<span class="w-8 text-center font-code-md font-semibold text-ink">2</span>
+<button class="w-7 h-7 flex items-center justify-center rounded text-secondary hover:bg-paper hover:text-ink transition-colors font-semibold" type="button">+</button>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-code-md text-secondary">
+                  S/ 8.00
+                </td>
+<td class="py-space-md px-space-md text-right font-code-md font-bold text-ink">
+                  S/ 16.00
+                </td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-space-xs">
+<button class="w-8 h-8 rounded-lg bg-canvas text-secondary hover:text-brand hover:bg-tint transition-colors flex items-center justify-center" title="Editar cantidad personalizada" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-canvas text-secondary hover:text-ink hover:bg-secondary-fixed transition-colors flex items-center justify-center" title="Mover de mesa" type="button">
+<span class="material-symbols-outlined text-[16px]">swap_horiz</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-error-container/60 text-error hover:bg-error hover:text-on-error transition-colors flex items-center justify-center" onclick="document.getElementById('delete-modal-preview').classList.remove('hidden')" title="Remover del pedido" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 2 -->
+<tr class="hover:bg-tint/40 transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-canvas flex-shrink-0 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[24px]">local_cafe</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-ink group-hover:text-brand transition-colors">Maracuyá 500ml</span>
+<span class="font-code-md text-[12px] text-secondary">SKU: BEV-012 · Barra de jugos</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-center">
+<div class="inline-flex items-center bg-canvas rounded-lg p-0.5">
+<button class="w-7 h-7 flex items-center justify-center rounded text-secondary hover:bg-paper hover:text-ink transition-colors font-semibold" type="button">-</button>
+<span class="w-8 text-center font-code-md font-semibold text-ink">1</span>
+<button class="w-7 h-7 flex items-center justify-center rounded text-secondary hover:bg-paper hover:text-ink transition-colors font-semibold" type="button">+</button>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-code-md text-secondary">
+                  S/ 3.00
+                </td>
+<td class="py-space-md px-space-md text-right font-code-md font-bold text-ink">
+                  S/ 3.00
+                </td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-space-xs">
+<button class="w-8 h-8 rounded-lg bg-canvas text-secondary hover:text-brand hover:bg-tint transition-colors flex items-center justify-center" title="Editar cantidad personalizada" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-canvas text-secondary hover:text-ink hover:bg-secondary-fixed transition-colors flex items-center justify-center" title="Mover de mesa" type="button">
+<span class="material-symbols-outlined text-[16px]">swap_horiz</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-error-container/60 text-error hover:bg-error hover:text-on-error transition-colors flex items-center justify-center" title="Remover del pedido" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Fila de Totales & Confirmación -->
+<div class="p-space-lg bg-canvas/70 flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm text-secondary">
+<span class="material-symbols-outlined text-[20px] text-brand">info</span>
+<span class="font-body-sm text-body-sm">Cálculo de impuestos (IGV 18%) incluido según normativa SUNAT</span>
+</div>
+<div class="flex items-baseline gap-space-md">
+<span class="font-label-md text-label-md uppercase tracking-wider text-secondary">Total Acumulado:</span>
+<div class="flex items-baseline gap-1">
+<span class="font-code-md text-code-md text-brand font-bold">S/</span>
+<span class="font-headline-lg text-headline-lg text-ink font-extrabold tabular-nums tracking-tight">19.00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Diálogo / Banner de Confirmación de Borrado Accesible -->
+<div class="p-space-lg bg-error-container/30 rounded-full shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md" id="delete-modal-preview">
+<div class="flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-full bg-error text-on-error flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-error-container">
+<span>Confirmar eliminación de fila</span>
+<span class="font-code-md text-[11px] px-1.5 py-0.2 bg-paper rounded text-error font-bold">DELETE DML</span>
+</div>
+<p class="font-body-sm text-body-sm text-ink mt-0.5">
+              ¿Deseas remover <strong>“Salchipapa clásica”</strong> del pedido #104? Esta acción actualizará la tabla <code class="font-code-md text-[12px] bg-paper px-1 py-0.5 rounded text-brand">detalle_pedidos</code> y recalculará el total en <code class="font-code-md text-[12px] bg-paper px-1 py-0.5 rounded text-brand">pedidos</code>.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-center flex-shrink-0">
+<button class="px-space-md py-space-xs bg-paper text-ink font-label-md text-label-md rounded-lg hover:bg-tint transition-colors" onclick="document.getElementById('delete-modal-preview').classList.add('hidden')" type="button">
+            Cancelar
+          </button>
+<button class="px-space-md py-space-xs bg-error text-on-error font-label-md text-label-md rounded-lg hover:bg-tertiary-container transition-colors shadow-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">delete_forever</span>
+<span>Eliminar y Recalcular</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Columna Derecha: Panel Educativo SQL & Transaccional (4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-md">
+<!-- Inspector Didáctico SQL -->
+<div class="bg-paper p-space-lg rounded-full shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-brand text-[20px]">hub</span>
+<span class="font-label-md text-label-md text-ink uppercase tracking-wide">Impacto Relacional</span>
+</div>
+<span class="font-code-md text-[11px] bg-tint text-brand px-2 py-0.5 rounded-full font-semibold">ON DELETE CASCADE</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary">
+          Al modificar o eliminar líneas de compra, el motor ejecuta restricciones de integridad para evitar registros huérfanos.
+        </p>
+<!-- Bloque de Código SQL en Vivo -->
+<div class="bg-ink text-surface p-space-md rounded-lg flex flex-col gap-space-xs font-code-md text-[12px] shadow-sm">
+<div class="flex items-center justify-between text-muted text-[11px] pb-1">
+<span>QUERY DE ACTUALIZACIÓN</span>
+<span class="text-tertiary-fixed-dim">TRIGGER ON_CHANGE</span>
+</div>
+<p class="text-on-primary-container leading-relaxed">
+<span class="text-tertiary-fixed-dim font-bold">DELETE FROM</span> detalle_pedidos<br/>
+<span class="text-tertiary-fixed-dim font-bold">WHERE</span> pedido_id = <span class="text-secondary-fixed">104</span><br/>
+              <span class="text-tertiary-fixed-dim font-bold">AND</span> producto_id = <span class="text-secondary-fixed">4</span>;<br/><br/>
+<span class="text-inverse-primary font-bold">UPDATE</span> pedidos<br/>
+<span class="text-inverse-primary font-bold">SET</span> total = (<br/>
+              <span class="text-inverse-primary font-bold">SELECT COALESCE</span>(SUM(subtotal), 0)<br/>
+              <span class="text-inverse-primary font-bold">FROM</span> detalle_pedidos<br/>
+              <span class="text-inverse-primary font-bold">WHERE</span> pedido_id = <span class="text-secondary-fixed">104</span><br/>
+            )<br/>
+<span class="text-inverse-primary font-bold">WHERE</span> id = <span class="text-secondary-fixed">104</span>;
+          </p>
+</div>
+<!-- Claves Foráneas Afectadas Diagrama Minimalista -->
+<div class="flex flex-col gap-space-xs pt-1">
+<span class="font-label-md text-[11px] uppercase tracking-wider text-secondary">Esquema Afectado</span>
+<div class="flex items-center justify-between p-space-sm bg-canvas rounded-lg">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-brand">key</span>
+<span class="font-code-md text-[12px] text-ink">pedidos.total</span>
+</div>
+<span class="text-body-sm text-[12px] text-secondary">Recálculo S/ 19.00</span>
+</div>
+<div class="flex items-center justify-between p-space-sm bg-canvas rounded-lg">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-tertiary">link</span>
+<span class="font-code-md text-[12px] text-ink">detalle_pedidos</span>
+</div>
+<span class="text-body-sm text-[12px] text-secondary">FK: pedido_id</span>
+</div>
+</div>
+<!-- Botón Guardar Cambios -->
+<button class="w-full py-space-sm px-space-md bg-brand text-on-brand font-label-md text-label-md rounded-lg hover:bg-primary transition-colors flex items-center justify-center gap-space-xs shadow-sm active:translate-y-0.5 mt-space-xs" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>Guardar cambios</span>
+</button>
+</div>
+<!-- Tarjeta informativa adicional -->
+<div class="bg-tint/70 p-space-md rounded-full flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-brand text-[20px] flex-shrink-0">verified</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-ink">Propiedad ACID: Atomicidad</span>
+<span class="font-body-sm text-body-sm text-secondary">La actualización de la orden y sus líneas se envuelven en una transacción atómica para prevenir descuadres de caja.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Controles de Navegación Inferior del Laboratorio -->
+<div class="mt-space-xl pt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<a class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-paper text-ink font-label-md text-label-md hover:bg-tint transition-colors shadow-sm" data-path="explorar-tablas" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Anterior: Explorar tablas</span>
+</a>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-line"></span>
+<span class="w-2 h-2 rounded-full bg-line"></span>
+<span class="w-6 h-2 rounded-full bg-brand"></span>
+<span class="w-2 h-2 rounded-full bg-line"></span>
+</div>
+<a class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-brand text-on-brand font-label-md text-label-md hover:bg-primary transition-colors shadow-sm" data-path="comprobantes-y-pagos" href="#">
+<span>Siguiente: Comprobantes y pagos</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div></main></div></body></html>
