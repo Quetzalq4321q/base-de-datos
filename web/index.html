@@ -4,84 +4,136 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <meta name="description" content="Laboratorio Red Pepper de pedidos, conciliación y pagos mixtos en PostgreSQL.">
-  <title>Pedidos y pagos | Red Pepper</title>
+  <meta name="description" content="Explora el flujo de ventas de Red Pepper y practica operaciones de base de datos con datos ficticios.">
+  <title>Red Pepper | Laboratorio de base de datos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="estilos.css">
-  <script type="module" src="app.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&amp;display=block">
+  <link rel="stylesheet" href="estilos.css?v=20261123b">
+  <script type="module" src="app.js?v=20261123b"></script>
 </head>
 <body>
-  <header class="barra">
-    <div class="ancho barra-interior">
-      <a class="identidad" href="./" aria-label="Inicio de Red Pepper">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><ellipse cx="12" cy="5.75" rx="7.5" ry="3.25"/><path d="M4.5 5.75v6c0 1.8 3.35 3.25 7.5 3.25s7.5-1.45 7.5-3.25v-6M4.5 11.75v6c0 1.8 3.35 3.25 7.5 3.25s7.5-1.45 7.5-3.25v-6"/></svg>
-        <span><strong>Red Pepper</strong><small>Laboratorio PostgreSQL</small></span>
+  <div class="marco">
+    <header class="cabecera">
+      <a class="marca" href="./" aria-label="Inicio del laboratorio Red Pepper">
+        <span class="marca-icono"><span class="icono" aria-hidden="true">database</span></span>
+        <span><strong>Red Pepper</strong><small>Laboratorio de base de datos</small></span>
       </a>
-      <a class="enlace-informe" href="informe">Informe técnico</a>
-    </div>
-  </header>
+      <a class="boton secundario enlace-informe" href="informe"><span class="icono" aria-hidden="true">description</span><span>Informe técnico</span></a>
+    </header>
 
-  <main class="ancho">
-    <section class="encabezado" aria-labelledby="titulo">
-      <div>
-        <p class="ceja">NexLabs / Base de datos</p>
-        <h1 id="titulo">Pedidos y pagos</h1>
-        <p class="descripcion">Revisa el detalle de una venta y prueba cómo se reparte el cobro entre efectivo y Yape.</p>
-      </div>
-      <div class="estado-controles">
-        <span class="estado" id="origen" role="status">Cargando pedidos</span>
-        <button type="button" class="actualizar" id="actualizar" hidden>Actualizar</button>
-      </div>
-    </section>
+    <aside class="navegacion" aria-label="Recorrido del laboratorio">
+      <nav class="pasos" aria-label="Diapositivas del laboratorio">
+        <button class="paso" type="button" data-paso="0" aria-controls="modelo" aria-current="step"><span class="icono" aria-hidden="true">account_tree</span><span>Modelo</span></button>
+        <button class="paso" type="button" data-paso="1" aria-controls="tablas"><span class="icono" aria-hidden="true">table_view</span><span>Explorar tablas</span></button>
+        <button class="paso" type="button" data-paso="2" aria-controls="editar"><span class="icono" aria-hidden="true">edit_note</span><span>Editar pedidos</span></button>
+        <button class="paso" type="button" data-paso="3" aria-controls="cobros"><span class="icono" aria-hidden="true">receipt_long</span><span>Comprobantes y pagos</span></button>
+      </nav>
+      <p class="practica"><span class="icono" aria-hidden="true">science</span><span>Datos ficticios<br><small>Los cambios se guardan en este navegador.</small></span></p>
+    </aside>
 
-    <dl class="indicadores" aria-label="Resumen de pedidos de prueba">
-      <div class="panel indicador"><dt>Pedidos de prueba</dt><dd id="pedidos">—</dd></div>
-      <div class="panel indicador"><dt>Total cobrado</dt><dd id="cobrado" class="acento">—</dd></div>
-      <div class="panel indicador"><dt>Saldo pendiente</dt><dd id="saldo">—</dd></div>
-    </dl>
+    <main id="laboratorio">
+      <section class="hero" aria-labelledby="paso-titulo">
+        <div class="hero-contenido">
+          <p class="progreso" id="progreso">Paso 1 de 4</p>
+          <h1 id="paso-titulo" tabindex="-1">Modelo de datos</h1>
+          <p id="paso-descripcion">Sigue una venta desde la persona que pide hasta el último abono.</p>
+        </div>
+        <div class="hero-marca" aria-hidden="true"><span class="icono" id="hero-icono">account_tree</span></div>
+      </section>
+      <p class="aviso global" id="aviso" role="status" aria-live="polite" hidden></p>
 
-    <div class="columnas">
-      <section class="panel" aria-labelledby="conciliacion">
-        <div class="titulo-panel"><h2 id="conciliacion">Conciliación de comprobantes</h2><p>Selecciona una boleta para inspeccionar el pedido.</p></div>
-        <div class="tabla-contenedor" tabindex="0" aria-label="Tabla de comprobantes">
-          <table>
-            <thead><tr><th scope="col">Comprobante</th><th scope="col" class="numero">Total</th><th scope="col" class="numero">Cobrado</th><th scope="col" class="numero">Saldo</th></tr></thead>
-            <tbody id="conciliacion-filas"></tbody>
-          </table>
+      <section id="modelo" class="pantalla" aria-label="Modelo de datos">
+        <dl class="indicadores" aria-label="Resumen de la base de práctica">
+          <div><dt>Tablas relacionadas</dt><dd id="cantidad-tablas">13</dd></div>
+          <div><dt>Productos de la carta</dt><dd id="cantidad-productos">38</dd></div>
+          <div><dt>Comprobantes en la muestra</dt><dd id="cantidad-ventas">100</dd></div>
+        </dl>
+        <div class="modelo-grid">
+          <article class="panel">
+            <div class="panel-cabeza"><h2>Recorrido de una venta</h2><p>Selecciona una entidad para ver sus claves y relaciones.</p></div>
+            <div class="mapa" id="mapa"></div>
+          </article>
+          <article class="panel inspector" id="inspector" aria-label="Inspector de tabla"></article>
         </div>
       </section>
 
-      <section class="panel simulador" aria-labelledby="simulador">
-        <div class="titulo-panel"><h2 id="simulador">Probar pago mixto</h2><p>Los abonos simulados se calculan en esta pantalla.</p></div>
-        <form id="pago">
-          <label for="comprobante">Comprobante</label>
-          <select id="comprobante" required></select>
-          <div class="par">
-            <div><label for="efectivo">Efectivo, S/</label><input id="efectivo" type="number" min="0" step="0.01" inputmode="decimal" required value="10.00"></div>
-            <div><label for="yape">Yape restante</label><output id="yape" for="comprobante efectivo">—</output></div>
+      <section id="tablas" class="pantalla" aria-label="Explorar tablas" hidden>
+        <article class="panel">
+          <div class="panel-cabeza"><h2 id="tabla-titulo" tabindex="-1">Pedidos</h2><p id="tabla-texto"></p></div>
+          <div class="filtros">
+            <label>Tabla<select id="tabla-elegida"></select></label>
+            <label>Buscar en la tabla<input id="buscar" type="search" placeholder="Producto, estado o clave"></label>
           </div>
-          <button id="simular" type="submit">Simular abono</button>
-          <p class="resultado" id="resultado" aria-live="polite"></p>
-        </form>
+          <div class="registros" id="registros"></div>
+          <nav class="paginacion" aria-label="Páginas de resultados">
+            <button class="boton secundario" id="pagina-ant" type="button"><span class="icono" aria-hidden="true">chevron_left</span>Anterior</button>
+            <span id="tabla-pagina" aria-live="polite"></span>
+            <button class="boton secundario" id="pagina-sig" type="button">Siguiente<span class="icono" aria-hidden="true">chevron_right</span></button>
+          </nav>
+        </article>
       </section>
 
-      <section class="panel detalle" aria-labelledby="detalle">
-        <div class="titulo-panel"><h2 id="detalle">Detalle del pedido</h2><p id="detalle-comprobante">—</p></div>
-        <div class="detalle-grid">
-          <div class="tabla-contenedor" tabindex="0" aria-label="Productos del pedido">
-            <table>
-              <thead><tr><th scope="col">Producto</th><th scope="col" class="numero">Cant.</th><th scope="col" class="numero">Importe</th></tr></thead>
-              <tbody id="detalle-filas"></tbody>
-            </table>
-          </div>
-          <div class="pagos"><h3>Pagos del ejemplo</h3><ul id="detalle-pagos"></ul><dl id="detalle-importes"></dl></div>
+      <section id="editar" class="pantalla" aria-label="Editar pedidos" hidden>
+        <div class="estacion">
+          <article class="panel">
+            <div class="panel-cabeza"><h2>Comanda de práctica</h2><p>Agrega productos, mueve una línea o cambia el estado del pedido.</p></div>
+            <div class="filtros">
+              <label>Pedido<select id="pedido-editar"></select></label>
+              <button class="boton primario" type="button" id="nuevo-pedido"><span class="icono" aria-hidden="true">add</span>Nuevo pedido</button>
+            </div>
+            <div id="pedido-lineas"></div>
+            <form id="agregar" class="filtros operacion">
+              <label>Producto<select name="producto" id="producto" required></select></label>
+              <label class="campo-corto">Cantidad<input name="cantidad" type="number" min="1" max="999" value="1" required></label>
+              <button class="boton primario" type="submit"><span class="icono" aria-hidden="true">add_shopping_cart</span>Agregar producto</button>
+            </form>
+            <form id="cambiar-estado" class="filtros operacion">
+              <label>Estado del pedido<select name="estado" id="estado"></select></label>
+              <button class="boton secundario" type="submit"><span class="icono" aria-hidden="true">sync_alt</span>Cambiar estado</button>
+              <button class="boton secundario" id="borrar-pedido" type="button"><span class="icono" aria-hidden="true">delete</span>Borrar pedido</button>
+            </form>
+          </article>
+          <aside class="panel rastreo" id="aprendizaje" aria-label="Relaciones afectadas"></aside>
         </div>
       </section>
-    </div>
-  </main>
 
-  <footer class="ancho pie">Datos ficticios · Soles peruanos (PEN)</footer>
+      <section id="cobros" class="pantalla" aria-label="Comprobantes y pagos" hidden>
+        <div class="estacion">
+          <article class="panel">
+            <div class="panel-cabeza"><h2>Comprobante de prueba</h2><p>Emite el documento y comprueba cómo los abonos reducen el saldo.</p></div>
+            <div class="filtros"><label>Pedido para consultar o cobrar<select id="pedido-cobrar"></select></label></div>
+            <div id="resumen-cobro"></div>
+            <div class="filtros operacion" id="emitir-zona"><button class="boton primario" id="emitir" type="button"><span class="icono" aria-hidden="true">receipt_long</span>Emitir comprobante</button></div>
+          </article>
+          <article class="panel calculadora">
+            <div class="panel-cabeza"><h2>Pago mixto</h2><p>Reparte el saldo entre efectivo y Yape para esta práctica.</p></div>
+            <form id="pago" class="operacion pago">
+              <label>Efectivo, S/<input id="efectivo" name="efectivo" type="number" min="0" step="0.01" value="0.00" required></label>
+              <div><span class="etiqueta" id="yape-label">Yape restante</span><output aria-labelledby="yape-label" id="yape" for="efectivo"></output></div>
+              <button class="boton primario" type="submit" id="registrar-pago"><span class="icono" aria-hidden="true">payments</span>Registrar abono de prueba</button>
+            </form>
+          </article>
+        </div>
+      </section>
+
+      <footer class="pie-pasos">
+        <button class="boton secundario" type="button" id="anterior"><span class="icono" aria-hidden="true">chevron_left</span>Anterior</button>
+        <span id="paso-pie">Modelo</span>
+        <button class="boton primario" type="button" id="siguiente">Siguiente<span class="icono" aria-hidden="true">chevron_right</span></button>
+      </footer>
+    </main>
+  </div>
+
+  <dialog id="dialogo" aria-labelledby="dialogo-titulo">
+    <form id="dialogo-form" method="dialog">
+      <h2 id="dialogo-titulo"></h2>
+      <p id="dialogo-info"></p>
+      <div id="dialogo-campos" class="dialogo-campos"></div>
+      <div class="dialogo-acciones"><button class="boton secundario" type="button" id="cancelar-dialogo">Cancelar</button><button class="boton primario" type="submit" id="confirmar-dialogo">Aceptar</button></div>
+    </form>
+  </dialog>
+  <noscript><p class="sin-scripts">Activa JavaScript para recorrer el modelo y practicar con los datos.</p></noscript>
 </body>
 </html>

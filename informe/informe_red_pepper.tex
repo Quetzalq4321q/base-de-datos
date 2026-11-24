@@ -5,11 +5,10 @@
 \setmainfont{Calibri}
 \setmonofont{Consolas}[Scale=.87]
 \usepackage{amsmath,microtype,tabularx,booktabs,array,enumitem,xcolor,hyperref,fancyhdr}
-\definecolor{tinta}{HTML}{16251B}
-\definecolor{verde}{HTML}{365D28}
-\definecolor{gris}{HTML}{51645A}
-\definecolor{borde}{HTML}{D0DED1}
-\hypersetup{colorlinks=true,linkcolor=verde,urlcolor=verde,pdftitle={Red Pepper | Informe técnico de base de datos},pdfsubject={Normalización y piloto PostgreSQL en Supabase}}
+\definecolor{tinta}{HTML}{131B32}
+\definecolor{azul}{HTML}{1648FF}
+\definecolor{gris}{HTML}{525E77}
+\hypersetup{colorlinks=true,linkcolor=azul,urlcolor=azul,pdftitle={Red Pepper | Informe técnico de base de datos},pdfsubject={Normalización y piloto PostgreSQL en Supabase}}
 \color{tinta}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt}
@@ -30,7 +29,7 @@
 
 \begin{document}
 
-{\color{verde}\bfseries NEXLABS / RED PEPPER}\par
+{\color{azul}\bfseries NEXLABS / RED PEPPER}\par
 \vspace{6pt}
 {\fontsize{34}{37}\selectfont\bfseries Normalización y piloto\\ en PostgreSQL}\par
 \vspace{5pt}
@@ -39,13 +38,13 @@
 {\color{gris} Asignatura Base de Datos · Docente Ing. Fabrizio Calienes}
 
 \seccion{1.}{Resumen ejecutivo}
-El sistema registra pedidos con varios productos, distingue snacks y bebidas y concilia los abonos de cada comprobante. El piloto adapta la documentación original de SQL Server a PostgreSQL. Se instaló un esquema propio en el proyecto Supabase de NexLabs y se ejecutaron datos ficticios y pruebas de integridad en dos motores, PostgreSQL local 18.4 y Supabase 17.12.
+El sistema registra pedidos con varios productos, distingue snacks y bebidas y concilia los abonos de cada comprobante. El piloto adapta la documentación original de SQL Server a PostgreSQL. Se instaló un esquema propio en Supabase y se verificó en PostgreSQL local 18.4 y Supabase 17.12. El laboratorio utiliza la carta de Red Pepper y añade una muestra de 100 ventas ficticias.
 
 \begin{tabularx}{\linewidth}{@{}lYY@{}}
 \toprule
 \textbf{Estructura} & \textbf{Demostración} & \textbf{Resultado}\\
 \midrule
-13 tablas y 3 vistas & 2 pedidos, 4 líneas y 3 abonos ficticios & S/ 45.00 cobrados y S/ 0.00 de saldo\\
+13 tablas y 3 vistas & 38 productos y 100 ventas de la serie de prueba RP01 & S/ 2,303.50 cobrados y S/ 0.00 de saldo\\
 \bottomrule
 \end{tabularx}
 
@@ -74,8 +73,8 @@ Los precios del catálogo se interpretan como importes brutos en PEN. Una línea
 \codigo{telefonos\_cliente} & PK \codigo{id\_telefono}; FK cliente; UQ cliente + número & Número de 7 a 15 dígitos, con prefijo \texttt{+} opcional.\\
 \codigo{categorias} & PK \codigo{id\_categoria}; UQ nombre & Nombre, descripción y familia de subtipo.\\
 \codigo{productos} & PK \codigo{id\_producto}; FK categoría; UQ categoría + nombre & Nombre comercial, precio y disponibilidad.\\
-\codigo{snacks} & PK/FK \codigo{id\_producto} & Porción, tipo de papa y si incluye cremas.\\
-\codigo{bebidas} & PK/FK \codigo{id\_producto} & Volumen en ml, temperatura y envase.\\
+\codigo{snacks} & PK/FK \codigo{id\_producto} & Porción. Tipo de papa y cremas si la carta los especifica.\\
+\codigo{bebidas} & PK/FK \codigo{id\_producto} & Volumen en ml, temperatura y envase si están disponibles.\\
 \codigo{pedidos} & PK \codigo{id\_pedido}; FK cliente & Fecha, modalidad y estado.\\
 \codigo{detalle\_pedido} & PK pedido + producto; ambas FK & Cantidad positiva y precio unitario histórico. Importe derivado en consulta.\\
 \codigo{tipos\_comprobante} & PK \codigo{id\_tipo\_comprobante}; UQ nombre & Boleta o factura del ejercicio.\\
@@ -120,7 +119,7 @@ Despliegue acotado & La migración crea el esquema \codigo{salchipaperia} en la 
 \nota{La edición directa de tablas se reserva a la administración de la base. Para asegurar un correlativo consecutivo por serie, las emisiones del piloto se registran mediante la función dedicada.}
 
 \newpage
-\seccion{8.}{Resultados reproducidos}
+\seccion{8.}{Resultados del caso inicial}
 La consulta de líneas suma S/ 14.00 y S/ 7.00 en el primer pedido. El segundo suma S/ 18.00 y S/ 6.00. Con precios brutos e IGV de prueba del 18\%, la base se calcula como $\operatorname{redondear}(\text{total}/1.18,2)$. El IGV es la diferencia entre el total y la base.
 
 {\small\begin{tabularx}{\linewidth}{@{}lYrrrrr@{}}
@@ -137,16 +136,46 @@ La batería SQL verificó los importes y las cantidades, la conservación del pr
 \seccion{9.}{Despliegue y consumo}
 \begin{itemize}
 \item \textbf{PostgreSQL.} Se aplica \codigo{01\_modelo.sql}, luego \codigo{02\_datos\_demo.sql}. \codigo{03\_consultas.sql} muestra líneas, conciliación y abonos. \codigo{04\_pruebas.sql} ejecuta la batería en transacción. La sesión remota verificada usó el pooler de Supabase, TLS 1.3 y validación de nombre y certificado.
-\item \textbf{Sitio.} La carpeta pública de cPanel sirve el \href{https://nexlabsgroup.com/basededatos/}{portal de NexLabs} y el informe en \codigo{/basededatos/informe}. La interfaz de Stitch distingue la consulta a Supabase de los datos de demostración incluidos en el sitio.
-\item \textbf{Consumo.} Después de poblar y probar el piloto, las tablas y sus índices sumaron 552 kB en Supabase. El cálculo excluye otros esquemas y servicios del proyecto. El portal evita el sondeo periódico, reutiliza la respuesta reciente de la sesión y calcula el pago mixto sin escribir a la base. El consumo operativo de red depende del número de visitas y se revisa en Observability y Usage.
+\item \textbf{Sitio.} La carpeta pública de cPanel sirve el \href{https://nexlabsgroup.com/basededatos/}{portal de NexLabs} y el informe en \codigo{/basededatos/informe}. Las prácticas del sitio se guardan en el navegador. La misma muestra de 100 ventas está cargada en PostgreSQL bajo el esquema privado \codigo{salchipaperia}.
+\item \textbf{Consumo.} El sitio carga su muestra como parte del código publicado. Explorar, editar o cobrar en la simulación no genera consultas al servicio PostgreSQL. La carga por SQL se ejecuta en una transacción y se puede repetir sin agregar ventas duplicadas.
 \end{itemize}
 
-\seccion{10.}{Fuentes}
+\newpage
+\seccion{10.}{Catálogo de Red Pepper y muestra ampliada}
+La carta se transcribió en siete categorías y 38 productos, contando los rellenos de empanada y las opciones de res y pollo como variantes individuales. Por ejemplo, la Salchipapa clásica cuesta S/ 8.00, el Maracuyá sin membresía S/ 3.00 y la bandeja Extrema S/ 30.00. Atributos como el volumen de una bebida quedan como \codigo{NULL} cuando la carta no los indica. La membresía queda fuera de la muestra de ventas.
+
+\begin{tabularx}{\linewidth}{@{}lrrY@{}}
+\toprule
+\textbf{Serie} & \textbf{Ventas} & \textbf{Cobrado} & \textbf{Periodo y saldo}\\
+\midrule
+RP01 & 100 & S/ 2,303.50 & 24 de octubre al 22 de noviembre de 2026. Saldo final S/ 0.00.\\
+\bottomrule
+\end{tabularx}
+
+La carga \codigo{06\_catalogo\_y\_ventas.sql} añade el catálogo y los pedidos de la serie RP01. Aplica altas de detalle con \codigo{agregar\_item}, genera sus documentos con \codigo{emitir\_comprobante} y registra los abonos. El script comprueba importe, correlativo y cobro de cada venta. Las 100 ventas se verificaron en PostgreSQL local y en Supabase. La segunda ejecución local devolvió las mismas 100 ventas y los mismos importes.
+
+\seccion{11.}{Recorrido de práctica}
+\begin{tabularx}{\linewidth}{@{}p{42mm}Y@{}}
+\toprule
+\textbf{Diapositiva} & \textbf{Qué permite observar}\\
+\midrule
+Modelo & Explorar claves primarias, claves foráneas y cardinalidades al elegir una entidad.\\
+Explorar tablas & Buscar filas, paginar y seguir una clave foránea hasta su registro relacionado.\\
+Editar pedidos & Crear un pedido de práctica, agregar o editar cantidades, mover una línea entre dos pedidos y borrar registros de práctica. El panel de cambios indica las tablas que intervienen.\\
+Comprobantes y pagos & Emitir un comprobante de prueba, desglosar un abono mixto y obtener el saldo. Un comprobante emitido protege el detalle de la orden.\\
+\bottomrule
+\end{tabularx}
+
+Para empezar, selecciona el pedido 101 en la diapositiva de edición. Su primera línea se puede trasladar al pedido 102. Ambos son borradores didácticos del navegador. Tras agregar al menos un producto, el pedido se puede emitir y liquidar en la diapositiva de cobros.
+
+\seccion{12.}{Validación en DataGrip}
+En las propiedades de la conexión Supabase de NexLabs, abrir \textbf{Schemas} y activar \codigo{postgres → salchipaperia}. Después, actualizar el explorador. Ejecutar \codigo{07\_validar\_datagrip.sql} por bloques en una consola de esa conexión para listar las tablas, el catálogo y los importes de la serie RP01.
+
+\seccion{13.}{Fuentes}
 \begin{itemize}
-\item Documentación técnica y arquitectura de base de datos para salchipapería, material de partida facilitado para la asignatura.
+\item Documentación técnica de la asignatura y Carta Red Pepper Nueva, seis páginas.
 \item PostgreSQL 18. \href{https://www.postgresql.org/docs/18/sql-createtrigger.html}{Disparadores y restricciones diferibles} y \href{https://www.postgresql.org/docs/18/explicit-locking.html}{bloqueos explícitos}.
-\item Supabase. \href{https://supabase.com/docs/guides/database/psql}{Conexión con psql} y \href{https://supabase.com/docs/guides/observability/reports}{métricas del proyecto}.
-\item cPanel. \href{https://docs.cpanel.net/cpanel/files/file-manager/}{Administrador de archivos}.
+\item Supabase. \href{https://supabase.com/docs/guides/database/psql}{Conexión con psql}. JetBrains. \href{https://www.jetbrains.com/help/datagrip/introspection.html}{Selección de esquemas en DataGrip}.
 \end{itemize}
 
 \end{document}
