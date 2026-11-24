@@ -21,10 +21,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&amp;display=block">
-  <link rel="stylesheet" href="estilos.css?v=20261124e">
+  <link rel="stylesheet" href="estilos.css?v=20261124f">
   <script type="module">
     try {
-      await import('./inicio.js?v=20261124e');
+      await import('./inicio.js?v=20261124f');
     } catch (error) {
       document.documentElement.classList.remove('preparando');
       document.getElementById('laboratorio').removeAttribute('aria-busy');
@@ -111,14 +111,15 @@
 
       <section id="modelo" class="pantalla" aria-label="Modelo entidad–relación" hidden>
         <div class="modelo-grid">
-          <article class="panel">
-            <div class="panel-cabeza"><h2>Diagrama de relaciones</h2><p>Selecciona una entidad para ver sus campos. Cada conexión indica la clave foránea y cuántas filas pueden enlazarse.</p></div>
-            <ul class="mapa" id="mapa" aria-label="Relaciones entre entidades"></ul>
+          <article class="panel panel-mapa">
+            <div class="panel-cabeza"><h2>Mapa de entidades</h2><p>Selecciona una tabla para ver sus campos y las claves que la conectan con las demás.</p></div>
+            <div class="visor-modelo" role="region" aria-label="Mapa de relaciones entre las ocho entidades" tabindex="0"><div class="mapa" id="mapa"></div></div>
+            <p class="leyenda-modelo ayuda-mapa">Desliza el mapa horizontalmente para ver las entidades de la derecha.</p>
             <p class="leyenda-modelo">Cada producto pertenece a un solo subtipo entre snacks, bebidas y hamburguesas.</p>
+            <p class="leyenda-modelo"><strong>PK</strong> clave primaria · <strong>FK</strong> clave foránea · <strong>0..N</strong> cero o muchas filas · <strong>0..1</strong> cero o una fila</p>
           </article>
           <article class="panel inspector" id="inspector" aria-label="Campos de la entidad seleccionada"></article>
         </div>
-        <p class="leyenda-modelo"><strong>PK</strong> clave primaria · <strong>FK</strong> clave foránea · <strong>0..N</strong> cero o muchas filas · <strong>0..1</strong> cero o una fila</p>
       </section>
 
       <section id="tablas" class="pantalla" aria-label="Explorar tablas" hidden>

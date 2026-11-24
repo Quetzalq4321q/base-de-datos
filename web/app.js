@@ -161,6 +161,9 @@ function mostrarModelo() {
   for (const control of id('mapa').querySelectorAll('[data-tabla]')) {
     control.setAttribute('aria-pressed', String(control.dataset.tabla === tablaModelo));
   }
+  for (const linea of id('mapa').querySelectorAll('[data-origen]')) {
+    linea.classList.toggle('conexion-activa', linea.dataset.origen === tablaModelo || linea.dataset.destino === tablaModelo);
+  }
   const ficha = esquema[tablaModelo];
   const foraneas = new Set(relacionesModelo.filter((relacion) => relacion.destino === tablaModelo).map((relacion) => relacion.columna));
   const campos = nodo('ul', '', 'campos-entidad');
@@ -196,19 +199,58 @@ function seleccionarEntidad(tabla) {
 }
 
 function crearMapa() {
-  const entidad = (tabla) => {
+  const mapa = id('mapa');
+  const ancho = 760;
+  const alto = 365;
+  const mitadTarjeta = 87;
+  const mitadAltura = 30;
+  const posiciones = {
+    clientes: [104, 52], categorias: [380, 52], pedidos: [104, 152], productos: [380, 152],
+    snacks: [656, 152], detalle_pedido: [104, 252], bebidas: [656, 230], hamburguesas: [656, 308],
+  };
+  const svg = (etiqueta, atributos) => {
+    const elemento = document.createElementNS('http://www.w3.org/2000/svg', etiqueta);
+    for (const [nombre, valor] of Object.entries(atributos)) elemento.setAttribute(nombre, valor);
+    return elemento;
+  };
+  const conexiones = svg('svg', { class: 'conexiones-modelo', viewBox: `0 0 ${ancho} ${alto}`, 'aria-hidden': 'true' });
+  const definiciones = svg('defs', {});
+  const flecha = svg('marker', { id: 'flecha-modelo', markerUnits: 'userSpaceOnUse', markerWidth: 8, markerHeight: 8, refX: 7, refY: 4, orient: 'auto' });
+  flecha.append(svg('path', { d: 'M1 1 L7 4 L1 7', class: 'flecha-modelo' }));
+  definiciones.append(flecha);
+  conexiones.append(definiciones);
+  for (const { origen, destino, cardinalidad } of relacionesModelo) {
+    const [x, y] = posiciones[origen];
+    const [destinoX, destinoY] = posiciones[destino];
+    const vertical = x === destinoX;
+    const direccion = Math.sign(destinoX - x);
+    const salidaX = x + direccion * mitadTarjeta;
+    const llegadaX = destinoX - direccion * mitadTarjeta;
+    const carrilX = salidaX + direccion * 20;
+    const d = vertical
+      ? `M${x} ${y + mitadAltura} V${destinoY - mitadAltura}`
+      : `M${salidaX} ${y} H${carrilX} V${destinoY} H${llegadaX}`;
+    const grupo = svg('g', { 'data-origen': origen, 'data-destino': destino });
+    const xTexto = vertical ? x + 43 : (carrilX + llegadaX) / 2;
+    const yTexto = vertical ? (y + destinoY) / 2 + 4 : destinoY - 9;
+    const etiqueta = svg('text', { x: xTexto, y: yTexto, 'text-anchor': 'middle' });
+    etiqueta.textContent = `1 a ${cardinalidad}`;
+    grupo.append(svg('path', { d, 'marker-end': 'url(#flecha-modelo)' }), etiqueta);
+    conexiones.append(grupo);
+  }
+  mapa.append(conexiones);
+  for (const [tabla, [x, y]] of Object.entries(posiciones)) {
     const ficha = esquema[tabla];
-    const control = boton(ficha.titulo, () => seleccionarEntidad(tabla), ficha.icono, 'opcion');
+    const control = boton(ficha.titulo, () => seleccionarEntidad(tabla), ficha.icono, 'opcion nodo-modelo');
     control.dataset.tabla = tabla;
     control.setAttribute('aria-controls', 'inspector');
-    return control;
-  };
-  for (const { origen, destino, columna, cardinalidad } of relacionesModelo) {
-    const fila = nodo('li', '', 'relacion-modelo');
-    const enlace = nodo('span', '', 'union-modelo');
-    enlace.append(nodo('code', columna), nodo('span', `1 a ${cardinalidad}`));
-    fila.append(entidad(origen), enlace, entidad(destino));
-    id('mapa').append(fila);
+    control.setAttribute('aria-label', ficha.titulo);
+    control.style.left = `${x / ancho * 100}%`;
+    control.style.top = `${y / alto * 100}%`;
+    control.style.width = `${2 * mitadTarjeta / ancho * 100}%`;
+    control.style.height = `${2 * mitadAltura / alto * 100}%`;
+    control.append(nodo('small', tabla));
+    mapa.append(control);
   }
 }
 
