@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"error-container":"#93000a","on-tertiary-fixed":"#00201c","inverse-surface":"#e0e3de","on-surface-variant":"#c4c9b2","on-surface":"#e0e3de","tertiary":"#ffffff","on-background":"#e0e3de","on-error-container":"#ffdad6","primary-fixed-dim":"#a6d64b","surface-bright":"#363a37","on-tertiary-fixed-variant":"#005047","on-tertiary-container":"#007165","surface-container-low":"#181d19","on-secondary-fixed":"#00210c","tertiary-fixed-dim":"#3cddc7","primary-container":"#c1f364","surface-container-lowest":"#0b0f0c","on-primary-container":"#4d6e00","secondary-container":"#00b55d","outline":"#8d937e","on-primary-fixed":"#131f00","primary":"#ffffff","primary-fixed":"#c1f364","secondary-fixed-dim":"#4de082","tertiary-fixed":"#62fae3","error":"#ffb4ab","surface-container-high":"#272b28","surface-container":"#1c211d","inverse-on-surface":"#2d312e","secondary-fixed":"#6dfe9c","outline-variant":"#434937","background":"#101411","secondary":"#4de082","surface-container-highest":"#323632","on-secondary":"#003919","on-primary-fixed-variant":"#364e00","on-error":"#690005","on-primary":"#243600","inverse-primary":"#496800","surface-variant":"#323632","surface":"#101411","on-secondary-fixed-variant":"#005227","surface-tint":"#a6d64b","tertiary-container":"#62fae3","on-secondary-container":"#003e1c","surface-dim":"#101411","on-tertiary":"#003731"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},spacing:{"margin-desktop":"2rem","space-md":"0.75rem",gutter:"1rem","gutter-desktop":"1.5rem","space-xs":"0.25rem",margin:"1rem","space-sm":"0.5rem","space-xl":"1.5rem","space-lg":"1rem"},fontFamily:{"label-numeric-lg":["JetBrains Mono"],"body-md":["Geist"],"code-inline":["JetBrains Mono"],"headline-xl":["Geist"],"body-lg":["Geist"],"headline-lg":["Geist"],"label-numeric-sm":["JetBrains Mono"],"label-numeric-md":["JetBrains Mono"],"body-sm":["Geist"],"headline-xl-mobile":["Geist"],"headline-md":["Geist"]},fontSize:{"label-numeric-lg":["1.25rem",{lineHeight:"1.5rem",letterSpacing:"-0.01em",fontWeight:"600"}],"body-md":["0.875rem",{lineHeight:"1.25rem",fontWeight:"400"}],"code-inline":["0.8125rem",{lineHeight:"1.125rem",fontWeight:"400"}],"headline-xl":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.03em",fontWeight:"600"}],"body-lg":["1rem",{lineHeight:"1.5rem",fontWeight:"400"}],"headline-lg":["1.5rem",{lineHeight:"2rem",letterSpacing:"-0.02em",fontWeight:"600"}],"label-numeric-sm":["0.75rem",{lineHeight:"1rem",letterSpacing:"0.02em",fontWeight:"400"}],"label-numeric-md":["0.875rem",{lineHeight:"1.25rem",letterSpacing:"0em",fontWeight:"500"}],"body-sm":["0.75rem",{lineHeight:"1rem",fontWeight:"400"}],"headline-xl-mobile":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.02em",fontWeight:"600"}],"headline-md":["1.25rem",{lineHeight:"1.75rem",letterSpacing:"-0.015em",fontWeight:"500"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface min-h-screen antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 w-full px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary-container text-[20px]">database</span></div><div class="flex items-baseline gap-space-xs"><span class="font-headline-md text-headline-md text-on-surface">Red Pepper</span><span class="font-body-sm text-body-sm text-on-surface-variant font-code-inline">· Laboratorio PostgreSQL</span></div></div><div class="inline-flex items-center px-space-sm py-space-xs rounded bg-surface-container-low"><span class="font-code-inline text-code-inline text-primary-fixed-dim">/basededatos/</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-surface-container-high text-on-surface font-medium"><a class="px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" data-path="database-telemetry" href="#">Telemetría</a><a class="px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" data-path="query-monitor" href="#">Consultas</a><a class="px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" data-path="schema-topology" href="#">Topología</a><a aria-current="page" class="px-space-md py-space-xs rounded transition-colors bg-surface-container-high text-on-surface font-medium" data-path="reconciliation-ledger" href="#">Conciliación B001</a></nav><div class="flex items-center gap-space-lg"><a class="hidden sm:flex items-center gap-space-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="technical-report" href="#"><span class="material-symbols-outlined text-[18px]">terminal</span><span class="font-body-sm text-body-sm">Informe técnico</span></a><div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-surface-container-lowest"><span class="w-2 h-2 rounded-full bg-secondary"></span><span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant">v2.4 - DB Engine</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-lowest z-40 hidden md:flex flex-col justify-between py-space-lg"><div class="flex flex-col gap-space-md"><div class="px-space-lg"><span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase tracking-wider">Nodos Activos</span><div class="mt-space-xs flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-surface-container"><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span><span class="font-code-inline text-code-inline text-on-surface">cluster-primary-01</span></div></div><nav class="flex flex-col px-space-sm gap-space-xs" data-active-classes="bg-surface-container text-on-surface font-medium"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="database-telemetry" href="#"><span class="material-symbols-outlined text-[18px]">insights</span><span class="font-body-md text-body-md">Métricas de Nodo</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="query-monitor" href="#"><span class="material-symbols-outlined text-[18px]">data_object</span><span class="font-body-md text-body-md">Transacciones SQL</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm rounded transition-colors bg-surface-container text-on-surface font-medium" data-path="reconciliation-ledger" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span class="font-body-md text-body-md">Comprobantes B001</span></a></nav></div><div class="px-space-lg flex flex-col gap-space-xs"><span class="font-label-numeric-sm text-label-numeric-sm text-outline">POOL CONNECTIONS</span><span class="font-label-numeric-md text-label-numeric-md text-secondary">64 / 128 IDLE</span></div></aside><div class="pl-0 md:pl-64"><main class="w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="w-full px-margin md:px-margin-desktop py-space-xl flex flex-col gap-space-xl max-w-7xl mx-auto">
+<!-- Top Editorial Header & Connection Telemetry Status -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs max-w-3xl">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-code-inline text-code-inline uppercase tracking-wider">
+<span>PostgreSQL Tx-Engine</span>
+<span>/</span>
+<span>Ledger B001</span>
+<span>/</span>
+<span class="text-secondary">En vivo</span>
+</div>
+<div class="flex flex-wrap items-center gap-space-md">
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Pedidos y pagos</h1>
+<div class="inline-flex items-center gap-space-sm px-space-md py-space-xs rounded-full bg-surface-container-high shadow-sm">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary-container"></span>
+</span>
+<span class="font-label-numeric-sm text-label-numeric-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">PostgreSQL conectado</span>
+<span class="font-code-inline text-code-inline text-on-surface-variant">p99: 4.2ms</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mt-space-xs">
+          Monitoreo en tiempo real del ledger transaccional, conciliación de comprobantes de pago y simulación interactiva de liquidación multicanal en moneda nacional (PEN).
+        </p>
+</div>
+<!-- Quick Session Controls / Meta -->
+<div class="flex items-center gap-space-sm self-start lg:self-end">
+<div class="px-space-md py-space-sm bg-surface-container rounded flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">terminal</span>
+<span class="font-code-inline text-code-inline text-on-surface">SESSION_ID: <span class="text-primary-container">TEST-WAL-982</span></span>
+</div>
+<button class="p-space-sm bg-surface-container hover:bg-surface-container-high rounded text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" id="btn-sync-telemetry" title="Forzar sincronización de buffer">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</button>
+</div>
+</div>
+<!-- Telemetry Pulse Micro Bar (Inline Sparkline / Buffer load) -->
+<div class="w-full bg-surface-container-low rounded-xl p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">swap_horiz</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase tracking-wider">Flujo de réplica activa</span>
+<span class="font-code-inline text-code-inline text-on-surface">sync_standby_priority: <strong class="text-secondary font-medium">QUORUM (2/2 ack)</strong></span>
+</div>
+</div>
+<div class="flex items-center gap-space-xl text-on-surface-variant">
+<div class="flex items-center gap-space-sm">
+<span class="font-code-inline text-code-inline">WAL LSN:</span>
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface">0/3F2B890</span>
+</div>
+<div class="hidden sm:flex items-center gap-space-sm">
+<span class="font-code-inline text-code-inline">Tablas monitoreadas:</span>
+<span class="font-label-numeric-sm text-label-numeric-sm text-primary-container">pedidos, pagos, boletas</span>
+</div>
+</div>
+</div>
+<!-- KPIs: 3 Column High Density Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<!-- KPI 1 -->
+<div class="bg-surface-container rounded-xl p-space-lg flex flex-col justify-between relative overflow-hidden shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase tracking-wider">Pedidos de prueba</span>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">shopping_cart</span>
+</div>
+<div class="my-space-md">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-xl text-headline-xl text-on-surface">2</span>
+<span class="font-code-inline text-code-inline text-on-surface-variant">slots</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">Activos en sesión de pruebas</p>
+</div>
+<div class="pt-space-sm bg-surface-container-low/40 rounded px-space-sm flex items-center justify-between">
+<span class="font-code-inline text-code-inline text-on-surface-variant">ID: #001, #002</span>
+<span class="font-label-numeric-sm text-label-numeric-sm text-secondary">COMMIT OK</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container rounded-xl p-space-lg flex flex-col justify-between relative overflow-hidden shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase tracking-wider">Total cobrado</span>
+<span class="material-symbols-outlined text-[20px] text-primary-container">payments</span>
+</div>
+<div class="my-space-md">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-xl text-headline-xl text-primary-container font-label-numeric-lg tracking-tight">S/ 45.00</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">100% conciliado en ledger</p>
+</div>
+<div class="pt-space-sm bg-surface-container-low/40 rounded px-space-sm flex items-center justify-between">
+<span class="font-code-inline text-code-inline text-on-surface-variant">PEN Ledger balance</span>
+<span class="font-label-numeric-sm text-label-numeric-sm text-primary-fixed-dim">SUNAT ACEPTADO</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container rounded-xl p-space-lg flex flex-col justify-between relative overflow-hidden shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase tracking-wider">Saldo pendiente</span>
+<span class="material-symbols-outlined text-[20px] text-secondary">check_circle</span>
+</div>
+<div class="my-space-md">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-xl text-headline-xl text-on-surface font-label-numeric-lg tracking-tight">S/ 0.00</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">Cero discrepancias registradas</p>
+</div>
+<div class="pt-space-sm bg-surface-container-low/40 rounded px-space-sm flex items-center justify-between">
+<span class="font-code-inline text-code-inline text-on-surface-variant">Variance check</span>
+<span class="font-label-numeric-sm text-label-numeric-sm text-secondary">Δ = 0.0000</span>
+</div>
+</div>
+</div>
+<!-- Main Section: Asymmetrical Split Panel Grid (Cols 7 / 5) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Columna A: Tarjeta 'Conciliación de comprobantes' (Ledger de boletas) (7 Columns) -->
+<div class="lg:col-span-7 bg-surface-container rounded-xl p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-primary-container">receipt_long</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Conciliación de comprobantes</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Emisión electrónica de boletas serie B001</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-code-inline text-code-inline px-space-sm py-space-xs bg-surface-container-low rounded text-on-surface-variant">2 registros</span>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left font-body-md text-body-md border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-numeric-sm text-label-numeric-sm uppercase tracking-wider">
+<th class="py-space-sm px-space-md rounded-l">Comprobante</th>
+<th class="py-space-sm px-space-md">Fecha/Hora</th>
+<th class="py-space-sm px-space-md">Método</th>
+<th class="py-space-sm px-space-md text-right">Monto</th>
+<th class="py-space-sm px-space-md text-center rounded-r">Estado</th>
+</tr>
+</thead>
+<tbody class="divide-y-0" id="ledger-table-body">
+<!-- Fila 1 -->
+<tr class="cursor-pointer bg-surface-container-high/60 hover:bg-surface-container-highest transition-colors group" id="row-order-1">
+<td class="py-space-md px-space-md rounded-l">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="font-code-inline text-code-inline text-on-surface font-semibold group-hover:text-primary-container transition-colors">B001-0000001</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block pl-space-md">Pedido #001 · Mesa 4</span>
+</td>
+<td class="py-space-md px-space-md">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface">14:22:10</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant">Hoy</span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-0.5 rounded bg-surface-container-highest text-on-surface font-code-inline text-code-inline">
+<span>Efectivo + Yape</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-label-numeric-md text-label-numeric-md text-on-surface">
+                  S/ 21.00
+                </td>
+<td class="py-space-md px-space-md text-center rounded-r">
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded bg-secondary/15 text-secondary font-label-numeric-sm text-label-numeric-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">check</span>
+                    Conciliado
+                  </span>
+</td>
+</tr>
+<!-- Spacer between rows using padding -->
+<tr><td class="h-1.5" colspan="5"></td></tr>
+<!-- Fila 2 -->
+<tr class="cursor-pointer bg-surface-container-low hover:bg-surface-container-highest transition-colors group" id="row-order-2">
+<td class="py-space-md px-space-md rounded-l">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-code-inline text-code-inline text-on-surface font-semibold group-hover:text-primary-container transition-colors">B001-0000002</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block pl-space-md">Pedido #002 · Barra 2</span>
+</td>
+<td class="py-space-md px-space-md">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface">14:35:48</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant">Hoy</span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-0.5 rounded bg-surface-container-highest text-on-surface font-code-inline text-code-inline">
+<span>Yape directo</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right font-label-numeric-md text-label-numeric-md text-on-surface">
+                  S/ 24.00
+                </td>
+<td class="py-space-md px-space-md text-center rounded-r">
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded bg-secondary/15 text-secondary font-label-numeric-sm text-label-numeric-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">check</span>
+                    Conciliado
+                  </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Ledger Footer Summary -->
+<div class="mt-space-sm p-space-md bg-surface-container-low rounded-lg flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-secondary">verified_user</span>
+<span class="font-code-inline text-code-inline">Consistencia estricta ACID · Isolation: READ COMMITTED</span>
+</div>
+<div class="flex items-baseline gap-space-sm">
+<span class="font-label-numeric-sm text-label-numeric-sm uppercase tracking-wider text-on-surface-variant">Total verificado:</span>
+<span class="font-headline-md text-headline-md text-primary-container font-label-numeric-lg font-bold">S/ 45.00</span>
+</div>
+</div>
+<!-- Inline Visual: Proportional Flow of Settlement Methods -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="flex justify-between items-center text-on-surface-variant font-label-numeric-sm text-label-numeric-sm">
+<span>Distribución de canales: Efectivo (S/ 10.00 · 22.2%)</span>
+<span>Yape (S/ 35.00 · 77.8%)</span>
+</div>
+<div class="w-full h-2 bg-surface-container-lowest rounded-full overflow-hidden flex">
+<div class="h-full bg-secondary-fixed-dim" style="width: 22.2%;"></div>
+<div class="h-full bg-primary-container" style="width: 77.8%;"></div>
+</div>
+</div>
+</div>
+<!-- Columna B: Tarjeta 'Probar pago mixto' (Simulador interactivo) (5 Columns) -->
+<div class="lg:col-span-5 bg-surface-container rounded-xl p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-primary-container">calculate</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Probar pago mixto</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Simulador de partición Efectivo / Yape</p>
+</div>
+</div>
+<span class="font-label-numeric-sm text-label-numeric-sm px-space-sm py-0.5 rounded bg-surface-container-highest text-primary-fixed-dim">REACTIVE ENGINE</span>
+</div>
+<!-- Form Elements -->
+<div class="flex flex-col gap-space-md">
+<!-- Selector de pedido activo -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase tracking-wider">
+              Seleccionar Pedido Activo
+            </label>
+<div class="grid grid-cols-2 gap-space-sm">
+<button class="order-picker-btn p-space-sm rounded bg-surface-container-high text-on-surface flex flex-col items-start gap-space-xs transition-colors" id="btn-order-1" type="button">
+<span class="font-code-inline text-code-inline font-semibold">Pedido #001</span>
+<span class="font-label-numeric-md text-label-numeric-md text-primary-container">Total: S/ 21.00</span>
+</button>
+<button class="order-picker-btn p-space-sm rounded bg-surface-container-low text-on-surface-variant flex flex-col items-start gap-space-xs transition-colors" id="btn-order-2" type="button">
+<span class="font-code-inline text-code-inline font-semibold">Pedido #002</span>
+<span class="font-label-numeric-md text-label-numeric-md text-on-surface">Total: S/ 24.00</span>
+</button>
+</div>
+</div>
+<!-- Total Target Display -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase">Monto a liquidar</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="calc-order-meta">Pedido #001 · Boleta B001-0000001</span>
+</div>
+<span class="font-headline-lg text-headline-lg font-label-numeric-lg text-primary-container" id="target-total-display">S/ 21.00</span>
+</div>
+<!-- Inputs Group -->
+<div class="flex flex-col gap-space-sm">
+<!-- Campo Efectivo -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-numeric-sm text-label-numeric-sm text-on-surface uppercase tracking-wider flex items-center gap-1" for="input-efectivo">
+<span class="material-symbols-outlined text-[16px] text-secondary">local_atm</span>
+                  Efectivo ingresado (S/)
+                </label>
+<!-- Quick split chips -->
+<div class="flex items-center gap-1">
+<button class="quick-split-chip px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface font-code-inline text-code-inline" data-split="0" type="button">0%</button>
+<button class="quick-split-chip px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface font-code-inline text-code-inline" data-split="50" type="button">50%</button>
+<button class="quick-split-chip px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface font-code-inline text-code-inline" data-split="100" type="button">100%</button>
+</div>
+</div>
+<div class="relative flex items-center">
+<span class="absolute left-space-md font-label-numeric-md text-label-numeric-md text-on-surface-variant">S/</span>
+<input class="w-full bg-surface-container-lowest text-on-surface font-label-numeric-lg text-label-numeric-lg pl-10 pr-space-md py-space-sm rounded outline-none focus:bg-surface-container-low transition-colors" id="input-efectivo" min="0" step="0.50" type="number" value="10.00"/>
+</div>
+</div>
+<!-- Campo Dinámico Calculado Yape -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-numeric-sm text-label-numeric-sm text-on-surface uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary-container">qr_code_scanner</span>
+                  Monto restante Yape (S/)
+                </label>
+<span class="font-label-numeric-sm text-label-numeric-sm text-secondary bg-secondary/10 px-space-xs rounded" id="diff-status-pill">
+                  AUTO-BALANCEADO
+                </span>
+</div>
+<div class="relative flex items-center bg-surface-container-lowest rounded p-space-sm px-space-md justify-between">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-label-numeric-md text-label-numeric-md text-on-surface-variant">S/</span>
+<span class="font-headline-md text-headline-md font-label-numeric-lg text-on-surface font-bold" id="output-yape">11.00</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-code-inline text-code-inline">
+<span class="material-symbols-outlined text-[16px] text-primary-container">phone_iphone</span>
+<span>984 *** 210</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary CTA Button -->
+<button class="w-full py-space-md px-space-lg bg-primary-container hover:bg-primary-fixed-dim text-on-primary font-headline-md text-headline-md font-semibold rounded flex items-center justify-center gap-space-sm transition-all shadow-md active:scale-[0.99]" id="btn-simulate-payment" type="button">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+            Simular abono
+          </button>
+<!-- Dynamic Result Box (JSON & Confirmation Card) -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg flex flex-col gap-space-xs" id="sim-result-box">
+<div class="flex items-center justify-between">
+<span class="font-label-numeric-sm text-label-numeric-sm text-secondary font-semibold uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span id="result-status-title">ABONO EXITOSO: S/ 10.00 Efectivo + S/ 11.00 Yape</span>
+</span>
+<span class="font-code-inline text-code-inline text-on-surface-variant" id="result-tx-hash">0x8f2d...b14</span>
+</div>
+<!-- Terminal code snapshot -->
+<pre class="font-code-inline text-code-inline text-on-surface-variant overflow-x-auto p-space-xs bg-surface-container-low rounded leading-tight"><code id="result-payload-preview">BEGIN TRANSACTION;
+INSERT INTO pagos (pedido_id, metodo, monto) VALUES (1, 'EFECTIVO', 10.00);
+INSERT INTO pagos (pedido_id, metodo, monto) VALUES (1, 'YAPE', 11.00);
+UPDATE comprobantes SET status = 'CONCILIADO' WHERE serie = 'B001-0000001';
+COMMIT;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<!-- Tarjeta inferior ancho completo: 'Detalle del pedido inspeccionado' -->
+<div class="w-full bg-surface-container rounded-xl p-space-lg flex flex-col gap-space-lg shadow-sm">
+<!-- Detalle Header & Selector -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px] text-primary-container">readiness_score</span>
+</div>
+<div>
+<div class="flex items-center gap-space-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Detalle del pedido inspeccionado</h2>
+<span class="px-space-sm py-0.5 rounded bg-primary-container text-on-primary font-label-numeric-sm text-label-numeric-sm font-semibold" id="inspected-badge">
+                B001-0000001
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="inspected-subtitle">Pedido #001 · Mesa 4 / Takeout · Canal Salón</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-code-inline text-code-inline text-on-surface-variant">Cambiar vista rápida:</span>
+<div class="inline-flex rounded bg-surface-container-low p-1">
+<button class="px-space-sm py-0.5 rounded bg-surface-container-high text-on-surface font-code-inline text-code-inline" id="tab-inspect-1" type="button">Pedido #001</button>
+<button class="px-space-sm py-0.5 rounded text-on-surface-variant hover:text-on-surface font-code-inline text-code-inline" id="tab-inspect-2" type="button">Pedido #002</button>
+</div>
+</div>
+</div>
+<!-- Content Grid: Tabla de Productos & Trazabilidad de Pagos PostgreSQL -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Left: Tabla de Items / Productos (7 Columns) -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase tracking-wider flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px]">restaurant_menu</span>
+            Ítems facturados en comprobante
+          </span>
+<div class="overflow-x-auto w-full bg-surface-container-low rounded-lg p-space-sm">
+<table class="w-full text-left font-body-md text-body-md">
+<thead>
+<tr class="text-on-surface-variant font-label-numeric-sm text-label-numeric-sm uppercase tracking-wider pb-space-sm">
+<th class="py-space-sm px-space-sm">Descripción del plato / bebida</th>
+<th class="py-space-sm px-space-sm text-center">Cant</th>
+<th class="py-space-sm px-space-sm text-right">P. Unit</th>
+<th class="py-space-sm px-space-sm text-right">Total</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 text-on-surface" id="detail-items-body">
+<!-- Dynamically populated or default to Pedido #001 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-space-sm px-space-sm font-body-md text-body-md">
+<span class="font-medium text-on-surface">1/4 Pollo a la Brasa c/ Papas y Ensalada</span>
+<span class="block font-code-inline text-code-inline text-on-surface-variant">SKU: PL-BRASA-04</span>
+</td>
+<td class="py-space-sm px-space-sm text-center font-label-numeric-md text-label-numeric-md">1</td>
+<td class="py-space-sm px-space-sm text-right font-label-numeric-md text-label-numeric-md">S/ 16.50</td>
+<td class="py-space-sm px-space-sm text-right font-label-numeric-md text-label-numeric-md font-semibold">S/ 16.50</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-space-sm px-space-sm font-body-md text-body-md">
+<span class="font-medium text-on-surface">Bebida Chicha Morada 500ml</span>
+<span class="block font-code-inline text-code-inline text-on-surface-variant">SKU: BEB-CHI-500</span>
+</td>
+<td class="py-space-sm px-space-sm text-center font-label-numeric-md text-label-numeric-md">1</td>
+<td class="py-space-sm px-space-sm text-right font-label-numeric-md text-label-numeric-md">S/ 4.50</td>
+<td class="py-space-sm px-space-sm text-right font-label-numeric-md text-label-numeric-md font-semibold">S/ 4.50</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Subtotal & IGV Breakdown Strip -->
+<div class="p-space-md bg-surface-container-low rounded-lg flex flex-wrap items-center justify-between gap-space-md text-on-surface">
+<div class="flex items-center gap-space-lg">
+<div class="flex flex-col">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase">Subtotal</span>
+<span class="font-label-numeric-md text-label-numeric-md" id="detail-subtotal">S/ 17.80</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase">IGV (18% inc.)</span>
+<span class="font-label-numeric-md text-label-numeric-md text-on-surface-variant" id="detail-igv">S/ 3.20</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-sm">
+<span class="font-label-numeric-sm text-label-numeric-sm uppercase tracking-wider text-on-surface-variant">Total Boleta:</span>
+<span class="font-headline-lg text-headline-lg font-label-numeric-lg text-primary-container font-bold" id="detail-total-boleta">S/ 21.00</span>
+</div>
+</div>
+</div>
+<!-- Right: Listado de Pagos Asociados (Trazabilidad PostgreSQL) (5 Columns) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<span class="font-label-numeric-sm text-label-numeric-sm text-on-surface-variant uppercase tracking-wider flex items-center justify-between">
+<span class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-secondary">account_tree</span>
+              Trazabilidad transaccional PostgreSQL
+            </span>
+<span class="font-code-inline text-code-inline text-secondary">WAL SYNCHRONOUS</span>
+</span>
+<div class="flex flex-col gap-space-sm" id="tx-log-container">
+<!-- TX 1 -->
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-space-xs transition-all hover:bg-surface-container-high/70">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-inline text-code-inline font-bold text-on-surface">TX-8921: Efectivo en caja</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-secondary font-label-numeric-sm text-label-numeric-sm">OK</span>
+</div>
+<span class="font-label-numeric-md text-label-numeric-md text-on-surface font-semibold">S/ 10.00</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-code-inline text-code-inline">
+<span>Operador: Cajero 01</span>
+<span class="text-secondary font-label-numeric-sm text-label-numeric-sm">Audit log OK · seq #1</span>
+</div>
+</div>
+<!-- TX 2 -->
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-space-xs transition-all hover:bg-surface-container-high/70">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-inline text-code-inline font-bold text-on-surface">TX-8922: Yape (Ref: 492019)</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-secondary font-label-numeric-sm text-label-numeric-sm">OK</span>
+</div>
+<span class="font-label-numeric-md text-label-numeric-md text-primary-container font-semibold">S/ 11.00</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-code-inline text-code-inline">
+<span>Webhook instantáneo OK</span>
+<span class="text-primary-container font-label-numeric-sm text-label-numeric-sm">BCP API 200 ms · seq #2</span>
+</div>
+</div>
+</div>
+<!-- Security Digest Hash -->
+<div class="p-space-sm bg-surface-container-lowest rounded flex items-center justify-between text-on-surface-variant font-code-inline text-code-inline">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+              SHA-256 SUNAT Hash:
+            </span>
+<span class="text-on-surface">9a8e2b...f809</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+(function() {
+  // Store orders mock data
+  const orders = {
+    "1": {
+      id: "1",
+      number: "#001",
+      serie: "B001-0000001",
+      meta: "Pedido #001 · Mesa 4",
+      subtitle: "Pedido #001 · Mesa 4 / Takeout · Canal Salón",
+      total: 21.00,
+      subtotal: 17.80,
+      igv: 3.20,
+      initialCash: 10.00,
+      items: [
+        { name: "1/4 Pollo a la Brasa c/ Papas y Ensalada", sku: "PL-BRASA-04", qty: 1, unit: 16.50, total: 16.50 },
+        { name: "Bebida Chicha Morada 500ml", sku: "BEB-CHI-500", qty: 1, unit: 4.50, total: 4.50 }
+      ],
+      txs: [
+        { code: "TX-8921", method: "Efectivo en caja", amount: 10.00, meta: "Operador: Cajero 01", log: "Audit log OK · seq #1" },
+        { code: "TX-8922", method: "Yape (Ref: 492019)", amount: 11.00, meta: "Webhook instantáneo OK", log: "BCP API 200 ms · seq #2", highlight: true }
+      ]
+    },
+    "2": {
+      id: "2",
+      number: "#002",
+      serie: "B001-0000002",
+      meta: "Pedido #002 · Barra 2",
+      subtitle: "Pedido #002 · Barra 2 · Canal Para Llevar",
+      total: 24.00,
+      subtotal: 20.34,
+      igv: 3.66,
+      initialCash: 0.00,
+      items: [
+        { name: "1/2 Pollo a la Brasa Solo", sku: "PL-BRASA-02", qty: 1, unit: 20.00, total: 20.00 },
+        { name: "Gaseosa Inca Kola 500ml", sku: "BEB-INK-500", qty: 1, unit: 4.00, total: 4.00 }
+      ],
+      txs: [
+        { code: "TX-9041", method: "Yape directo (Ref: 881204)", amount: 24.00, meta: "Yape QR Dinámico", log: "SUNAT CDR aceptado · seq #1", highlight: true }
+      ]
+    }
+  };
+
+  let activeOrderId = "1";
+
+  // Elements
+  const btnOrder1 = document.getElementById("btn-order-1");
+  const btnOrder2 = document.getElementById("btn-order-2");
+  const rowOrder1 = document.getElementById("row-order-1");
+  const rowOrder2 = document.getElementById("row-order-2");
+  const tabInspect1 = document.getElementById("tab-inspect-1");
+  const tabInspect2 = document.getElementById("tab-inspect-2");
+  
+  const targetTotalDisplay = document.getElementById("target-total-display");
+  const calcOrderMeta = document.getElementById("calc-order-meta");
+  const inputEfectivo = document.getElementById("input-efectivo");
+  const outputYape = document.getElementById("output-yape");
+  const diffStatusPill = document.getElementById("diff-status-pill");
+  const btnSimulate = document.getElementById("btn-simulate-payment");
+  
+  const resultStatusTitle = document.getElementById("result-status-title");
+  const resultTxHash = document.getElementById("result-tx-hash");
+  const resultPayloadPreview = document.getElementById("result-payload-preview");
+
+  // Detalle elements
+  const inspectedBadge = document.getElementById("inspected-badge");
+  const inspectedSubtitle = document.getElementById("inspected-subtitle");
+  const detailItemsBody = document.getElementById("detail-items-body");
+  const detailSubtotal = document.getElementById("detail-subtotal");
+  const detailIgv = document.getElementById("detail-igv");
+  const detailTotalBoleta = document.getElementById("detail-total-boleta");
+  const txLogContainer = document.getElementById("tx-log-container");
+
+  function formatMoney(amount) {
+    return "S/ " + Number(amount).toFixed(2);
+  }
+
+  function recalculateSplit() {
+    const order = orders[activeOrderId];
+    const total = order.total;
+    let cash = parseFloat(inputEfectivo.value);
+
+    if (isNaN(cash) || cash < 0) {
+      cash = 0;
+    }
+
+    if (cash > total) {
+      cash = total;
+      inputEfectivo.value = total.toFixed(2);
+    }
+
+    const yape = Math.max(0, total - cash);
+    outputYape.textContent = yape.toFixed(2);
+
+    if (cash + yape === total) {
+      diffStatusPill.textContent = "AUTO-BALANCEADO";
+      diffStatusPill.className = "font-label-numeric-sm text-label-numeric-sm text-secondary bg-secondary/10 px-space-xs rounded";
+    } else {
+      diffStatusPill.textContent = "DIFERENCIA DETECTADA";
+      diffStatusPill.className = "font-label-numeric-sm text-label-numeric-sm text-error bg-error-container/20 px-space-xs rounded";
+    }
+  }
+
+  function setSimulatedConfirmation(cash, yape) {
+    const order = orders[activeOrderId];
+    const randomHash = "0x" + Array.from({length: 8}, () => Math.floor(Math.random()*16).toString(16)).join("") + "...b" + Math.floor(Math.random()*89+10);
+    resultTxHash.textContent = randomHash;
+    resultStatusTitle.textContent = `ABONO EXITOSO: ${formatMoney(cash)} Efectivo + ${formatMoney(yape)} Yape`;
+
+    resultPayloadPreview.textContent = 
+`BEGIN TRANSACTION;
+-- Reference: ${order.serie}
+INSERT INTO pagos (pedido_id, metodo, monto, status) VALUES (${order.id}, 'EFECTIVO', ${cash.toFixed(2)}, 'CONFIRMED');
+INSERT INTO pagos (pedido_id, metodo, monto, status) VALUES (${order.id}, 'YAPE', ${yape.toFixed(2)}, 'CONFIRMED');
+UPDATE comprobantes SET status = 'CONCILIADO', updated_at = NOW() WHERE serie = '${order.serie}';
+COMMIT; -- TX OK in 3.1ms`;
+  }
+
+  function renderInspectedDetail(orderId) {
+    const order = orders[orderId];
+    inspectedBadge.textContent = order.serie;
+    inspectedSubtitle.textContent = order.subtitle;
+    detailSubtotal.textContent = formatMoney(order.subtotal);
+    detailIgv.textContent = formatMoney(order.igv);
+    detailTotalBoleta.textContent = formatMoney(order.total);
+
+    // Render items
+    detailItemsBody.innerHTML = order.items.map(item => `
+      <tr class="hover:bg-surface-container-high/40 transition-colors">
+        <td class="py-space-sm px-space-sm font-body-md text-body-md">
+          <span class="font-medium text-on-surface">${item.name}</span>
+          <span class="block font-code-inline text-code-inline text-on-surface-variant">SKU: ${item.sku}</span>
+        </td>
+        <td class="py-space-sm px-space-sm text-center font-label-numeric-md text-label-numeric-md">${item.qty}</td>
+        <td class="py-space-sm px-space-sm text-right font-label-numeric-md text-label-numeric-md">${formatMoney(item.unit)}</td>
+        <td class="py-space-sm px-space-sm text-right font-label-numeric-md text-label-numeric-md font-semibold">${formatMoney(item.total)}</td>
+      </tr>
+    `).join("");
+
+    // Render txs
+    txLogContainer.innerHTML = order.txs.map(tx => `
+      <div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-space-xs transition-all hover:bg-surface-container-high/70">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-space-xs">
+            <span class="font-code-inline text-code-inline font-bold text-on-surface">${tx.code}: ${tx.method}</span>
+            <span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-secondary font-label-numeric-sm text-label-numeric-sm">OK</span>
+          </div>
+          <span class="font-label-numeric-md text-label-numeric-md ${tx.highlight ? 'text-primary-container' : 'text-on-surface'} font-semibold">${formatMoney(tx.amount)}</span>
+        </div>
+        <div class="flex items-center justify-between text-on-surface-variant font-code-inline text-code-inline">
+          <span>${tx.meta}</span>
+          <span class="${tx.highlight ? 'text-primary-container' : 'text-secondary'} font-label-numeric-sm text-label-numeric-sm">${tx.log}</span>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function setActiveOrder(id) {
+    activeOrderId = id;
+    const order = orders[id];
+
+    // Update UI pickers
+    if (id === "1") {
+      btnOrder1.className = "order-picker-btn p-space-sm rounded bg-surface-container-high text-on-surface flex flex-col items-start gap-space-xs transition-colors";
+      btnOrder2.className = "order-picker-btn p-space-sm rounded bg-surface-container-low text-on-surface-variant flex flex-col items-start gap-space-xs transition-colors";
+      
+      rowOrder1.className = "cursor-pointer bg-surface-container-high/60 hover:bg-surface-container-highest transition-colors group";
+      rowOrder2.className = "cursor-pointer bg-surface-container-low hover:bg-surface-container-highest transition-colors group";
+
+      tabInspect1.className = "px-space-sm py-0.5 rounded bg-surface-container-high text-on-surface font-code-inline text-code-inline";
+      tabInspect2.className = "px-space-sm py-0.5 rounded text-on-surface-variant hover:text-on-surface font-code-inline text-code-inline";
+    } else {
+      btnOrder2.className = "order-picker-btn p-space-sm rounded bg-surface-container-high text-on-surface flex flex-col items-start gap-space-xs transition-colors";
+      btnOrder1.className = "order-picker-btn p-space-sm rounded bg-surface-container-low text-on-surface-variant flex flex-col items-start gap-space-xs transition-colors";
+
+      rowOrder2.className = "cursor-pointer bg-surface-container-high/60 hover:bg-surface-container-highest transition-colors group";
+      rowOrder1.className = "cursor-pointer bg-surface-container-low hover:bg-surface-container-highest transition-colors group";
+
+      tabInspect2.className = "px-space-sm py-0.5 rounded bg-surface-container-high text-on-surface font-code-inline text-code-inline";
+      tabInspect1.className = "px-space-sm py-0.5 rounded text-on-surface-variant hover:text-on-surface font-code-inline text-code-inline";
+    }
+
+    targetTotalDisplay.textContent = formatMoney(order.total);
+    calcOrderMeta.textContent = `${order.meta} · Boleta ${order.serie}`;
+    inputEfectivo.value = order.initialCash.toFixed(2);
+
+    recalculateSplit();
+    setSimulatedConfirmation(parseFloat(inputEfectivo.value), order.total - parseFloat(inputEfectivo.value));
+    renderInspectedDetail(id);
+  }
+
+  // Event Listeners
+  btnOrder1.addEventListener("click", () => setActiveOrder("1"));
+  btnOrder2.addEventListener("click", () => setActiveOrder("2"));
+  rowOrder1.addEventListener("click", () => setActiveOrder("1"));
+  rowOrder2.addEventListener("click", () => setActiveOrder("2"));
+  tabInspect1.addEventListener("click", () => setActiveOrder("1"));
+  tabInspect2.addEventListener("click", () => setActiveOrder("2"));
+
+  inputEfectivo.addEventListener("input", recalculateSplit);
+
+  // Quick split percentage buttons
+  document.querySelectorAll(".quick-split-chip").forEach(btn => {
+    btn.addEventListener("click", function() {
+      const splitPercent = parseFloat(this.getAttribute("data-split"));
+      const order = orders[activeOrderId];
+      const cashVal = (order.total * (splitPercent / 100));
+      inputEfectivo.value = cashVal.toFixed(2);
+      recalculateSplit();
+    });
+  });
+
+  // Action Button
+  btnSimulate.addEventListener("click", function() {
+    const order = orders[activeOrderId];
+    const cash = parseFloat(inputEfectivo.value) || 0;
+    const yape = Math.max(0, order.total - cash);
+    
+    // Add quick pulse animation to button
+    btnSimulate.classList.add("scale-95");
+    setTimeout(() => {
+      btnSimulate.classList.remove("scale-95");
+      setSimulatedConfirmation(cash, yape);
+      
+      // Update detail section transaction mockup live
+      order.txs = [
+        { code: "TX-LIVE-01", method: "Efectivo en caja", amount: cash, meta: "Operador de turno", log: "Tx instantáneo OK" },
+        { code: "TX-LIVE-02", method: "Yape dinámico", amount: yape, meta: "Liquidación split", log: "App confirmada", highlight: true }
+      ];
+      renderInspectedDetail(activeOrderId);
+    }, 150);
+  });
+
+  // Telemetry refresh micro interaction
+  const btnSync = document.getElementById("btn-sync-telemetry");
+  if (btnSync) {
+    btnSync.addEventListener("click", function() {
+      const icon = btnSync.querySelector(".material-symbols-outlined");
+      if (icon) {
+        icon.classList.add("rotate-180");
+        setTimeout(() => icon.classList.remove("rotate-180"), 400);
+      }
+    });
+  }
+
+  // Initialize
+  recalculateSplit();
+})();
+</script></main></div></body></html>

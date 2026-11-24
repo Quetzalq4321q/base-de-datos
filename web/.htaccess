@@ -1,0 +1,9 @@
+DirectoryIndex index.html
+Options -Indexes -MultiViews
+
+RewriteEngine On
+RewriteCond %{THE_REQUEST} \s/+basededatos/index\.html(?:[?\s]) [NC]
+RewriteRule ^index\.html$ /basededatos/ [R=302,L]
+RewriteCond %{THE_REQUEST} \s/+basededatos/informe-red-pepper\.pdf(?:[?\s]) [NC]
+RewriteRule ^informe-red-pepper\.pdf$ /basededatos/informe [R=302,L]
+RewriteRule ^informe/?$ informe-red-pepper.pdf [L]
