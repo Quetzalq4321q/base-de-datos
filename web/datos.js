@@ -9,26 +9,26 @@ export const categorias = [
 ];
 
 const carta = [
-  ['RPSAN', 'Triple clásico', 500, 'Unidad'],
-  ['RPSAN', 'Triple mixto', 550, 'Unidad'],
-  ['RPSAN', 'Triple de durazno', 600, 'Unidad'],
-  ['RPSAN', 'Baguetino de pollo a la brasa', 700, 'Unidad'],
+  ['RPSAN', 'Triple clásico', 500, 'Sánguche'],
+  ['RPSAN', 'Triple mixto', 550, 'Sánguche'],
+  ['RPSAN', 'Triple de durazno', 600, 'Sánguche'],
+  ['RPSAN', 'Baguetino de pollo a la brasa', 700, 'Baguetino'],
   ...['Ají de gallina', 'Rocoto relleno', 'Lomo saltado', 'Pizza', 'Hawaiana', 'Queso', 'Triple', 'Chorizo']
-    .map((relleno) => ['RPEMP', `Empanada de ${relleno.toLowerCase()}`, 500, 'Unidad']),
+    .map((relleno) => ['RPEMP', `Empanada de ${relleno.toLowerCase()}`, 500, 'Empanada']),
   ['RPSAL', 'Salchicono', 500, 'Cono', true],
   ['RPSAL', 'Cono Mix', 600, 'Cono', true],
-  ['RPSAL', 'Salchipapa clásica', 800, 'Porción individual', true],
-  ['RPSAL', 'Double Black', 900, 'Porción individual', true],
-  ['RPSAL', 'Choripapas', 1000, 'Porción individual', true],
-  ['RPSAL', 'Salchibrasa', 1000, 'Porción individual', true],
-  ['RPPLA', 'Salchichaufa', 1200, 'Plato', true],
-  ['RPPLA', 'Mostrito con pechuga a la plancha', 1600, 'Plato'],
-  ['RPPLA', 'Jack Pepper', 1400, 'Plato'],
-  ['RPPLA', 'Cheese Pepper', 1500, 'Plato', true],
-  ['RPCOM', 'Extrema', 3000, 'Para 4 personas'],
+  ['RPSAL', 'Salchipapa clásica', 800, 'Porción estándar', true],
+  ['RPSAL', 'Double Black', 900, 'Porción estándar', true],
+  ['RPSAL', 'Choripapas', 1000, 'Porción estándar', true],
+  ['RPSAL', 'Salchibrasa', 1000, 'Porción estándar', true],
+  ['RPPLA', 'Salchichaufa', 1200, 'Al plato', true],
+  ['RPPLA', 'Mostrito con pechuga a la plancha', 1600, 'Al plato'],
+  ['RPPLA', 'Jack Pepper', 1400, 'Al plato'],
+  ['RPPLA', 'Cheese Pepper', 1500, 'Al plato', true],
+  ['RPCOM', 'Extrema', 3000, 'Bandeja para 4 personas'],
   ['RPCOM', 'La Gaucha', 2500, 'Para 4 personas'],
   ...[['Hamburguesa clásica', 800], ['Cheese Burguer', 900], ['La Royal', 1000], ['Doble Burguer', 1500]]
-    .flatMap(([nombre, precio]) => ['res', 'pollo'].map((carne) => ['RPHAM', `${nombre} de ${carne}`, precio, 'Unidad'])),
+    .flatMap(([nombre, precio]) => ['res', 'pollo'].map((carne) => ['RPHAM', `${nombre} de ${carne}`, precio, 'Hamburguesa con papas'])),
   ['RPBEB', 'Chicha morada', 300],
   ['RPBEB', 'Maracuyá', 300],
   ['RPBEB', 'Coca-Cola', 400],
@@ -61,9 +61,14 @@ export const clientes = identidadesFicticias.map(([nombres, apellidos], indice) 
   tipo_documento: 'CE', numero_documento: `RPDEMO${String(indice + 1).padStart(3, '0')}`,
 }));
 
-export const telefonos = clientes.slice(0, 6).map((cliente, indice) => ({
-  id_telefono: indice + 1, id_cliente: cliente.id_cliente, numero: `00000010${indice + 1}`,
+// Números inventados para la práctica. Se guardan como texto, sin separadores.
+export const telefonos = ['931640728', '964285317', '927536041', '982471635', '956317284', '913748562'].map((numero, indice) => ({
+  id_telefono: indice + 1, id_cliente: clientes[indice].id_cliente, numero,
 }));
+
+export function mostrarCelular(numero) {
+  return numero.replace(/^(9\d{2})(\d{3})(\d{3})$/, '$1 $2 $3');
+}
 
 export const metodos = [
   { id_metodo_pago: 'MP01', nombre: 'Efectivo', requiere_referencia: false },

@@ -7,6 +7,7 @@
   <meta name="description" content="Explora el flujo de ventas de Red Pepper y practica operaciones de base de datos con datos ficticios.">
   <meta name="color-scheme" content="light dark">
   <title>Red Pepper | Laboratorio de base de datos</title>
+  <link rel="icon" href="icono-red-pepper.svg" type="image/svg+xml">
   <script>
     const raiz = document.documentElement;
     raiz.classList.add('preparando');
@@ -20,10 +21,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&amp;display=block">
-  <link rel="stylesheet" href="estilos.css?v=20261123c">
+  <link rel="stylesheet" href="estilos.css?v=20261124b">
   <script type="module">
     try {
-      await import('./inicio.js?v=20261123c');
+      await import('./inicio.js?v=20261124b');
     } catch (error) {
       document.documentElement.classList.remove('preparando');
       document.getElementById('laboratorio').removeAttribute('aria-busy');
@@ -36,7 +37,7 @@
   <div class="marco">
     <header class="cabecera">
       <a class="marca" href="./" aria-label="Inicio del laboratorio Red Pepper">
-        <span class="marca-icono"><span class="icono" aria-hidden="true">database</span></span>
+        <img class="marca-icono" src="icono-red-pepper.svg" width="44" height="44" alt="">
         <span><strong>Red Pepper</strong><small>Laboratorio de base de datos</small></span>
       </a>
       <div class="cabecera-acciones">
@@ -47,10 +48,11 @@
 
     <aside class="navegacion" aria-label="Recorrido del laboratorio">
       <nav class="pasos" id="pasos" aria-label="Diapositivas del laboratorio" inert>
-        <button class="paso" type="button" data-paso="0" aria-controls="modelo" aria-current="step"><span class="icono" aria-hidden="true">account_tree</span><span>Modelo</span></button>
-        <button class="paso" type="button" data-paso="1" aria-controls="tablas"><span class="icono" aria-hidden="true">table_view</span><span>Explorar tablas</span></button>
-        <button class="paso" type="button" data-paso="2" aria-controls="editar"><span class="icono" aria-hidden="true">edit_note</span><span>Editar pedidos</span></button>
-        <button class="paso" type="button" data-paso="3" aria-controls="cobros"><span class="icono" aria-hidden="true">receipt_long</span><span>Comprobantes y pagos</span></button>
+        <button class="paso" type="button" data-paso aria-controls="guia" aria-current="step"><span class="icono" aria-hidden="true">route</span><span>Guía de ventas</span></button>
+        <button class="paso" type="button" data-paso aria-controls="modelo"><span class="icono" aria-hidden="true">account_tree</span><span>Modelo</span></button>
+        <button class="paso" type="button" data-paso aria-controls="tablas"><span class="icono" aria-hidden="true">table_view</span><span>Explorar tablas</span></button>
+        <button class="paso" type="button" data-paso aria-controls="editar"><span class="icono" aria-hidden="true">edit_note</span><span>Editar pedidos</span></button>
+        <button class="paso" type="button" data-paso aria-controls="cobros"><span class="icono" aria-hidden="true">receipt_long</span><span>Comprobantes y pagos</span></button>
       </nav>
       <p class="practica"><span class="icono" aria-hidden="true">science</span><span>Datos ficticios<br><small>Los cambios se guardan en este navegador.</small></span></p>
     </aside>
@@ -80,13 +82,32 @@
       </section>
       <section class="hero" id="encabezado" aria-labelledby="paso-titulo" hidden>
         <div class="hero-contenido">
-          <p class="progreso" id="progreso">Paso 1 de 4</p>
-          <h1 id="paso-titulo" tabindex="-1">Modelo de datos</h1>
-          <p id="paso-descripcion">Sigue una venta desde la persona que pide hasta el último abono.</p>
+          <p class="progreso" id="progreso">Paso 1 de 5</p>
+          <h1 id="paso-titulo" tabindex="-1">Guía de ventas</h1>
+          <p id="paso-descripcion">Crea una comanda, agrega productos y sigue cada cambio hasta el pago.</p>
         </div>
-        <div class="hero-marca" aria-hidden="true"><span class="icono" id="hero-icono">account_tree</span></div>
+        <div class="hero-marca" aria-hidden="true"><span class="icono" id="hero-icono">route</span></div>
       </section>
       <p class="aviso global" id="aviso" role="status" aria-live="polite" hidden></p>
+
+      <section id="guia" class="pantalla" aria-label="Guía de ventas" hidden>
+        <article class="panel">
+          <div class="panel-cabeza"><h2>Arma una venta de práctica</h2><p>Empieza con un pedido nuevo o elige uno de la muestra para ver qué datos se relacionan.</p></div>
+          <div class="filtros">
+            <label>Pedido de la guía<select id="pedido-guia"></select></label>
+            <button class="boton primario" type="button" id="nuevo-guia"><span class="icono" aria-hidden="true">add</span>Nuevo pedido</button>
+          </div>
+          <ol class="flujo-guia" id="flujo-guia" aria-label="Etapas de la venta"></ol>
+        </article>
+        <div class="estacion guia-detalle">
+          <article class="panel" aria-labelledby="guia-productos-titulo">
+            <div class="panel-cabeza"><h2 id="guia-productos-titulo">Productos del pedido</h2><p>Cada producto y su cantidad se guardan juntos en una fila del detalle.</p></div>
+            <div id="guia-lineas"></div>
+            <div class="filtros operacion" id="guia-acciones"></div>
+          </article>
+          <aside class="panel rastreo" id="guia-cambios" aria-label="Cambios recientes en los datos"></aside>
+        </div>
+      </section>
 
       <section id="modelo" class="pantalla" aria-label="Modelo de datos" hidden>
         <dl class="indicadores" aria-label="Resumen de la base de práctica">
@@ -126,6 +147,7 @@
             <div class="filtros">
               <label>Pedido<select id="pedido-editar"></select></label>
               <button class="boton primario" type="button" id="nuevo-pedido"><span class="icono" aria-hidden="true">add</span>Nuevo pedido</button>
+              <button class="boton secundario" type="button" id="editar-cabecera"><span class="icono" aria-hidden="true">edit</span>Editar cliente o modalidad</button>
             </div>
             <div id="pedido-lineas"></div>
             <form id="agregar" class="filtros operacion">
@@ -151,20 +173,24 @@
             <div id="resumen-cobro"></div>
             <div class="filtros operacion" id="emitir-zona"><button class="boton primario" id="emitir" type="button"><span class="icono" aria-hidden="true">receipt_long</span>Emitir comprobante</button></div>
           </article>
-          <article class="panel calculadora">
-            <div class="panel-cabeza"><h2>Pago mixto</h2><p>Reparte el saldo entre efectivo y Yape para esta práctica.</p></div>
-            <form id="pago" class="operacion pago">
-              <label>Efectivo, S/<input id="efectivo" name="efectivo" type="number" min="0" step="0.01" value="0.00" required></label>
-              <div><span class="etiqueta" id="yape-label">Yape restante</span><output aria-labelledby="yape-label" id="yape" for="efectivo"></output></div>
-              <button class="boton primario" type="submit" id="registrar-pago"><span class="icono" aria-hidden="true">payments</span>Registrar abono de prueba</button>
-            </form>
-          </article>
+          <div class="cobro-lateral">
+            <article class="panel calculadora">
+              <div class="panel-cabeza"><h2>Pago mixto</h2><p>Reparte el saldo entre efectivo y Yape para esta práctica.</p></div>
+              <form id="pago" class="operacion pago">
+                <label>Efectivo, S/<input id="efectivo" name="efectivo" type="number" min="0" step="0.01" value="0.00" required></label>
+                <div><span class="etiqueta" id="yape-label">Yape restante</span><output aria-labelledby="yape-label" id="yape" for="efectivo"></output></div>
+                <button class="boton primario" type="submit" id="registrar-pago"><span class="icono" aria-hidden="true">payments</span>Registrar abono de prueba</button>
+              </form>
+              <div class="filtros operacion"><button class="boton secundario" type="button" id="volver-guia"><span class="icono" aria-hidden="true">route</span>Volver a la guía</button></div>
+            </article>
+            <aside class="panel rastreo" id="cobro-cambios" aria-label="Cambios recientes en los datos"></aside>
+          </div>
         </div>
       </section>
 
       <footer class="pie-pasos" id="pie-pasos" hidden>
         <button class="boton secundario" type="button" id="anterior"><span class="icono" aria-hidden="true">chevron_left</span>Anterior</button>
-        <span id="paso-pie">Modelo</span>
+        <span id="paso-pie">Guía de ventas</span>
         <button class="boton primario" type="button" id="siguiente">Siguiente<span class="icono" aria-hidden="true">chevron_right</span></button>
       </footer>
     </main>

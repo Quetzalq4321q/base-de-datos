@@ -19,6 +19,7 @@ psql -X -v ON_ERROR_STOP=1 -f sql/03_consultas.sql
 psql -X -v ON_ERROR_STOP=1 -f sql/04_pruebas.sql
 psql -X -v ON_ERROR_STOP=1 -f sql/06_catalogo_y_ventas.sql
 psql -X -v ON_ERROR_STOP=1 -f sql/08_nombres_ficticios.sql
+psql -X -v ON_ERROR_STOP=1 -f sql/09_presentaciones_y_celulares.sql
 psql -X -v ON_ERROR_STOP=1 -f sql/07_validar_datagrip.sql
 ```
 
@@ -36,6 +37,8 @@ La carta adjunta aporta los nombres y precios de venta. Los ocho rellenos de emp
 
 `08_nombres_ficticios.sql` actualiza nombres y apellidos de los 12 clientes asociados a los códigos `RPDEMO001` a `RPDEMO012`. Las ventas y sus comprobantes conservan sus asociaciones. El Excel enlaza los clientes por código e integra el detalle y los pagos por número de comprobante. El resumen concilia importes en PEN y muestra los totales por modalidad de pedido y medio de pago.
 
+`09_presentaciones_y_celulares.sql` actualiza las presentaciones de los snacks de la carta y sustituye los números ficticios de la muestra. La base guarda los nueve dígitos consecutivos como texto. El portal y el Excel muestran los celulares en grupos de tres. La columna de presentación del catálogo describe conos, platos, bandejas y otros formatos de venta.
+
 ### Ver el esquema en DataGrip
 
 En **Database Explorer**, abrir **Data Sources and Drivers**, seleccionar la conexión Supabase de NexLabs y marcar `salchipaperia` en **Schemas**. Aplicar y sincronizar la conexión. La base es `postgres`. Abrir una consola de esa conexión y ejecutar `sql/07_validar_datagrip.sql` por bloques. La primera consulta confirma la conexión aunque la consola use `public` de esquema activo. Las demás usan nombres calificados y muestran las tablas, el catálogo, las ventas y el recorrido de un comprobante. El bloque de `RP01` debe devolver 100 ventas, S/ 2,303.50 y saldo S/ 0.00.
@@ -48,7 +51,9 @@ El portal carga la muestra como parte de su aplicación estática. Los borradore
 
 La cabecera permite alternar entre tema claro y oscuro. El portal sigue la preferencia del sistema hasta elegir un modo y guarda la elección en el navegador. La pantalla de carga aparece mientras se prepara el laboratorio. El movimiento reducido del sistema desactiva el pulso y las transiciones.
 
-El recorrido incluye cuatro pasos. **Modelo** explica las relaciones de las 13 tablas. **Explorar tablas** permite buscar y seguir claves foráneas. **Editar pedidos** permite crear comandas, agregar o ajustar líneas, moverlas entre pedidos, cambiar su estado y borrarlas. **Comprobantes y pagos** permite emitir un comprobante y conciliar con efectivo y Yape en céntimos. Los comprobantes emitidos protegen sus líneas. El script `05` corresponde a una API opcional de la versión anterior y la publicación actual funciona con los datos de práctica incluidos.
+El recorrido abre en **Guía de ventas**. Las tarjetas muestran el pedido seleccionado, sus productos, el comprobante y el saldo, con enlaces filtrados a las filas relacionadas. Para practicar, pulsa **Nuevo pedido**, elige cliente y modalidad, agrega un producto y edita su cantidad. El panel **Qué cambió en los datos** compara las filas antes y después de la última operación. También puedes mover una línea a otro borrador, borrarla o deshacer el último cambio durante la sesión. Emite el comprobante y registra un pago mixto para ver las nuevas filas de pago.
+
+**Modelo** explica las relaciones de las 13 tablas. **Explorar tablas** permite buscar y seguir claves foráneas. **Editar pedidos** permite cambiar los datos de una comanda, sus líneas y su estado. **Comprobantes y pagos** concilia efectivo y Yape en céntimos. Los comprobantes emitidos protegen sus líneas. El script `05` corresponde a una API opcional de la versión anterior y la publicación actual funciona con los datos de práctica incluidos.
 
 ## 3. Archivos y verificación
 

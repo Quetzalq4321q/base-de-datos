@@ -4,6 +4,9 @@ import { bebidas, categorias, clientes, productos, snacks, ventas, seriePrueba, 
 const sql = (valor) => valor === null ? 'NULL' : `'${String(valor).replaceAll("'", "''")}'`;
 const valores = (filas) => filas.map((fila) => `    (${fila.join(', ')})`).join(',\n');
 const soles = (centavos) => (centavos / 100).toFixed(2);
+const celularesCarta = telefonos.map(({ id_telefono, id_cliente, numero }) => [
+  'CE', clientes.find((c) => c.id_cliente === id_cliente).numero_documento, `00000010${id_telefono}`, numero,
+]);
 
 const catalogo = productos.map((p) => {
   const snack = snacks.find((fila) => fila.id_producto === p.id_producto);
@@ -56,9 +59,10 @@ ON CONFLICT (tipo_documento, numero_documento) DO NOTHING;
 INSERT INTO telefonos_cliente (id_cliente, numero)
 SELECT c.id_cliente, t.numero
 FROM (VALUES
-${valores(telefonos.map((t) => [sql(clientes.find((c) => c.id_cliente === t.id_cliente).numero_documento), sql(t.numero)]))}
-) t(documento, numero)
+${valores(celularesCarta.map(([, documento, anterior, numero]) => [sql(documento), sql(anterior), sql(numero)]))}
+) t(documento, numero_anterior, numero)
 JOIN clientes c ON c.tipo_documento = 'CE' AND c.numero_documento = t.documento
+WHERE NOT EXISTS (SELECT FROM telefonos_cliente previo WHERE previo.id_cliente = c.id_cliente AND previo.numero = t.numero_anterior)
 ON CONFLICT (id_cliente, numero) DO NOTHING;
 
 CREATE TEMP TABLE rp_catalogo (
@@ -174,3 +178,70 @@ COMMIT;
 `;
 
 await writeFile(new URL('../sql/08_nombres_ficticios.sql', import.meta.url), identidades, 'utf8');
+
+const celularesIniciales = [
+  ['DNI', '00000001', '000000001', '906381472'],
+  ['DNI', '00000001', '000000002', '934720615'],
+  ['DNI', '00000002', '000000003', '972506183'],
+];
+const presentaciones = snacks.map(({ id_producto, porcion }) => {
+  const { id_categoria, nombre } = productos.find((producto) => producto.id_producto === id_producto);
+  return [id_categoria, nombre, porcion];
+});
+const correcciones = `-- Generado por scripts/generar_muestra.mjs. Solo modifica fichas ficticias de la muestra.
+BEGIN;
+SET LOCAL search_path = salchipaperia, pg_catalog;
+SELECT pg_advisory_xact_lock(hashtext('salchipaperia.red_pepper.ventas_100.v1'));
+
+CREATE TEMP TABLE rp_presentaciones (
+    categoria varchar(10), nombre varchar(100), porcion varchar(30), PRIMARY KEY (categoria, nombre)
+) ON COMMIT DROP;
+INSERT INTO rp_presentaciones VALUES
+${valores(presentaciones.map((fila) => fila.map(sql)))};
+
+CREATE TEMP TABLE rp_celulares (
+    tipo_documento varchar(10), documento varchar(20), anterior varchar(16),
+    numero varchar(9) NOT NULL UNIQUE CHECK (numero ~ '^9[0-9]{8}$'),
+    PRIMARY KEY (tipo_documento, documento, anterior)
+) ON COMMIT DROP;
+INSERT INTO rp_celulares VALUES
+${valores([...celularesIniciales, ...celularesCarta].map((fila) => fila.map(sql)))};
+
+DO $validar$
+BEGIN
+    IF EXISTS (SELECT FROM rp_presentaciones f WHERE NOT EXISTS (
+        SELECT FROM productos p JOIN snacks s USING (id_producto)
+        WHERE p.id_categoria = f.categoria AND p.nombre = f.nombre
+    )) THEN
+        RAISE EXCEPTION 'Faltan presentaciones de la muestra RP01';
+    END IF;
+
+    IF EXISTS (SELECT FROM rp_celulares f WHERE (
+        SELECT count(*) FROM clientes c JOIN telefonos_cliente t USING (id_cliente)
+        WHERE c.tipo_documento = f.tipo_documento AND c.numero_documento = f.documento
+          AND t.numero IN (f.anterior, f.numero)
+    ) <> 1) THEN
+        RAISE EXCEPTION 'Faltan celulares de la muestra o hay un número anterior y uno nuevo para la misma ficha';
+    END IF;
+END;
+$validar$;
+
+UPDATE snacks s SET porcion = f.porcion
+FROM productos p JOIN rp_presentaciones f ON p.id_categoria = f.categoria AND p.nombre = f.nombre
+WHERE s.id_producto = p.id_producto AND s.porcion IS DISTINCT FROM f.porcion;
+
+UPDATE telefonos_cliente t SET numero = f.numero
+FROM clientes c JOIN rp_celulares f
+    ON c.tipo_documento = f.tipo_documento AND c.numero_documento = f.documento
+WHERE t.id_cliente = c.id_cliente AND t.numero = f.anterior;
+
+SELECT (SELECT count(*) FROM rp_presentaciones f
+        JOIN productos p ON p.id_categoria = f.categoria AND p.nombre = f.nombre
+        JOIN snacks s ON s.id_producto = p.id_producto AND s.porcion = f.porcion) AS presentaciones,
+       (SELECT count(*) FROM rp_celulares f
+        JOIN clientes c ON c.tipo_documento = f.tipo_documento AND c.numero_documento = f.documento
+        JOIN telefonos_cliente t ON t.id_cliente = c.id_cliente AND t.numero = f.numero) AS celulares;
+COMMIT;
+`;
+
+await writeFile(new URL('../sql/09_presentaciones_y_celulares.sql', import.meta.url), correcciones, 'utf8');

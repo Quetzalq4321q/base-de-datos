@@ -1,13 +1,13 @@
-import { estados, modalidades, seriePrueba } from './datos.js?v=20261123c';
+import { estados, modalidades, seriePrueba } from './datos.js?v=20261124b';
 
 const relacion = (tabla, columna, cardinalidad) => ({ tabla, columna, cardinalidad });
 
 export const esquema = {
   clientes: { titulo: 'Clientes', icono: 'groups', clave: ['id_cliente'], columnas: ['id_cliente', 'nombres', 'apellidos', 'tipo_documento', 'numero_documento'], texto: 'Identifica a quien hace el pedido. Se admiten distintos tipos de documento.', relaciones: [relacion('pedidos', 'id_cliente', '1 a N'), relacion('telefonos_cliente', 'id_cliente', '1 a N')] },
-  telefonos_cliente: { titulo: 'Teléfonos', icono: 'call', clave: ['id_telefono'], columnas: ['id_telefono', 'id_cliente', 'numero'], texto: 'Guarda un teléfono por fila, vinculado a su cliente.', relaciones: [relacion('clientes', 'id_cliente', 'N a 1')] },
+  telefonos_cliente: { titulo: 'Teléfonos', icono: 'call', clave: ['id_telefono'], columnas: ['id_telefono', 'id_cliente', 'numero'], texto: 'Cada fila vincula un celular ficticio de nueve dígitos con su cliente.', relaciones: [relacion('clientes', 'id_cliente', 'N a 1')] },
   categorias: { titulo: 'Categorías', icono: 'category', clave: ['id_categoria'], columnas: ['id_categoria', 'nombre', 'descripcion', 'tipo_subtipo'], texto: 'Agrupa las secciones de la carta e indica el subtipo esperado.', relaciones: [relacion('productos', 'id_categoria', '1 a N')] },
   productos: { titulo: 'Productos', icono: 'restaurant_menu', clave: ['id_producto'], columnas: ['id_producto', 'id_categoria', 'nombre', 'precio', 'disponible'], texto: 'Mantiene el precio vigente. Las líneas de venta conservan el precio aplicado.', relaciones: [relacion('categorias', 'id_categoria', 'N a 1'), relacion('detalle_pedido', 'id_producto', '1 a N'), relacion('snacks', 'id_producto', '1 a 0..1'), relacion('bebidas', 'id_producto', '1 a 0..1')] },
-  snacks: { titulo: 'Snacks', icono: 'lunch_dining', clave: ['id_producto'], columnas: ['id_producto', 'porcion', 'tipo_papa', 'incluye_cremas'], texto: 'Añade atributos de los productos de comida. Comparte la clave con Productos.', relaciones: [relacion('productos', 'id_producto', '1 a 1')] },
+  snacks: { titulo: 'Snacks', icono: 'lunch_dining', clave: ['id_producto'], columnas: ['id_producto', 'porcion', 'tipo_papa', 'incluye_cremas'], texto: 'Registra la presentación de cada producto, como cono, al plato o para compartir.', relaciones: [relacion('productos', 'id_producto', '1 a 1')] },
   bebidas: { titulo: 'Bebidas', icono: 'local_drink', clave: ['id_producto'], columnas: ['id_producto', 'volumen_ml', 'temperatura', 'envase'], texto: 'Añade datos de presentación cuando están disponibles en la carta.', relaciones: [relacion('productos', 'id_producto', '1 a 1')] },
   pedidos: { titulo: 'Pedidos', icono: 'shopping_bag', clave: ['id_pedido'], columnas: ['id_pedido', 'id_cliente', 'fecha_pedido', 'tipo_pedido', 'estado'], texto: 'Registra cliente, fecha, modalidad y estado de una venta.', relaciones: [relacion('clientes', 'id_cliente', 'N a 1'), relacion('detalle_pedido', 'id_pedido', '1 a N'), relacion('comprobantes', 'id_pedido', '1 a 0..1')] },
   detalle_pedido: { titulo: 'Detalle del pedido', icono: 'list_alt', clave: ['id_pedido', 'id_producto'], columnas: ['id_pedido', 'id_producto', 'cantidad', 'precio_unitario'], texto: 'Resuelve la relación entre pedidos y productos. Registra la cantidad y el precio aplicado.', relaciones: [relacion('pedidos', 'id_pedido', 'N a 1'), relacion('productos', 'id_producto', 'N a 1')] },
@@ -57,6 +57,21 @@ function obtenerLinea(tablas, id, producto) {
   return linea;
 }
 
+function filasCambiadas(antes, despues, tablas) {
+  return tablas.split(', ').flatMap((tabla) => {
+    const { clave, columnas } = esquema[tabla];
+    const conClave = (filas) => new Map(filas.map((fila) => [JSON.stringify(clave.map((campo) => fila[campo])), fila]));
+    const previas = conClave(antes[tabla]);
+    const nuevas = conClave(despues[tabla]);
+    return [...new Set([...previas.keys(), ...nuevas.keys()])].flatMap((id) => {
+      const previa = previas.get(id);
+      const nueva = nuevas.get(id);
+      const campos = columnas.filter((campo) => previa?.[campo] !== nueva?.[campo]);
+      return campos.length ? [{ tabla, previa, nueva, campos }] : [];
+    });
+  });
+}
+
 export function operar(base, accion) {
   const siguiente = structuredClone(base);
   const { tablas, secuencias, cambios } = siguiente;
@@ -67,13 +82,20 @@ export function operar(base, accion) {
   let cambia;
 
   switch (tipo) {
-    case 'crear': {
+    case 'crear':
+    case 'editar-pedido': {
       if (!tablas.clientes.some((cliente) => cliente.id_cliente === accion.cliente) || !modalidades.includes(accion.modalidad)) {
         throw new Error('Selecciona un cliente de prueba y una modalidad.');
       }
-      elegido = secuencias.pedido++;
-      tablas.pedidos.push({ id_pedido: elegido, id_cliente: accion.cliente, tipo_pedido: accion.modalidad, fecha_pedido: fecha, estado: 'Pendiente' });
-      mensaje = `Se creó el pedido #${elegido}.`;
+      if (tipo === 'crear') {
+        elegido = secuencias.pedido++;
+        tablas.pedidos.push({ id_pedido: elegido, id_cliente: accion.cliente, tipo_pedido: accion.modalidad, fecha_pedido: fecha, estado: 'Pendiente' });
+        mensaje = `Se creó el pedido #${elegido}.`;
+      } else {
+        const pedido = editable(tablas, id);
+        Object.assign(pedido, { id_cliente: accion.cliente, tipo_pedido: accion.modalidad });
+        mensaje = `Se guardó el cliente y la modalidad del pedido #${id}.`;
+      }
       cambia = 'pedidos';
       break;
     }
@@ -171,7 +193,7 @@ export function operar(base, accion) {
       throw new Error('La operación solicitada no está disponible.');
   }
 
-  cambios.unshift({ mensaje, tabla: cambia });
+  cambios.unshift({ mensaje, tabla: cambia, filas: filasCambiadas(base.tablas, tablas, cambia) });
   cambios.splice(12);
   return { base: siguiente, elegido, mensaje };
 }

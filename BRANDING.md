@@ -27,14 +27,15 @@ El azul eléctrico es el único acento cromático. Usar bloques sólidos, bordes
 
 ## Iconos, superficies y contenido
 
-- Iconos lineales de 20 px con trazo consistente y texto visible para acciones. Utilizar base de datos, relaciones, tabla, edición, transferencia, papelera y recibo. El símbolo de Red Pepper en el portal es el icono del laboratorio, acompañado de su nombre.
+- Iconos lineales de 20 px con trazo consistente y texto visible para acciones. Utilizar base de datos, relaciones, tabla, edición, transferencia, papelera y recibo. La cabecera y la pestaña usan el [ají blanco sobre azul eléctrico](web/icono-red-pepper.svg), acompañado del nombre Red Pepper en la cabecera.
 - Superficies definidas por el tema, borde gris azulado y radio medio de 12 px. Evitar gradientes, sombras pesadas, fotografías genéricas, logotipos inventados del restaurante y elementos que aparenten telemetría.
 - La carta es la referencia para nombres y precios. Mantener las variantes cuando están explícitas y marcar como desconocidos los atributos ausentes. Las ventas, clientes y referencias de pago de ejercicio son ficticios.
 
 ## Brief para Stitch
 
-Diseñar un portal tipo presentación interactiva con navegación lateral en escritorio y navegación compacta en móvil. Crear cuatro pasos: **Modelo**, **Explorar tablas**, **Editar pedidos** y **Comprobantes y pagos**. El paso activo usa el azul de marca. El área principal presenta el título, una frase que indica qué hacer y una superficie de trabajo. El contenido real de datos debe pasar por los mismos componentes en todos los pasos.
+Diseñar un portal tipo presentación interactiva con navegación lateral en escritorio y navegación compacta en móvil. Crear cinco pasos con **Guía de ventas** como punto de entrada. El paso activo usa el azul de marca. El área principal presenta el título, una frase que indica qué hacer y una superficie de trabajo. El contenido real de datos pasa por los mismos componentes en todos los pasos.
 
+- **Guía de ventas** muestra cuatro etapas con controles y enlaces a las tablas del pedido activo. Identificar la acción siguiente con texto y un borde azul. El panel de cambios muestra campo, valor anterior y valor nuevo en columnas legibles. [Referencia visual en Stitch](https://stitch.withgoogle.com/projects/14029965516649664019).
 - **Modelo** muestra el recorrido Clientes → Pedidos → Detalle → Productos y el de Pedidos → Comprobantes → Pagos. Las entidades tienen un inspector con su clave primaria, foráneas y cardinalidad.
 - **Explorar tablas** muestra el selector de las 13 tablas, búsqueda, filas con claves e importes, y paginación.
 - **Editar pedidos** incluye un selector, líneas, cantidades y acciones para agregar, mover, cambiar estado o borrar. Los avisos explican qué relaciones cambian.

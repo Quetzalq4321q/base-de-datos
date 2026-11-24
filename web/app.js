@@ -1,12 +1,14 @@
-import { clientes, comprobanteTexto, crearBase, estados, modalidades } from './datos.js?v=20261123c';
-import { conciliar, dividirPago, documentoDe, esquema, lineasDe, operar, totalLineas } from './modelo.js?v=20261123c';
+import { clientes, comprobanteTexto, crearBase, estados, modalidades, mostrarCelular, snacks, telefonos } from './datos.js?v=20261124b';
+import { conciliar, dividirPago, documentoDe, esquema, lineasDe, operar, totalLineas } from './modelo.js?v=20261124b';
 
 const pasos = [
-  ['Modelo de datos', 'Sigue una venta desde la persona que pide hasta el último abono.', 'account_tree', 'modelo', 'Modelo'],
-  ['Explorar tablas', 'Abre las 13 tablas, busca registros y sigue sus claves foráneas.', 'table_view', 'tablas', 'Explorar tablas'],
-  ['Editar pedidos', 'Practica con una comanda y observa qué filas cambian en el modelo.', 'edit_note', 'editar', 'Editar pedidos'],
-  ['Comprobantes y pagos', 'Emite un comprobante de práctica y reparte el saldo entre efectivo y Yape.', 'receipt_long', 'cobros', 'Comprobantes y pagos'],
+  ['Guía de ventas', 'Crea una comanda, agrega productos y sigue cada cambio hasta el pago.', 'route', 'guia', 'Guía de ventas', mostrarGuia],
+  ['Modelo de datos', 'Sigue una venta desde la persona que pide hasta el último abono.', 'account_tree', 'modelo', 'Modelo', mostrarModelo],
+  ['Explorar tablas', 'Abre las 13 tablas, busca registros y sigue sus claves foráneas.', 'table_view', 'tablas', 'Explorar tablas', mostrarTablas],
+  ['Editar pedidos', 'Practica con una comanda y observa qué filas cambian en el modelo.', 'edit_note', 'editar', 'Editar pedidos', mostrarPedido],
+  ['Comprobantes y pagos', 'Emite un comprobante de práctica y reparte el saldo entre efectivo y Yape.', 'receipt_long', 'cobros', 'Comprobantes y pagos', mostrarCobros],
 ];
+const indicePaso = (ruta) => pasos.findIndex((etapa) => etapa[3] === ruta);
 
 const id = (nombre) => document.getElementById(nombre);
 const moneda = new Intl.NumberFormat('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -27,6 +29,8 @@ function cargar() {
         const ficha = clientes.find((muestra) => muestra.numero_documento === cliente.numero_documento && muestra.tipo_documento === cliente.tipo_documento);
         if (ficha) Object.assign(cliente, { nombres: ficha.nombres, apellidos: ficha.apellidos });
       }
+      anterior.tablas.snacks = structuredClone(snacks);
+      anterior.tablas.telefonos_cliente = structuredClone(telefonos);
       return anterior;
     }
   } catch {
@@ -42,7 +46,7 @@ let tablaModelo = 'pedidos';
 let tablaDatos = 'pedidos';
 let filtroClave = null;
 let pagina = 0;
-let pedidoActivo = base.tablas.pedidos.find((p) => p.id_pedido === 101)?.id_pedido ?? base.tablas.pedidos.at(-1).id_pedido;
+let pedidoActivo = base.tablas.pedidos.find((p) => p.id_pedido === (base.pedidoActivo ?? 101))?.id_pedido ?? base.tablas.pedidos.at(-1).id_pedido;
 let accionDialogo;
 
 function nodo(etiqueta, texto = '', clase = '') {
@@ -106,7 +110,7 @@ function mostrarAviso(mensaje, error = false) {
 
 function guardar(mensaje) {
   try {
-    localStorage.setItem(claveLocal, JSON.stringify(base));
+    localStorage.setItem(claveLocal, JSON.stringify({ ...base, pedidoActivo }));
     mostrarAviso(mensaje);
   } catch {
     mostrarAviso(`${mensaje} Los cambios quedan disponibles hasta cerrar la página.`);
@@ -138,7 +142,7 @@ function ir(indice, enfocar = true) {
 }
 
 function mostrarPantalla() {
-  [mostrarModelo, mostrarTablas, mostrarPedido, mostrarCobros][paso]();
+  pasos[paso][5]();
 }
 
 function elegirTabla(tabla, clave = null) {
@@ -146,10 +150,11 @@ function elegirTabla(tabla, clave = null) {
   filtroClave = clave;
   id('buscar').value = clave ? String(clave.valor) : '';
   pagina = 0;
-  if (paso === 1) {
+  const destino = indicePaso('tablas');
+  if (paso === destino) {
     mostrarTablas();
     if (clave) id('tabla-titulo').focus();
-  } else ir(1);
+  } else ir(destino);
 }
 
 function mostrarModelo() {
@@ -207,6 +212,7 @@ function mostrarValor(campo, valor) {
   if (camposMoneda.has(campo)) return soles(valor);
   if (campo.startsWith('fecha_')) return fechaLima.format(new Date(valor));
   if (campo === 'tasa_igv') return `${valor}%`;
+  if (campo === 'numero' && typeof valor === 'string') return mostrarCelular(valor);
   if (typeof valor === 'boolean') return valor ? 'Sí' : 'No';
   return String(valor);
 }
@@ -221,7 +227,10 @@ function mostrarTablas() {
   const palabras = simplificar(id('buscar').value.trim()).split(/\s+/).filter(Boolean);
   const filas = base.tablas[tablaDatos].filter((registro) => {
     if (filtroClave) return registro[filtroClave.campo] === filtroClave.valor;
-    const texto = simplificar(ficha.columnas.map((campo) => mostrarValor(campo, registro[campo])).join(' '));
+    const valores = ficha.columnas.map((campo) => mostrarValor(campo, registro[campo]));
+    if (tablaDatos === 'snacks') valores.push(nombreProducto(registro.id_producto));
+    if (tablaDatos === 'telefonos_cliente') valores.push(registro.numero);
+    const texto = simplificar(valores.join(' '));
     return palabras.every((palabra) => texto.includes(palabra));
   });
   const porPagina = 10;
@@ -233,8 +242,9 @@ function mostrarTablas() {
     const texto = mostrarValor(campo, valor);
     const destino = referencias[campo];
     if (destino && destino !== tablaDatos && valor !== null && valor !== undefined) {
-      const enlace = boton(texto, () => elegirTabla(destino, { campo, valor }), null, 'enlace-boton codigo');
-      enlace.setAttribute('aria-label', `Ver ${esquema[destino].titulo} con ${campo} ${texto}`);
+      const etiqueta = tablaDatos === 'snacks' && campo === 'id_producto' ? `${texto} · ${nombreProducto(valor)}` : texto;
+      const enlace = boton(etiqueta, () => elegirTabla(destino, { campo, valor }), null, 'enlace-boton codigo');
+      enlace.setAttribute('aria-label', `Ver ${esquema[destino].titulo} con id ${etiqueta}`);
       return enlace;
     }
     return texto;
@@ -298,17 +308,36 @@ function ajustarLinea(linea) {
     }));
 }
 
-function mostrarPedido() {
-  const pedido = pedidoVigente();
-  const documento = documentoDe(base.tablas, pedidoActivo);
-  const editable = !documento && pedido.estado !== 'Anulado';
-  const lineas = lineasDe(base.tablas, pedidoActivo);
-  const cliente = base.tablas.clientes.find((c) => c.id_cliente === pedido.id_cliente);
-  selectorPedidos(id('pedido-editar'));
-  id('agregar').hidden = !editable;
-  id('borrar-pedido').disabled = Boolean(documento);
-  opciones(id('estado'), documento ? estados.filter((estado) => estado !== 'Anulado') : estados, (x) => x, (x) => x, pedido.estado);
+function formularioPedido(pedido) {
+  const cliente = nodo('select');
+  const modalidad = nodo('select');
+  opciones(cliente, base.tablas.clientes, (c) => c.id_cliente, (c) => `${c.nombres} ${c.apellidos}`, pedido?.id_cliente);
+  opciones(modalidad, modalidades, (x) => x, (x) => x, pedido?.tipo_pedido);
+  dialogo(pedido ? 'Editar pedido' : 'Nuevo pedido',
+    pedido ? 'Cambia el cliente o la modalidad del pedido actual.' : 'Elige el cliente y la modalidad para crear la primera fila de la venta.',
+    pedido ? 'Guardar pedido' : 'Crear pedido',
+    [formularioCampo('Cliente', cliente, 'cliente'), formularioCampo('Modalidad', modalidad, 'modalidad')],
+    (datos) => ({ tipo: pedido ? 'editar-pedido' : 'crear', id: pedido?.id_pedido, cliente: Number(datos.get('cliente')), modalidad: datos.get('modalidad') }));
+}
 
+function agregarDesdeGuia() {
+  const producto = nodo('select');
+  const cantidad = nodo('input');
+  opciones(producto, base.tablas.productos.filter((p) => p.disponible), (p) => p.id_producto, (p) => `${p.nombre} · ${soles(p.precio)}`);
+  Object.assign(cantidad, { type: 'number', min: '1', max: '999', value: '1' });
+  dialogo('Agregar producto', 'Al guardar podrás ver la cantidad y el precio unitario en el detalle.', 'Agregar producto',
+    [formularioCampo('Producto', producto, 'producto'), formularioCampo('Cantidad', cantidad, 'cantidad')], (datos) => ({
+      tipo: 'agregar', id: pedidoActivo, producto: Number(datos.get('producto')), cantidad: Number(datos.get('cantidad')),
+    }));
+}
+
+function borrarPedido() {
+  confirmarBorrado('Borrar pedido', `Se eliminará el pedido #${pedidoActivo} junto a todas sus líneas de práctica.`,
+    { tipo: 'borrar-pedido', id: pedidoActivo });
+}
+
+function tablaLineas(pedido, documento, lineas, editable) {
+  const cliente = base.tablas.clientes.find((c) => c.id_cliente === pedido.id_cliente);
   const columnas = [{ texto: 'Producto' }, { texto: 'Cant.', clase: 'numero' }, { texto: 'Importe', clase: 'numero' }];
   if (editable) columnas.push({ texto: 'Acciones' });
   const filas = lineas.map((linea) => {
@@ -328,18 +357,98 @@ function mostrarPedido() {
   if (cliente) identificacion.append(nodo('p', `${cliente.nombres} ${cliente.apellidos}`));
   identificacion.append(nodo('p', documento ? `Emitido · ${comprobanteTexto(documento)}` : `Estado · ${pedido.estado}`));
   pie.append(identificacion, nodo('strong', soles(totalLineas(lineas)), 'numero'));
-  id('pedido-lineas').replaceChildren(registros(columnas, filas, 'Líneas del pedido'), pie);
+  return [registros(columnas, filas, 'Líneas del pedido'), pie];
+}
 
-  const lista = nodo('ul', '', 'cambios');
-  for (const evento of base.cambios) {
-    const fila = nodo('li');
-    fila.append(nodo('code', evento.tabla, 'codigo'), nodo('span', evento.mensaje));
-    lista.append(fila);
+function mostrarCambios(contenedor) {
+  contenedor.replaceChildren(nodo('h2', 'Qué cambió en los datos'));
+  const [ultimo, ...historial] = base.cambios;
+  if (!ultimo) {
+    contenedor.append(nodo('p', 'Crea un pedido o edita una línea para comparar los valores de antes y después.', 'apagado'));
+    return;
   }
-  id('aprendizaje').replaceChildren(nodo('h2', 'Qué cambia'),
-    nodo('p', 'Los traslados cambian el pedido de la línea. El comprobante emitido conserva su detalle.', 'apagado'),
-    base.cambios.length ? lista : nodo('p', 'Los cambios de práctica aparecerán aquí.', 'apagado'));
-  if (anterior) id('aprendizaje').append(boton('Deshacer último cambio', deshacer, 'undo'));
+  contenedor.append(nodo('p', ultimo.mensaje));
+  if (ultimo.filas?.length) {
+    for (const [indice, { tabla, previa, nueva, campos }] of ultimo.filas.entries()) {
+      const ficha = esquema[tabla];
+      const operacion = previa && nueva ? 'Actualizada' : nueva ? 'Creada' : 'Eliminada';
+      const fila = nueva ?? previa;
+      const claves = ficha.clave.map((campo) => fila[campo]).join(' / ');
+      const detalle = nodo('details', '', 'cambio-fila');
+      detalle.open = indice < 2;
+      const titulo = nodo('summary');
+      titulo.append(nodo('code', tabla), nodo('span', `${operacion} · ${claves}`, 'apagado'));
+      const columnas = [{ texto: 'Campo' }, { texto: 'Antes' }, { texto: 'Después' }];
+      const datos = campos.map((campo) => [nodo('code', campo), mostrarValor(campo, previa?.[campo]),
+        nodo('span', mostrarValor(campo, nueva?.[campo]), 'valor-cambiado')]);
+      detalle.append(titulo, registros(columnas, datos, `Cambios en ${tabla}`));
+      contenedor.append(detalle);
+    }
+  } else {
+    contenedor.append(nodo('p', ultimo.filas ? 'Los valores quedaron iguales.' : ultimo.tabla, 'apagado'));
+  }
+  if (anterior) contenedor.append(boton('Deshacer último cambio', deshacer, 'undo'));
+  if (historial.length) {
+    const recientes = nodo('details', '', 'historial');
+    const lista = nodo('ul', '', 'cambios');
+    lista.append(...historial.map((evento) => nodo('li', evento.mensaje)));
+    recientes.append(nodo('summary', 'Actividad anterior'), lista);
+    contenedor.append(recientes);
+  }
+}
+
+function mostrarGuia() {
+  const pedido = pedidoVigente();
+  selectorPedidos(id('pedido-guia'));
+  const { comprobante, pagos, saldo, total } = conciliar(base.tablas, pedidoActivo);
+  const lineas = lineasDe(base.tablas, pedidoActivo);
+  const cliente = base.tablas.clientes.find((c) => c.id_cliente === pedido.id_cliente);
+  const editable = !comprobante && pedido.estado !== 'Anulado';
+  const etapa = pedido.estado === 'Anulado' ? -1 : !lineas.length ? 1 : !comprobante ? 2 : saldo > 0 ? 3 : 4;
+  const agregar = () => boton('Agregar producto', agregarDesdeGuia, 'add_shopping_cart', 'boton primario');
+  const tarjetas = [
+    ['pedidos', 'Pedido', `#${pedidoActivo} · ${pedido.tipo_pedido}`, `${cliente.nombres} ${cliente.apellidos}`, { campo: 'id_pedido', valor: pedidoActivo },
+      editable && boton('Editar pedido', () => formularioPedido(pedido), 'edit')],
+    ['detalle_pedido', 'Detalle', `${lineas.length} ${lineas.length === 1 ? 'línea' : 'líneas'} · ${soles(total)}`, 'La línea relaciona el pedido con un producto.', { campo: 'id_pedido', valor: pedidoActivo },
+      editable && agregar()],
+    ['comprobantes', 'Comprobante', comprobante ? comprobanteTexto(comprobante) : 'Por emitir', 'La boleta toma un correlativo de la serie RP01.', { campo: 'id_pedido', valor: pedidoActivo },
+      editable && lineas.length > 0 && boton('Emitir comprobante', () => ejecutar({ tipo: 'emitir', id: pedidoActivo }), 'receipt_long', 'boton primario')],
+    ['pagos', 'Pago', comprobante ? `Saldo ${soles(saldo)}` : 'Por cobrar', `${pagos.length} ${pagos.length === 1 ? 'abono asociado' : 'abonos asociados'} al comprobante.`,
+      { campo: 'id_comprobante', valor: comprobante?.id_comprobante ?? 'Por emitir' },
+      comprobante && boton(saldo > 0 ? 'Registrar pago' : 'Ver cobro', () => ir(indicePaso('cobros')), 'payments', saldo > 0 ? 'boton primario' : 'boton secundario')],
+  ];
+  id('flujo-guia').replaceChildren(...tarjetas.map(([tabla, titulo, valor, texto, filtro, accion], indice) => {
+    const tarjeta = nodo('li', '', 'tarjeta-guia');
+    if (indice === etapa) tarjeta.setAttribute('aria-current', 'step');
+    const cabecera = nodo('div', '', 'etapa-guia');
+    cabecera.append(icono(esquema[tabla].icono), nodo('h3', titulo));
+    if (indice === etapa) cabecera.append(nodo('span', 'Siguiente', 'siguiente-guia'));
+    tarjeta.append(cabecera, nodo('strong', valor, 'valor-guia'), nodo('p', texto, 'apagado'));
+    if (accion) tarjeta.append(accion);
+    const enlace = boton(tabla, () => elegirTabla(tabla, filtro), 'table_view', 'enlace-boton codigo tabla-guia');
+    enlace.setAttribute('aria-label', `Ver tabla ${tabla}`);
+    tarjeta.append(enlace);
+    return tarjeta;
+  }));
+  id('guia-lineas').replaceChildren(...tablaLineas(pedido, comprobante, lineas, editable));
+  const acciones = id('guia-acciones');
+  acciones.replaceChildren();
+  if (!comprobante) acciones.append(boton('Borrar pedido', borrarPedido, 'delete'));
+  acciones.append(boton('Abrir editor de pedidos', () => ir(indicePaso('editar')), 'edit_note'));
+  mostrarCambios(id('guia-cambios'));
+}
+
+function mostrarPedido() {
+  const pedido = pedidoVigente();
+  const documento = documentoDe(base.tablas, pedidoActivo);
+  const editable = !documento && pedido.estado !== 'Anulado';
+  selectorPedidos(id('pedido-editar'));
+  id('agregar').hidden = !editable;
+  id('editar-cabecera').disabled = !editable;
+  id('borrar-pedido').disabled = Boolean(documento);
+  opciones(id('estado'), documento ? estados.filter((estado) => estado !== 'Anulado') : estados, (x) => x, (x) => x, pedido.estado);
+  id('pedido-lineas').replaceChildren(...tablaLineas(pedido, documento, lineasDe(base.tablas, pedidoActivo), editable));
+  mostrarCambios(id('aprendizaje'));
   id('aprendizaje').append(boton('Ver tabla de detalle', () => elegirTabla('detalle_pedido', { campo: 'id_pedido', valor: pedidoActivo }), 'table_view'));
 }
 
@@ -379,6 +488,7 @@ function mostrarCobros() {
   id('emitir').disabled = pedido.estado === 'Anulado' || lineasDe(base.tablas, pedidoActivo).length === 0;
   id('efectivo').value = '0.00';
   mostrarPartes();
+  mostrarCambios(id('cobro-cambios'));
 }
 
 function ejecutar(accion) {
@@ -415,18 +525,11 @@ id('tabla-elegida').addEventListener('change', (evento) => elegirTabla(evento.ta
 id('buscar').addEventListener('input', () => { filtroClave = null; pagina = 0; mostrarTablas(); });
 id('pagina-ant').addEventListener('click', () => { pagina--; mostrarTablas(); });
 id('pagina-sig').addEventListener('click', () => { pagina++; mostrarTablas(); });
-for (const control of ['pedido-editar', 'pedido-cobrar']) {
+for (const control of ['pedido-guia', 'pedido-editar', 'pedido-cobrar']) {
   id(control).addEventListener('change', (evento) => { pedidoActivo = Number(evento.target.value); mostrarPantalla(); });
 }
-id('nuevo-pedido').addEventListener('click', () => {
-  const cliente = nodo('select');
-  const modalidad = nodo('select');
-  opciones(cliente, base.tablas.clientes, (c) => c.id_cliente, (c) => `${c.nombres} ${c.apellidos}`);
-  opciones(modalidad, modalidades, (x) => x, (x) => x);
-  dialogo('Nuevo pedido', 'Crea una cabecera para empezar a agregar productos.', 'Crear pedido',
-    [formularioCampo('Cliente', cliente, 'cliente'), formularioCampo('Modalidad', modalidad, 'modalidad')],
-    (datos) => ({ tipo: 'crear', cliente: Number(datos.get('cliente')), modalidad: datos.get('modalidad') }));
-});
+for (const control of ['nuevo-guia', 'nuevo-pedido']) id(control).addEventListener('click', () => formularioPedido());
+id('editar-cabecera').addEventListener('click', () => formularioPedido(pedidoVigente()));
 id('agregar').addEventListener('submit', (evento) => {
   evento.preventDefault();
   const datos = new FormData(evento.currentTarget);
@@ -436,9 +539,9 @@ id('cambiar-estado').addEventListener('submit', (evento) => {
   evento.preventDefault();
   ejecutar({ tipo: 'estado', id: pedidoActivo, estado: id('estado').value });
 });
-id('borrar-pedido').addEventListener('click', () => confirmarBorrado('Borrar pedido', `Se eliminará el pedido #${pedidoActivo} junto a todas sus líneas de práctica.`,
-  { tipo: 'borrar-pedido', id: pedidoActivo }));
+id('borrar-pedido').addEventListener('click', borrarPedido);
 id('emitir').addEventListener('click', () => ejecutar({ tipo: 'emitir', id: pedidoActivo }));
+id('volver-guia').addEventListener('click', () => ir(indicePaso('guia')));
 id('pago').addEventListener('submit', (evento) => {
   evento.preventDefault();
   ejecutar({ tipo: 'abonar', id: pedidoActivo, efectivo: Math.round(Number(id('efectivo').value) * 100) });
@@ -455,4 +558,4 @@ id('cancelar-dialogo').addEventListener('click', () => id('dialogo').close());
 opciones(id('tabla-elegida'), Object.entries(esquema), ([tabla]) => tabla, ([tabla, ficha]) => `${ficha.titulo} (${tabla})`);
 opciones(id('producto'), base.tablas.productos, (p) => p.id_producto, (p) => `${p.nombre} · ${soles(p.precio)}`);
 crearMapa();
-ir(Math.max(0, pasos.findIndex((etapa) => `#${etapa[3]}` === location.hash)), false);
+ir(Math.max(0, indicePaso(location.hash.slice(1))), false);
