@@ -1,0 +1,152 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=20mm,top=22mm,bottom=22mm]{geometry}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont{Consolas}[Scale=.87]
+\usepackage{amsmath,microtype,tabularx,booktabs,array,enumitem,xcolor,hyperref,fancyhdr}
+\definecolor{tinta}{HTML}{16251B}
+\definecolor{verde}{HTML}{365D28}
+\definecolor{gris}{HTML}{51645A}
+\definecolor{borde}{HTML}{D0DED1}
+\hypersetup{colorlinks=true,linkcolor=verde,urlcolor=verde,pdftitle={Red Pepper | Informe técnico de base de datos},pdfsubject={Normalización y piloto PostgreSQL en Supabase}}
+\color{tinta}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\headheight}{15pt}
+\renewcommand{\arraystretch}{1.24}
+\setlist[itemize]{leftmargin=1.3em,topsep=1pt,itemsep=2pt,parsep=0pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\codigo}[1]{\texttt{#1}}
+\newcommand{\seccion}[2]{\vspace{5pt}{\Large\bfseries #1\enspace #2}\par\vspace{2pt}}
+\newcommand{\nota}[1]{\par\smallskip{\color{gris}\small #1}\par}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\color{gris} RED PEPPER / BASE DE DATOS}
+\rhead{\small\color{gris} 23 DE NOVIEMBRE DE 2026}
+\lfoot{\small\color{gris} Informe técnico · Piloto en Supabase}
+\rfoot{\small\color{gris} \thepage}
+\renewcommand{\headrulewidth}{.35pt}
+
+\begin{document}
+
+{\color{verde}\bfseries NEXLABS / RED PEPPER}\par
+\vspace{6pt}
+{\fontsize{34}{37}\selectfont\bfseries Normalización y piloto\\ en PostgreSQL}\par
+\vspace{5pt}
+{\large Pedidos, catálogo, comprobantes de prueba y pagos mixtos}\par
+\vspace{5pt}
+{\color{gris} Asignatura Base de Datos · Docente Ing. Fabrizio Calienes}
+
+\seccion{1.}{Resumen ejecutivo}
+El sistema registra pedidos con varios productos, distingue snacks y bebidas y concilia los abonos de cada comprobante. El piloto adapta la documentación original de SQL Server a PostgreSQL. Se instaló un esquema propio en el proyecto Supabase de NexLabs y se ejecutaron datos ficticios y pruebas de integridad en dos motores, PostgreSQL local 18.4 y Supabase 17.12.
+
+\begin{tabularx}{\linewidth}{@{}lYY@{}}
+\toprule
+\textbf{Estructura} & \textbf{Demostración} & \textbf{Resultado}\\
+\midrule
+13 tablas y 3 vistas & 2 pedidos, 4 líneas y 3 abonos ficticios & S/ 45.00 cobrados y S/ 0.00 de saldo\\
+\bottomrule
+\end{tabularx}
+
+\seccion{2.}{Diagnóstico y alcance}
+\begin{itemize}
+\item El esquema inicial registraba un producto por pedido. Eso limitaba la cardinalidad. La primera forma normal también se incumpliría si se guardara una lista de productos en una celda. La solución distingue cabecera y líneas.
+\item Separar nombres y apellidos favorece las búsquedas requeridas. Una cadena con el nombre completo puede ser un valor escalar válido. Los teléfonos sí forman una colección independiente para cada cliente.
+\item Las categorías se administran por código y se pueden cambiar de nombre desde un punto. La dependencia transitiva aparece si la tabla del producto también almacena datos de la categoría determinados por su código.
+\item Se conservan los códigos de pizarra \codigo{S001} (Snack) y \codigo{B001} (Bebida). El código \codigo{B001} también identifica la serie de boleta en su catálogo independiente.
+\end{itemize}
+
+\seccion{3.}{Decisiones del piloto}
+Los precios del catálogo se interpretan como importes brutos en PEN. Una línea registra el precio aplicado en su primera inclusión y acumula unidades del mismo producto en el pedido. Un pedido admite como máximo un comprobante. La serie lleva su propio contador y la tasa se guarda como valor del documento. El 18\% se utiliza en la prueba para reproducir el ejercicio académico.
+
+\nota{El alcance cubre comprobantes y abonos de demostración. La emisión tributaria, la integración con pasarelas, las devoluciones, el inventario y la conexión con Odoo requieren un alcance específico.}
+
+\newpage
+\seccion{4.}{Modelo lógico y diccionario de datos}
+\nota{PK = clave primaria. FK = clave foránea. UQ = restricción de unicidad. Los identificadores numéricos de entidades maestras son \codigo{bigint} con identidad. Los importes se calculan con tipos \codigo{numeric}.}
+
+{\small\begin{tabularx}{\linewidth}{@{}p{35mm}p{47mm}Y@{}}
+\toprule
+\textbf{Relación} & \textbf{Claves} & \textbf{Otros campos y reglas}\\
+\midrule
+\codigo{clientes} & PK \codigo{id\_cliente}; UQ tipo + número de documento & Nombres y apellidos. Validación de formato de DNI, RUC o CE.\\
+\codigo{telefonos\_cliente} & PK \codigo{id\_telefono}; FK cliente; UQ cliente + número & Número de 7 a 15 dígitos, con prefijo \texttt{+} opcional.\\
+\codigo{categorias} & PK \codigo{id\_categoria}; UQ nombre & Nombre, descripción y familia de subtipo.\\
+\codigo{productos} & PK \codigo{id\_producto}; FK categoría; UQ categoría + nombre & Nombre comercial, precio y disponibilidad.\\
+\codigo{snacks} & PK/FK \codigo{id\_producto} & Porción, tipo de papa y si incluye cremas.\\
+\codigo{bebidas} & PK/FK \codigo{id\_producto} & Volumen en ml, temperatura y envase.\\
+\codigo{pedidos} & PK \codigo{id\_pedido}; FK cliente & Fecha, modalidad y estado.\\
+\codigo{detalle\_pedido} & PK pedido + producto; ambas FK & Cantidad positiva y precio unitario histórico. Importe derivado en consulta.\\
+\codigo{tipos\_comprobante} & PK \codigo{id\_tipo\_comprobante}; UQ nombre & Boleta o factura del ejercicio.\\
+\codigo{series\_comprobante} & PK \codigo{serie}; FK tipo & Último correlativo asignado.\\
+\codigo{comprobantes} & PK \codigo{id\_comprobante}; FK pedido y serie; UQ pedido y UQ serie + correlativo & Fecha de emisión, correlativo y tasa de IGV aplicada.\\
+\codigo{metodos\_pago} & PK \codigo{id\_metodo\_pago}; UQ nombre & Indicador de referencia obligatoria.\\
+\codigo{pagos} & PK \codigo{id\_pago}; FK comprobante y método; UQ método + referencia & Monto positivo, número de operación cuando aplica y fecha.\\
+\bottomrule
+\end{tabularx}}
+
+\seccion{5.}{Cardinalidades}
+\begin{itemize}
+\item Un cliente tiene cero o más teléfonos y pedidos. Una categoría agrupa cero o más productos. Cada producto pertenece a una categoría y tiene exactamente un subtipo compatible.
+\item Un pedido puede estar vacío mientras se prepara. Para emitirlo debe tener al menos una línea. Cada línea pertenece a un pedido y a un producto. La clave compuesta resuelve la relación N:M entre ambos.
+\item Un tipo tiene cero o más series. Cada comprobante utiliza una serie y un pedido. Un pedido puede quedar sin comprobante. Un comprobante puede tener cero o más abonos y cada abono pertenece a un método.
+\end{itemize}
+
+\newpage
+\seccion{6.}{Normalización y dependencias funcionales}
+\textbf{1FN.} El detalle representa una línea por par pedido-producto. Los teléfonos se almacenan como filas, con su propio identificador. La semántica de nombres y apellidos se define por las operaciones de búsqueda del sistema.
+
+\textbf{2FN.} En \codigo{detalle\_pedido}, la pareja (pedido, producto) determina cantidad y precio aplicado. El identificador de pedido por sí solo determina fecha, cliente y estado, que se conservan en la cabecera. El identificador de producto determina precio actual y nombre, que permanecen en el catálogo.
+
+\textbf{3FN.} En una relación que incluyera datos del producto y de su categoría, producto $\to$ categoría $\to$ nombre y descripción de categoría. Separar el catálogo deja esa dependencia en una relación donde categoría es clave. El tipo del comprobante se obtiene a través de su serie. El requisito de referencia se obtiene desde el método de pago. El subtotal de línea es cantidad por precio, por eso se calcula en una vista.
+
+\textbf{FNBC.} Toda dependencia funcional no trivial debe tener una superclave como determinante. El modelo se audita contra las dependencias declaradas y las que se derivan de su clave. En clientes se admiten como claves \codigo{id\_cliente} y (tipo, número); en categorías, código y nombre; en productos, identificador y (categoría, nombre); en comprobantes, identificador, pedido y (serie, correlativo). La unicidad método y referencia aplica cuando la referencia existe. El supuesto de un único precio aplicado por pareja pedido-producto es parte del dominio académico.
+
+\seccion{7.}{Reglas implementadas en PostgreSQL}
+\begin{tabularx}{\linewidth}{@{}p{45mm}Y@{}}
+\toprule
+\textbf{Regla} & \textbf{Mecanismo y efecto}\\
+\midrule
+Especialización total y excluyente & Una restricción diferible verifica al terminar la transacción que cada producto tenga una fila en el subtipo correspondiente. Producto y subtipo se registran en la misma transacción.\\
+Conservación de importes & \codigo{agregar\_item} toma el precio vigente al crear la línea. La edición de las líneas se bloquea después de emitir el comprobante.\\
+Emisión y correlativos & \codigo{emitir\_comprobante} valida el pedido, incrementa el contador de la serie en una actualización y devuelve el comprobante existente si se repite con la misma serie y tasa.\\
+Abono y saldo & Un disparador exige referencia cuando corresponda y serializa los pagos del mismo comprobante antes de validar fecha y saldo. Los pagos registrados conservan sus valores.\\
+Tipos y zona horaria & Identidades, \codigo{boolean}, \codigo{numeric} y \codigo{timestamptz}. La consulta convierte la fecha civil a \codigo{America/Lima}.\\
+Despliegue acotado & La migración crea el esquema \codigo{salchipaperia} en la base existente. Los scripts de prueba revierten las filas temporales y conservan el conjunto de demostración.\\
+\bottomrule
+\end{tabularx}
+
+\nota{La edición directa de tablas se reserva a la administración de la base. Para asegurar un correlativo consecutivo por serie, las emisiones del piloto se registran mediante la función dedicada.}
+
+\newpage
+\seccion{8.}{Resultados reproducidos}
+La consulta de líneas suma S/ 14.00 y S/ 7.00 en el primer pedido. El segundo suma S/ 18.00 y S/ 6.00. Con precios brutos e IGV de prueba del 18\%, la base se calcula como $\operatorname{redondear}(\text{total}/1.18,2)$. El IGV es la diferencia entre el total y la base.
+
+{\small\begin{tabularx}{\linewidth}{@{}lYrrrrr@{}}
+\toprule
+\textbf{Comprobante} & \textbf{Abonos (S/)} & \textbf{Base} & \textbf{IGV} & \textbf{Total} & \textbf{Cobrado} & \textbf{Saldo}\\
+\midrule
+B001-0000001 & Efectivo 10.00 + Yape 11.00 & 17.80 & 3.20 & 21.00 & 21.00 & 0.00\\
+B001-0000002 & Plin 24.00 & 20.34 & 3.66 & 24.00 & 24.00 & 0.00\\
+\bottomrule
+\end{tabularx}}
+
+La batería SQL verificó los importes y las cantidades, la conservación del precio tras actualizar el catálogo, la reemisión con el mismo identificador y la liquidación de un saldo en dos abonos. También comprobó el rechazo de un pedido vacío, cantidades cero, subtipos ausentes, incompatibles o dobles, cambios después de la emisión, un pago sin referencia obligatoria, un número de operación duplicado, un sobrepago y la modificación de un pago registrado.
+
+\seccion{9.}{Despliegue y consumo}
+\begin{itemize}
+\item \textbf{PostgreSQL.} Se aplica \codigo{01\_modelo.sql}, luego \codigo{02\_datos\_demo.sql}. \codigo{03\_consultas.sql} muestra líneas, conciliación y abonos. \codigo{04\_pruebas.sql} ejecuta la batería en transacción. La sesión remota verificada usó el pooler de Supabase, TLS 1.3 y validación de nombre y certificado.
+\item \textbf{Sitio.} La carpeta pública de cPanel sirve el \href{https://nexlabsgroup.com/basededatos/}{portal de NexLabs} y el informe en \codigo{/basededatos/informe}. La interfaz de Stitch distingue la consulta a Supabase de los datos de demostración incluidos en el sitio.
+\item \textbf{Consumo.} Después de poblar y probar el piloto, las tablas y sus índices sumaron 552 kB en Supabase. El cálculo excluye otros esquemas y servicios del proyecto. El portal evita el sondeo periódico, reutiliza la respuesta reciente de la sesión y calcula el pago mixto sin escribir a la base. El consumo operativo de red depende del número de visitas y se revisa en Observability y Usage.
+\end{itemize}
+
+\seccion{10.}{Fuentes}
+\begin{itemize}
+\item Documentación técnica y arquitectura de base de datos para salchipapería, material de partida facilitado para la asignatura.
+\item PostgreSQL 18. \href{https://www.postgresql.org/docs/18/sql-createtrigger.html}{Disparadores y restricciones diferibles} y \href{https://www.postgresql.org/docs/18/explicit-locking.html}{bloqueos explícitos}.
+\item Supabase. \href{https://supabase.com/docs/guides/database/psql}{Conexión con psql} y \href{https://supabase.com/docs/guides/observability/reports}{métricas del proyecto}.
+\item cPanel. \href{https://docs.cpanel.net/cpanel/files/file-manager/}{Administrador de archivos}.
+\end{itemize}
+
+\end{document}
