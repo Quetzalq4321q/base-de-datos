@@ -67,7 +67,7 @@ main { min-width: 0; margin: 0 auto; width: min(100%, 82rem); padding: clamp(.85
 
 .hero { background: var(--brand); color: var(--on-brand); border-radius: var(--radio); min-height: 10.6rem; display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; padding: clamp(1.05rem, 3vw, 2.1rem); }
 .hero h1 { margin: .3rem 0 .55rem; }
-.hero h1:focus { outline: 2px solid var(--on-brand); outline-offset: .2rem; }
+#paso-titulo:focus { outline: none; }
 .hero p { max-width: 38rem; }
 .progreso { font-size: .875rem; font-weight: 600; }
 .hero-marca { display: grid; place-items: center; border: 1px solid rgb(255 255 255 / .6); border-radius: 1rem; width: 5.5rem; height: 5.5rem; flex: 0 0 auto; }
