@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Manrope:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"on-error":"#ffffff","tertiary-fixed-dim":"#ffb4a1","secondary-fixed":"#d7e2ff","primary-fixed-dim":"#bac3ff","on-surface-variant":"#434657","line":"#D9E0F0","surface-container-highest":"#e2e1ef","on-background":"#191b25","brand":"#1648FF","surface-container-high":"#e8e7f5","on-error-container":"#93000a","on-tertiary-container":"#ffd3c9","outline-variant":"#c4c5da","muted":"#525E77","tertiary-container":"#b82c00","on-primary-container":"#d7dbff","outline":"#747688","on-primary-fixed":"#00115a","inverse-surface":"#2e303a","on-secondary-container":"#57637c","background":"#fbf8ff","on-tertiary-fixed":"#3c0800","secondary-container":"#d3e0fd","on-secondary-fixed":"#0f1b31","surface-dim":"#d9d9e7","tertiary-fixed":"#ffdbd2","on-surface":"#191b25","surface-container-low":"#f4f2ff","primary-container":"#1648ff","on-primary-fixed-variant":"#0031c6","on-brand":"#FFFFFF","surface-container-lowest":"#ffffff","on-primary":"#ffffff","error-container":"#ffdad6","on-tertiary":"#ffffff","inverse-on-surface":"#f0effe","tertiary":"#8e2000","on-secondary":"#ffffff","inverse-primary":"#bac3ff","surface":"#fbf8ff","paper":"#FFFFFF","secondary-fixed-dim":"#bac7e4","canvas":"#F5F7FC","surface-container":"#edecfb","on-secondary-fixed-variant":"#3b475f","secondary":"#525e78","error":"#ba1a1a","tint":"#EEF2FF","ink":"#131B32","surface-bright":"#fbf8ff","primary":"#0033cd","on-tertiary-fixed-variant":"#891e00","surface-tint":"#0d44fc","primary-fixed":"#dee1ff","surface-variant":"#e2e1ef"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"gutter":"1.5rem","space-xs":"0.25rem","space-md":"1rem","space-xl":"2.5rem","space-sm":"0.5rem","space-lg":"1.5rem","margin":"2rem"},"fontFamily":{"label-md":["Inter"],"body-sm":["Inter"],"body-md":["Inter"],"headline-lg":["Manrope"],"headline-sm":["Manrope"],"code-md":["JetBrains Mono"],"headline-md":["Manrope"],"body-md-medium":["Inter"],"headline-lg-mobile":["Manrope"]},"fontSize":{"label-md":["14px",{"lineHeight":"20px","fontWeight":"600"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-lg":["42px",{"lineHeight":"52px","letterSpacing":"-0.02em","fontWeight":"800"}],"headline-sm":["22px",{"lineHeight":"28px","fontWeight":"700"}],"code-md":["14px",{"lineHeight":"20px","fontWeight":"500"}],"headline-md":["26px",{"lineHeight":"34px","fontWeight":"700"}],"body-md-medium":["16px",{"lineHeight":"24px","fontWeight":"500"}],"headline-lg-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"800"}]}}}}</script></head><body class="bg-canvas text-ink font-body-md"><aside class="fixed left-0 top-0 h-full w-72 bg-paper border-r border-line z-50 flex flex-col justify-between"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center border-b border-line gap-space-sm"><div class="w-9 h-9 rounded-full bg-tint flex items-center justify-center text-brand"><span class="material-symbols-outlined text-[20px]">database</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-ink leading-none font-bold">Red Pepper</span><span class="font-code-md text-[11px] text-muted leading-tight mt-0.5">/basededatos/</span></div></div><div class="px-space-lg pt-space-lg pb-space-sm"><span class="font-label-md text-label-md uppercase tracking-wider text-muted text-[11px]">Pasos del laboratorio</span></div><nav class="flex flex-col gap-space-xs px-space-md" data-active-classes="bg-brand text-on-brand font-semibold rounded-full"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="modelo-entidad-relacion-ddl" href="#"><span class="material-symbols-outlined text-[20px]">schema</span><span class="font-label-md text-label-md">1. Modelo (ER y DDL)</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="explorar-tablas-estructura-registros" href="#"><span class="material-symbols-outlined text-[20px]">table_chart</span><span class="font-label-md text-label-md">2. Explorar tablas</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="editar-pedidos-operaciones-dml" href="#"><span class="material-symbols-outlined text-[20px]">edit_note</span><span class="font-label-md text-label-md">3. Editar pedidos</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-muted hover:bg-tint hover:text-ink transition-colors" data-path="comprobantes-pagos-consistencia" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">4. Comprobantes y pagos</span></a></nav></div><div class="p-space-md border-t border-line"><div class="bg-canvas rounded-full p-space-sm border border-line flex flex-col gap-space-xs"><div class="flex items-center justify-between px-space-xs"><span class="font-label-md text-[12px] text-muted">Navegación</span><span class="font-code-md text-[12px] text-ink font-medium">Paso activo</span></div><div class="flex items-center gap-space-xs pt-1"><button class="flex-1 h-8 rounded-full border border-line bg-paper hover:bg-tint text-ink flex items-center justify-center gap-1 transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">chevron_left</span><span class="font-label-md text-[12px]">Anterior</span></button><button class="flex-1 h-8 rounded-full border border-line bg-paper hover:bg-tint text-ink flex items-center justify-center gap-1 transition-colors" type="button"><span class="font-label-md text-[12px]">Siguiente</span><span class="material-symbols-outlined text-[16px]">chevron_right</span></button></div></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-16 bg-paper/90 backdrop-blur-md border-b border-line z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-md"><span class="font-headline-sm text-headline-sm text-ink">Laboratorio de Base de Datos</span><span class="px-2 py-0.5 rounded-full bg-tint border border-line text-brand font-code-md text-[12px]">PostgreSQL 16</span></div><div class="flex items-center gap-space-sm"><button aria-label="Cambiar a modo oscuro" class="h-9 px-space-sm rounded-full border border-line bg-paper hover:bg-tint text-ink flex items-center gap-1.5 transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">dark_mode</span><span class="font-label-md text-label-md hidden sm:inline">Modo oscuro</span></button><a class="h-9 px-space-sm rounded-full border border-line bg-paper hover:bg-tint text-ink flex items-center gap-1.5 transition-colors" data-path="informe-tecnico" href="#"><span class="material-symbols-outlined text-[18px]">description</span><span class="font-label-md text-label-md hidden sm:inline">Informe técnico</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 w-full flex-1 px-space-lg py-space-lg"><div class="flex flex-col w-full">
+<!-- 1. Encabezado de página -->
+<header class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md mb-space-lg pb-space-md bg-paper p-space-lg rounded-xl shadow-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="px-space-sm py-0.5 rounded-full bg-tint text-brand font-code-md text-code-md">
+          PASO 02 • CATÁLOGO RELACIONAL
+        </span>
+<span class="inline-flex items-center gap-1 text-muted font-body-sm text-body-sm">
+<span class="w-2 h-2 rounded-full bg-brand"></span>
+          Esquema activo
+        </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-ink font-extrabold tracking-tight">
+        Explorar tablas del sistema
+      </h1>
+<p class="font-body-md text-body-md text-muted max-w-2xl">
+        Consulta las 13 tablas relacionales del catálogo de Red Pepper con claves foráneas e importes tabulares.
+      </p>
+</div>
+<!-- Bloque superior derecho -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center gap-space-sm px-space-md py-space-sm bg-canvas rounded-xl">
+<div class="w-3 h-3 rounded-full bg-primary flex-shrink-0 animate-pulse"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-muted uppercase">DBMS Conectado</span>
+<span class="font-code-md text-code-md text-ink font-semibold">PostgreSQL 16 (online)</span>
+</div>
+</div>
+<button class="h-10 px-space-md rounded-xl bg-canvas hover:bg-tint text-ink font-label-md text-label-md flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px] text-brand">terminal</span>
+<span>Esquema SQL</span>
+</button>
+</div>
+</header>
+<!-- 2. Fila de métricas e indicadores de laboratorio (con esqueletos neutrales #E3E9F7) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-lg">
+<!-- Tarjeta Métrica 1 -->
+<div class="bg-paper p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-muted">Tablas activas</span>
+<div class="w-8 h-8 rounded-lg bg-tint flex items-center justify-center text-brand">
+<span class="material-symbols-outlined text-[20px]">table_rows</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-ink font-bold">13</span>
+<span class="font-body-sm text-body-sm text-muted">tablas en public</span>
+</div>
+<span class="font-code-md text-[11px] text-brand mt-1 block">Catálogo verificado</span>
+</div>
+<!-- Tarjeta Métrica 2 -->
+<div class="bg-paper p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-muted">Productos en carta</span>
+<div class="w-8 h-8 rounded-lg bg-tint flex items-center justify-center text-brand">
+<span class="material-symbols-outlined text-[20px]">restaurant_menu</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-ink font-bold">38</span>
+<span class="font-body-sm text-body-sm text-muted">productos activos</span>
+</div>
+<span class="font-code-md text-[11px] text-muted mt-1 block">6 categorías en menú</span>
+</div>
+<!-- Tarjeta Métrica 3 -->
+<div class="bg-paper p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-muted">Comprobantes de prueba</span>
+<div class="w-8 h-8 rounded-lg bg-tint flex items-center justify-center text-brand">
+<span class="material-symbols-outlined text-[20px]">receipt</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-ink font-bold">100</span>
+<span class="font-body-sm text-body-sm text-muted">registros emitidos</span>
+</div>
+<span class="font-code-md text-[11px] text-muted mt-1 block">Boletas y facturas</span>
+</div>
+<!-- Tarjeta Esqueleto neutral #E3E9F7 -->
+<div class="bg-paper p-space-md rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden" id="skeleton-card">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-brand animate-spin">sync</span>
+<span class="font-label-md text-label-md text-ink">Sincronizando índices...</span>
+</div>
+<button class="font-code-md text-[11px] text-brand hover:underline focus:outline-none focus:ring-1 focus:ring-brand px-1 py-0.5 rounded" id="reload-btn" type="button">
+          Recargar estado
+        </button>
+</div>
+<!-- Bloques de esqueleto neutral plano (#E3E9F7) -->
+<div class="flex flex-col gap-2 my-2">
+<div class="h-3 w-4/5 rounded bg-[#E3E9F7]"></div>
+<div class="h-2 w-full rounded bg-[#E3E9F7]"></div>
+<div class="h-2 w-3/5 rounded bg-[#E3E9F7]"></div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="h-2.5 w-16 rounded bg-[#E3E9F7]"></div>
+<span class="font-code-md text-[11px] text-muted">buffers pg_stat</span>
+</div>
+</div>
+</section>
+<!-- 3. Selector de tablas disponibles (13 tablas) -->
+<section class="bg-paper p-space-md rounded-xl shadow-sm mb-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-brand text-[20px]">folder_data</span>
+<span class="font-label-md text-label-md text-ink uppercase tracking-wider">Tablas disponibles</span>
+</div>
+<span class="font-code-md text-code-md text-muted bg-canvas px-space-sm py-0.5 rounded">
+        Esquema: public
+      </span>
+</div>
+<div class="flex flex-wrap gap-1.5" id="table-chips">
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-brand text-on-brand font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        productos <span class="ml-1 opacity-90 text-[12px]">(38)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        clientes <span class="ml-1 text-muted text-[12px]">(48)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        mesas <span class="ml-1 text-muted text-[12px]">(24)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        pedidos <span class="ml-1 text-muted text-[12px]">(112)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        detalle_pedidos <span class="ml-1 text-muted text-[12px]">(340)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        comprobantes <span class="ml-1 text-muted text-[12px]">(100)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        pagos <span class="ml-1 text-muted text-[12px]">(120)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        categorias <span class="ml-1 text-muted text-[12px]">(6)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        comprobante_pagos <span class="ml-1 text-muted text-[12px]">(100)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        mozos <span class="ml-1 text-muted text-[12px]">(8)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        turnos <span class="ml-1 text-muted text-[12px]">(3)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        cajas <span class="ml-1 text-muted text-[12px]">(2)</span>
+</button>
+<button class="table-chip px-space-md py-1.5 rounded-full font-code-md text-code-md bg-canvas text-ink hover:bg-tint transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+        auditoria_pedidos <span class="ml-1 text-muted text-[12px]">(210)</span>
+</button>
+</div>
+</section>
+<!-- 4. Inspector rápido de tabla seleccionada ('productos') -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-lg">
+<!-- PK -->
+<div class="bg-paper p-space-md rounded-xl shadow-sm flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-tint flex items-center justify-center text-brand flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">key</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-[12px] text-muted uppercase">Clave Primaria</span>
+<span class="font-code-md text-code-md text-ink font-bold truncate">id_producto</span>
+<span class="font-code-md text-[12px] text-muted">VARCHAR(10) PK</span>
+</div>
+</div>
+<!-- FK -->
+<div class="bg-paper p-space-md rounded-xl shadow-sm flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-tint flex items-center justify-center text-brand flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">link</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-[12px] text-muted uppercase">Clave Foránea</span>
+<span class="font-code-md text-code-md text-ink font-bold truncate">id_categoria</span>
+<span class="font-code-md text-[12px] text-brand truncate">→ categorias(id)</span>
+</div>
+</div>
+<!-- Moneda / Precisión -->
+<div class="bg-paper p-space-md rounded-xl shadow-sm flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-tint flex items-center justify-center text-brand flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-[12px] text-muted uppercase">Moneda y Precisión</span>
+<span class="font-code-md text-code-md text-ink font-bold truncate">PEN (S/)</span>
+<span class="font-code-md text-[12px] text-muted">NUMERIC(10,2)</span>
+</div>
+</div>
+<!-- Integridad -->
+<div class="bg-paper p-space-md rounded-xl shadow-sm flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-tint flex items-center justify-center text-brand flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">shield</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-[12px] text-muted uppercase">Regla de Integridad</span>
+<span class="font-code-md text-code-md text-ink font-bold truncate">RESTRICT</span>
+<span class="font-code-md text-[12px] text-muted">ON DELETE RESTRICT</span>
+</div>
+</div>
+</section>
+<!-- 5. Barra de búsqueda y filtros -->
+<section class="bg-paper p-space-md rounded-xl shadow-sm mb-space-md flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-md">
+<div class="flex flex-1 items-center gap-space-sm">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-muted">search</span>
+<input class="w-full h-10 pl-9 pr-space-md bg-canvas rounded-lg text-ink font-body-sm text-body-sm placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand transition-all" id="search-input" placeholder="Buscar por ID, nombre o SKU..." type="text"/>
+</div>
+<div class="relative">
+<select class="h-10 pl-space-md pr-8 bg-canvas rounded-lg text-ink font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-brand appearance-none cursor-pointer">
+<option value="">Todas las Categorías</option>
+<option value="CAT_01">CAT_01 · Salchipapas</option>
+<option value="CAT_02">CAT_02 · Bebidas</option>
+<option value="CAT_03">CAT_03 · Hamburguesas</option>
+<option value="CAT_04">CAT_04 · Empanadas</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-[18px] text-muted pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm justify-end">
+<button class="h-10 px-space-md rounded-lg bg-canvas hover:bg-tint text-ink font-label-md text-label-md flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">view_column</span>
+<span>Columnas</span>
+</button>
+<button class="h-10 px-space-md rounded-lg bg-tint hover:bg-brand hover:text-on-brand text-brand font-label-md text-label-md flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-brand" id="refresh-table" type="button">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span>Refrescar datos</span>
+</button>
+</div>
+</section>
+<!-- 6. Tabla de datos relacionales (carta peruana de Red Pepper) -->
+<section class="bg-paper rounded-xl shadow-sm overflow-hidden mb-space-lg">
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm border-collapse">
+<thead>
+<tr class="bg-canvas text-muted font-label-md text-[12px] uppercase tracking-wider">
+<th class="py-space-md px-space-lg font-semibold">PK / ID</th>
+<th class="py-space-md px-space-md font-semibold">DESCRIPCIÓN DEL PRODUCTO</th>
+<th class="py-space-md px-space-md font-semibold">FK / CATEGORÍA</th>
+<th class="py-space-md px-space-md font-semibold text-center">STOCK</th>
+<th class="py-space-md px-space-md font-semibold">ESTADO</th>
+<th class="py-space-md px-space-lg font-semibold text-right">PRECIO UNITARIO</th>
+<th class="py-space-md px-space-md font-semibold text-center">ACCIONES</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-canvas" id="table-body">
+<!-- Row 1 -->
+<tr class="hover:bg-canvas/60 transition-colors">
+<td class="py-space-md px-space-lg font-code-md text-code-md text-brand font-semibold">PROD_001</td>
+<td class="py-space-md px-space-md">
+<div class="font-body-md-medium text-ink">Salchipapa clásica</div>
+<div class="text-[12px] text-muted">Papas nativas + frankfurter artesanal</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tint text-brand font-code-md text-[12px]">
+                CAT_01 · Salchipapas
+              </span>
+</td>
+<td class="py-space-md px-space-md text-center font-code-md text-code-md text-ink">45 und</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tint text-brand font-label-md text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                Activo
+              </span>
+</td>
+<td class="py-space-md px-space-lg text-right font-code-md text-code-md text-ink font-semibold tabular-nums">
+              S/ 8.00
+            </td>
+<td class="py-space-md px-space-md text-center">
+<div class="flex items-center justify-center gap-1">
+<button aria-label="Ver detalles" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button aria-label="Editar registro" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-canvas/60 transition-colors">
+<td class="py-space-md px-space-lg font-code-md text-code-md text-brand font-semibold">PROD_002</td>
+<td class="py-space-md px-space-md">
+<div class="font-body-md-medium text-ink">Jugo de Maracuyá 500ml</div>
+<div class="text-[12px] text-muted">Fruta fresca pulpa natural embotellada</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tint text-brand font-code-md text-[12px]">
+                CAT_02 · Bebidas
+              </span>
+</td>
+<td class="py-space-md px-space-md text-center font-code-md text-code-md text-ink">80 und</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tint text-brand font-label-md text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                Activo
+              </span>
+</td>
+<td class="py-space-md px-space-lg text-right font-code-md text-code-md text-ink font-semibold tabular-nums">
+              S/ 3.00
+            </td>
+<td class="py-space-md px-space-md text-center">
+<div class="flex items-center justify-center gap-1">
+<button aria-label="Ver detalles" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button aria-label="Editar registro" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-canvas/60 transition-colors">
+<td class="py-space-md px-space-lg font-code-md text-code-md text-brand font-semibold">PROD_003</td>
+<td class="py-space-md px-space-md">
+<div class="font-body-md-medium text-ink">Hamburguesa simple</div>
+<div class="text-[12px] text-muted">Carne de res 120g, lechuga y tomate</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tint text-brand font-code-md text-[12px]">
+                CAT_03 · Hamburguesas
+              </span>
+</td>
+<td class="py-space-md px-space-md text-center font-code-md text-code-md text-ink">32 und</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tint text-brand font-label-md text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                Activo
+              </span>
+</td>
+<td class="py-space-md px-space-lg text-right font-code-md text-code-md text-ink font-semibold tabular-nums">
+              S/ 10.00
+            </td>
+<td class="py-space-md px-space-md text-center">
+<div class="flex items-center justify-center gap-1">
+<button aria-label="Ver detalles" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button aria-label="Editar registro" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-canvas/60 transition-colors">
+<td class="py-space-md px-space-lg font-code-md text-code-md text-brand font-semibold">PROD_004</td>
+<td class="py-space-md px-space-md">
+<div class="font-body-md-medium text-ink">Empanada de carne</div>
+<div class="text-[12px] text-muted">Masa horneada, relleno criollo tradicional</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tint text-brand font-code-md text-[12px]">
+                CAT_04 · Empanadas
+              </span>
+</td>
+<td class="py-space-md px-space-md text-center font-code-md text-code-md text-ink">19 und</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tint text-brand font-label-md text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                Activo
+              </span>
+</td>
+<td class="py-space-md px-space-lg text-right font-code-md text-code-md text-ink font-semibold tabular-nums">
+              S/ 4.50
+            </td>
+<td class="py-space-md px-space-md text-center">
+<div class="flex items-center justify-center gap-1">
+<button aria-label="Ver detalles" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button aria-label="Editar registro" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-canvas/60 transition-colors">
+<td class="py-space-md px-space-lg font-code-md text-code-md text-brand font-semibold">PROD_005</td>
+<td class="py-space-md px-space-md">
+<div class="font-body-md-medium text-ink">Salchipapa Royal</div>
+<div class="text-[12px] text-muted">Papas nativas, salchicha, huevo frito y queso</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tint text-brand font-code-md text-[12px]">
+                CAT_01 · Salchipapas
+              </span>
+</td>
+<td class="py-space-md px-space-md text-center font-code-md text-code-md text-ink">22 und</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tint text-brand font-label-md text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                Activo
+              </span>
+</td>
+<td class="py-space-md px-space-lg text-right font-code-md text-code-md text-ink font-semibold tabular-nums">
+              S/ 12.50
+            </td>
+<td class="py-space-md px-space-md text-center">
+<div class="flex items-center justify-center gap-1">
+<button aria-label="Ver detalles" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button aria-label="Editar registro" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-canvas/60 transition-colors">
+<td class="py-space-md px-space-lg font-code-md text-code-md text-brand font-semibold">PROD_006</td>
+<td class="py-space-md px-space-md">
+<div class="font-body-md-medium text-ink">Chicha Morada Clásica</div>
+<div class="text-[12px] text-muted">Maíz morado con piña, manzana y canela</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tint text-brand font-code-md text-[12px]">
+                CAT_02 · Bebidas
+              </span>
+</td>
+<td class="py-space-md px-space-md text-center font-code-md text-code-md text-ink">64 und</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tint text-brand font-label-md text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                Activo
+              </span>
+</td>
+<td class="py-space-md px-space-lg text-right font-code-md text-code-md text-ink font-semibold tabular-nums">
+              S/ 3.50
+            </td>
+<td class="py-space-md px-space-md text-center">
+<div class="flex items-center justify-center gap-1">
+<button aria-label="Ver detalles" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button aria-label="Editar registro" class="w-8 h-8 rounded-lg hover:bg-tint text-muted hover:text-brand flex items-center justify-center transition-colors focus:outline-none focus:ring-1 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Paginación y Query Info -->
+<div class="px-space-lg py-space-md bg-canvas flex flex-col md:flex-row items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2">
+<span class="font-body-sm text-body-sm text-muted">Mostrando 1-10 de 38 registros</span>
+<span class="text-muted">•</span>
+<span class="font-code-md text-[12px] text-ink bg-paper px-2 py-0.5 rounded">
+          SELECT * FROM productos LIMIT 10 OFFSET 0;
+        </span>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Página anterior" class="w-8 h-8 rounded-lg bg-paper hover:bg-tint text-ink flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-brand text-on-brand font-label-md text-label-md flex items-center justify-center shadow-sm focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+          1
+        </button>
+<button class="w-8 h-8 rounded-lg bg-paper hover:bg-tint text-ink font-label-md text-label-md flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+          2
+        </button>
+<button class="w-8 h-8 rounded-lg bg-paper hover:bg-tint text-ink font-label-md text-label-md flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+          3
+        </button>
+<button class="w-8 h-8 rounded-lg bg-paper hover:bg-tint text-ink font-label-md text-label-md flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+          4
+        </button>
+<button aria-label="Página siguiente" class="w-8 h-8 rounded-lg bg-paper hover:bg-tint text-ink flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 7. Barra inferior de navegación -->
+<footer class="flex items-center justify-between pt-space-sm pb-space-lg">
+<button class="h-11 px-space-lg rounded-xl bg-paper hover:bg-tint text-ink font-label-md text-label-md flex items-center gap-2 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-brand" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Anterior: Modelo</span>
+</button>
+<button class="h-11 px-space-lg rounded-xl bg-brand text-on-brand font-label-md text-label-md flex items-center gap-2 shadow-sm hover:opacity-95 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand" type="button">
+<span>Siguiente: Editar pedidos</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</footer>
+</div>
+<script>
+  // Micro-interacción: Cambio visual de chips de tablas
+  document.querySelectorAll('.table-chip').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.table-chip').forEach(btn => {
+        btn.classList.remove('bg-brand', 'text-on-brand', 'font-semibold', 'shadow-sm');
+        btn.classList.add('bg-canvas', 'text-ink');
+      });
+      button.classList.remove('bg-canvas', 'text-ink');
+      button.classList.add('bg-brand', 'text-on-brand', 'font-semibold', 'shadow-sm');
+    });
+  });
+
+  // Micro-interacción: Recargar buffers / esqueleto
+  const reloadBtn = document.getElementById('reload-btn');
+  if (reloadBtn) {
+    reloadBtn.addEventListener('click', () => {
+      reloadBtn.textContent = 'Actualizando...';
+      setTimeout(() => {
+        reloadBtn.textContent = 'Recargar estado';
+      }, 700);
+    });
+  }
+
+  // Micro-interacción de búsqueda rápida en tabla
+  const searchInput = document.getElementById('search-input');
+  const tableRows = document.querySelectorAll('#table-body tr');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      tableRows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(term) ? '' : 'none';
+      });
+    });
+  }
+</script></main></div></body></html>

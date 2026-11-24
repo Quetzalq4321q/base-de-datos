@@ -5,13 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <meta name="description" content="Explora el flujo de ventas de Red Pepper y practica operaciones de base de datos con datos ficticios.">
+  <meta name="color-scheme" content="light dark">
   <title>Red Pepper | Laboratorio de base de datos</title>
+  <script>
+    const raiz = document.documentElement;
+    raiz.classList.add('preparando');
+    try {
+      const preferencia = localStorage.getItem('red-pepper-tema');
+      if (preferencia === 'claro' || preferencia === 'oscuro') raiz.dataset.temaGuardado = preferencia;
+    } catch {}
+    raiz.dataset.tema = raiz.dataset.temaGuardado || (matchMedia('(prefers-color-scheme: dark)').matches ? 'oscuro' : 'claro');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&amp;display=block">
-  <link rel="stylesheet" href="estilos.css?v=20261123b">
-  <script type="module" src="app.js?v=20261123b"></script>
+  <link rel="stylesheet" href="estilos.css?v=20261123c">
+  <script type="module">
+    try {
+      await import('./inicio.js?v=20261123c');
+    } catch (error) {
+      document.documentElement.classList.remove('preparando');
+      document.getElementById('laboratorio').removeAttribute('aria-busy');
+      document.getElementById('error-carga').hidden = false;
+      console.error('El laboratorio no pudo iniciar.', error);
+    }
+  </script>
 </head>
 <body>
   <div class="marco">
@@ -20,11 +39,14 @@
         <span class="marca-icono"><span class="icono" aria-hidden="true">database</span></span>
         <span><strong>Red Pepper</strong><small>Laboratorio de base de datos</small></span>
       </a>
-      <a class="boton secundario enlace-informe" href="informe"><span class="icono" aria-hidden="true">description</span><span>Informe técnico</span></a>
+      <div class="cabecera-acciones">
+        <button class="boton secundario boton-tema" id="boton-tema" type="button" aria-label="Cambiar a modo oscuro" hidden><span class="icono" aria-hidden="true">dark_mode</span><span class="tema-texto">Oscuro</span></button>
+        <a class="boton secundario enlace-informe" href="informe" aria-label="Informe técnico"><span class="icono" aria-hidden="true">description</span><span class="informe-texto">Informe técnico</span></a>
+      </div>
     </header>
 
     <aside class="navegacion" aria-label="Recorrido del laboratorio">
-      <nav class="pasos" aria-label="Diapositivas del laboratorio">
+      <nav class="pasos" id="pasos" aria-label="Diapositivas del laboratorio" inert>
         <button class="paso" type="button" data-paso="0" aria-controls="modelo" aria-current="step"><span class="icono" aria-hidden="true">account_tree</span><span>Modelo</span></button>
         <button class="paso" type="button" data-paso="1" aria-controls="tablas"><span class="icono" aria-hidden="true">table_view</span><span>Explorar tablas</span></button>
         <button class="paso" type="button" data-paso="2" aria-controls="editar"><span class="icono" aria-hidden="true">edit_note</span><span>Editar pedidos</span></button>
@@ -33,8 +55,30 @@
       <p class="practica"><span class="icono" aria-hidden="true">science</span><span>Datos ficticios<br><small>Los cambios se guardan en este navegador.</small></span></p>
     </aside>
 
-    <main id="laboratorio">
-      <section class="hero" aria-labelledby="paso-titulo">
+    <main id="laboratorio" aria-busy="true">
+      <div class="carga" id="carga" role="status" aria-label="Cargando laboratorio">
+        <div aria-hidden="true">
+          <div class="hero carga-hero">
+            <div class="carga-titulos"><span class="hueso carga-etiqueta"></span><span class="hueso carga-titulo"></span><span class="hueso carga-texto"></span></div>
+            <div class="hero-marca hueso"></div>
+          </div>
+          <div class="indicadores carga-indicadores">
+            <div><span class="hueso carga-texto"></span><span class="hueso carga-dato"></span></div>
+            <div><span class="hueso carga-texto"></span><span class="hueso carga-dato"></span></div>
+            <div><span class="hueso carga-texto"></span><span class="hueso carga-dato"></span></div>
+          </div>
+          <div class="modelo-grid">
+            <div class="panel carga-panel"><span class="hueso carga-subtitulo"></span><span class="hueso carga-texto"></span><span class="hueso carga-fila"></span><span class="hueso carga-fila"></span><span class="hueso carga-fila"></span></div>
+            <div class="panel carga-panel"><span class="hueso carga-subtitulo"></span><span class="hueso carga-texto"></span><span class="hueso carga-fila"></span><span class="hueso carga-fila"></span></div>
+          </div>
+        </div>
+      </div>
+      <section class="panel error-carga" id="error-carga" aria-labelledby="error-titulo" hidden>
+        <h1 id="error-titulo">El laboratorio no pudo cargar</h1>
+        <p>Vuelve a abrir la página para intentar de nuevo.</p>
+        <a class="boton primario" href="./">Recargar el laboratorio</a>
+      </section>
+      <section class="hero" id="encabezado" aria-labelledby="paso-titulo" hidden>
         <div class="hero-contenido">
           <p class="progreso" id="progreso">Paso 1 de 4</p>
           <h1 id="paso-titulo" tabindex="-1">Modelo de datos</h1>
@@ -44,7 +88,7 @@
       </section>
       <p class="aviso global" id="aviso" role="status" aria-live="polite" hidden></p>
 
-      <section id="modelo" class="pantalla" aria-label="Modelo de datos">
+      <section id="modelo" class="pantalla" aria-label="Modelo de datos" hidden>
         <dl class="indicadores" aria-label="Resumen de la base de práctica">
           <div><dt>Tablas relacionadas</dt><dd id="cantidad-tablas">13</dd></div>
           <div><dt>Productos de la carta</dt><dd id="cantidad-productos">38</dd></div>
@@ -118,7 +162,7 @@
         </div>
       </section>
 
-      <footer class="pie-pasos">
+      <footer class="pie-pasos" id="pie-pasos" hidden>
         <button class="boton secundario" type="button" id="anterior"><span class="icono" aria-hidden="true">chevron_left</span>Anterior</button>
         <span id="paso-pie">Modelo</span>
         <button class="boton primario" type="button" id="siguiente">Siguiente<span class="icono" aria-hidden="true">chevron_right</span></button>

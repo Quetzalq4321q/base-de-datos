@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"error-container":"#93000a","secondary-fixed-dim":"#b5c4ff","inverse-primary":"#0d44fc","on-primary-container":"#d7dbff","primary":"#bac3ff","on-tertiary-fixed-variant":"#364571","on-surface":"#dbe2f8","on-tertiary":"#1f2e59","on-primary-fixed":"#00115a","inverse-on-surface":"#293041","surface-bright":"#31394a","error":"#ffb4ab","surface-container":"#18202f","secondary":"#b5c4ff","secondary-fixed":"#dce1ff","primary-fixed":"#dee1ff","on-tertiary-fixed":"#071943","tertiary-fixed-dim":"#b6c5f9","on-secondary-fixed":"#00164e","outline":"#8e8fa3","on-primary":"#00208e","surface-tint":"#bac3ff","surface-dim":"#0b1322","on-tertiary-container":"#d4dcff","on-secondary-fixed-variant":"#2f4382","on-surface-variant":"#c4c5da","primary-container":"#1648ff","secondary-container":"#2f4382","surface-variant":"#2d3545","surface":"#0b1322","primary-fixed-dim":"#bac3ff","tertiary":"#b6c5f9","tertiary-container":"#51608e","surface-container-lowest":"#060e1d","surface-container-low":"#141c2b","surface-container-high":"#222a3a","on-primary-fixed-variant":"#0031c6","on-background":"#dbe2f8","outline-variant":"#434657","on-secondary":"#162c6a","surface-container-highest":"#2d3545","inverse-surface":"#dbe2f8","on-error":"#690005","background":"#0b1322","on-error-container":"#ffdad6","on-secondary-container":"#9fb2f9","tertiary-fixed":"#dbe1ff"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-xs":"0.25rem","space-xl":"1.5rem","margin":"1rem","gutter-desktop":"1.5rem","gutter":"1rem","margin-desktop":"1.5rem","space-sm":"0.5rem","space-lg":"1rem","space-md":"0.75rem"},"fontFamily":{"code-sm":["JetBrains Mono"],"headline-sm":["Manrope"],"code-md":["JetBrains Mono"],"headline-xl-mobile":["Manrope"],"headline-xl":["Manrope"],"code-lg":["JetBrains Mono"],"headline-lg":["Manrope"],"headline-md":["Manrope"],"label-md":["Inter"],"body-sm":["Inter"],"label-sm":["JetBrains Mono"],"body-lg":["Inter"],"body-md":["Inter"]},"fontSize":{"code-sm":["11px",{"lineHeight":"16px","fontWeight":"400"}],"headline-sm":["16px",{"lineHeight":"24px","fontWeight":"700"}],"code-md":["13px",{"lineHeight":"20px","fontWeight":"400"}],"headline-xl-mobile":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"800"}],"headline-xl":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"800"}],"code-lg":["14px",{"lineHeight":"22px","fontWeight":"500"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"700"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"label-sm":["10px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}]}}}</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 h-16 z-50 bg-surface-container-low border-b border-outline-variant"><div class="w-full h-full px-space-xl flex items-center justify-between"><div class="flex items-center gap-space-md"><div class="flex items-center justify-center w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant text-primary"><span class="material-symbols-outlined text-[20px]">database</span></div><div class="flex items-baseline gap-space-sm"><span class="font-headline-sm text-headline-sm text-on-surface">Red Pepper</span><span class="hidden sm:inline font-code-sm text-code-sm text-on-surface-variant">Laboratorio de base de datos (/basededatos/)</span></div></div><div class="flex items-center gap-space-md"><button aria-label="Modo claro" class="flex items-center gap-space-xs px-space-sm py-1 rounded-lg bg-surface-container-high border border-outline-variant text-primary hover:border-primary transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">light_mode</span><span class="font-label-sm text-label-sm hidden md:inline">Modo claro</span></button><a class="flex items-center gap-space-xs px-space-md py-1 rounded-lg border border-outline-variant text-on-surface hover:border-primary hover:text-on-surface transition-colors" data-path="informe-tecnico" href="#"><span class="material-symbols-outlined text-[16px]">description</span><span class="font-label-md text-label-md">Informe técnico</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-72 bg-surface-container-low border-r border-outline-variant z-40 flex flex-col justify-between p-space-md"><div class="flex flex-col gap-space-md"><div class="px-space-sm pt-space-xs"><span class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">PASOS DEL LABORATORIO</span></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary font-bold"><a class="group flex flex-col p-space-sm rounded-full text-on-surface-variant hover:bg-secondary-container hover:text-on-surface transition-colors" data-path="modelo-ddl" href="#"><div class="flex items-center gap-space-sm"><span class="font-code-sm text-code-sm font-semibold">01</span><span class="font-label-md text-label-md text-on-surface">Modelo</span></div><span class="font-body-sm text-body-sm text-on-surface-variant pl-space-lg">Entidad-Relación y DDL</span></a><a aria-current="page" class="group flex flex-col p-space-sm rounded-full transition-colors bg-primary-container text-on-primary font-bold" data-path="explorar-tablas" href="#"><div class="flex items-center gap-space-sm"><span class="font-code-sm text-code-sm font-semibold">02</span><span class="font-label-md text-label-md text-on-surface">Explorar tablas</span></div><span class="font-body-sm text-body-sm text-on-surface-variant pl-space-lg">Estructura y registros</span></a><a class="group flex flex-col p-space-sm rounded-full text-on-surface-variant hover:bg-secondary-container hover:text-on-surface transition-colors" data-path="editar-pedidos" href="#"><div class="flex items-center gap-space-sm"><span class="font-code-sm text-code-sm font-semibold">03</span><span class="font-label-md text-label-md text-on-surface">Editar pedidos</span></div><span class="font-body-sm text-body-sm text-on-surface-variant pl-space-lg">Operaciones DML</span></a><a class="group flex flex-col p-space-sm rounded-full text-on-surface-variant hover:bg-secondary-container hover:text-on-surface transition-colors" data-path="comprobantes-pagos" href="#"><div class="flex items-center gap-space-sm"><span class="font-code-sm text-code-sm font-semibold">04</span><span class="font-label-md text-label-md text-on-surface">Comprobantes y pagos</span></div><span class="font-body-sm text-body-sm text-on-surface-variant pl-space-lg">Consistencia transaccional</span></a></nav></div><div class="p-space-sm bg-surface-container rounded-full border border-outline-variant flex flex-col gap-space-sm"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Recorrido</span><span class="font-code-sm text-code-sm text-primary">Paso interactivo</span></div><div class="flex items-center gap-space-xs"><button class="flex-1 flex items-center justify-center gap-space-xs py-1 rounded-lg border border-outline-variant bg-surface-container-high text-on-surface-variant hover:border-primary hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">chevron_left</span><span class="font-label-sm text-label-sm">Anterior</span></button><button class="flex-1 flex items-center justify-center gap-space-xs py-1 rounded-lg border border-outline-variant bg-surface-container-high text-on-surface-variant hover:border-primary hover:text-on-surface transition-colors" type="button"><span class="font-label-sm text-label-sm">Siguiente</span><span class="material-symbols-outlined text-[16px]">chevron_right</span></button></div></div></aside><div class="pl-72"><main class="w-full min-h-screen pt-16 px-space-xl pb-space-xl bg-surface"><div class="flex flex-col w-full text-on-surface">
+<!-- 1. Encabezado de página -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-space-lg mb-space-xl">
+<div class="flex flex-col gap-space-xs max-w-3xl">
+<div class="flex items-center gap-space-sm mb-1">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-secondary bg-surface-container-high border border-outline-variant font-code-sm text-code-sm font-semibold tracking-wider">
+          PASO 02 • CATÁLOGO RELACIONAL
+        </span>
+<span class="inline-flex items-center gap-1 font-code-sm text-code-sm text-outline">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          Cluster sincronizado
+        </span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">
+        Explorar tablas del sistema
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Consulta las 13 tablas relacionales del catálogo de Red Pepper con claves foráneas e importes tabulares.
+      </p>
+</div>
+<!-- Bloque superior derecho: Estado de conexión y accesos -->
+<div class="flex items-center gap-space-md shrink-0">
+<div class="flex items-center gap-space-sm bg-surface-container border border-outline-variant rounded px-space-md py-space-sm shadow-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">database</span>
+<div class="flex flex-col">
+<span class="font-code-sm text-code-sm text-on-surface font-medium leading-none">PostgreSQL 16.2</span>
+<span class="font-code-sm text-[10px] text-outline leading-none mt-1">pool_active: 8/20 conn</span>
+</div>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm bg-surface-container-low border border-outline-variant hover:border-primary text-on-surface rounded font-label-md text-label-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span class="material-symbols-outlined text-primary text-[18px]">schema</span>
+<span>Esquema SQL</span>
+</button>
+</div>
+</section>
+<!-- 2. Fila de métricas e indicadores de laboratorio (con esqueleto neutral) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-xl">
+<div class="bg-surface-container border border-outline-variant rounded p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md uppercase tracking-wider">Tablas activas</span>
+<span class="material-symbols-outlined text-[18px] text-outline">table_chart</span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">13</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">tablas</span>
+</div>
+<span class="font-code-sm text-[10px] text-outline mt-space-xs font-mono">esquema: public (100% migrado)</span>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md uppercase tracking-wider">Productos en carta</span>
+<span class="material-symbols-outlined text-[18px] text-outline">restaurant_menu</span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">38</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">productos</span>
+</div>
+<span class="font-code-sm text-[10px] text-outline mt-space-xs font-mono">6 categorías gastronómicas</span>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md uppercase tracking-wider">Comprobantes de prueba</span>
+<span class="material-symbols-outlined text-[18px] text-outline">receipt_long</span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">100</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">registros</span>
+</div>
+<span class="font-code-sm text-[10px] text-outline mt-space-xs font-mono">boletas &amp; facturas validadas</span>
+</div>
+<!-- Indicador de buffers / esqueleto neutral -->
+<div class="bg-surface-container border border-outline-variant rounded p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-secondary">Sincronizando índices...</span>
+</div>
+<button class="font-code-sm text-code-sm text-primary hover:underline focus:outline-none focus:ring-1 focus:ring-primary" type="button">
+          Recargar estado
+        </button>
+</div>
+<!-- Bloques de esqueleto en color sólido neutral #30405F sin gradientes -->
+<div class="flex flex-col gap-2 my-1">
+<div class="w-full h-2.5 bg-surface-container-highest rounded"></div>
+<div class="w-3/4 h-2 bg-surface-container-highest rounded"></div>
+</div>
+<div class="flex justify-between items-center text-outline font-code-sm text-[10px]">
+<span>WAL buffer write 94%</span>
+<span>0.14 ms sync</span>
+</div>
+</div>
+</section>
+<!-- 3. Selector de tablas disponibles (13 tablas) -->
+<section class="bg-surface-container border border-outline-variant rounded p-space-md mb-space-xl">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-outline text-[18px]">view_column</span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Catálogo de Entidades (13 tablas relacionales)</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary">Esquema: public</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<!-- Tabla Activa -->
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-primary-container text-on-primary font-code-sm text-code-sm font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span class="material-symbols-outlined text-[14px]">check</span>
+<span>productos</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-lowest text-primary font-mono text-[10px]">38</span>
+</button>
+<!-- Tablas Inactivas -->
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>clientes</span>
+<span class="text-outline text-[10px]">48</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>mesas</span>
+<span class="text-outline text-[10px]">24</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>pedidos</span>
+<span class="text-outline text-[10px]">112</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>detalle_pedidos</span>
+<span class="text-outline text-[10px]">340</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>comprobantes</span>
+<span class="text-outline text-[10px]">100</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>pagos</span>
+<span class="text-outline text-[10px]">120</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>categorias</span>
+<span class="text-outline text-[10px]">6</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>comprobante_pagos</span>
+<span class="text-outline text-[10px]">100</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>mozos</span>
+<span class="text-outline text-[10px]">8</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>turnos</span>
+<span class="text-outline text-[10px]">3</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>cajas</span>
+<span class="text-outline text-[10px]">2</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span>auditoria_pedidos</span>
+<span class="text-outline text-[10px]">210</span>
+</button>
+</div>
+</section>
+<!-- 4. Inspector rápido de tabla seleccionada ('productos') -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-xl">
+<div class="bg-surface-container border border-outline-variant rounded-xl p-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Clave Primaria</span>
+<span class="material-symbols-outlined text-primary text-[20px]">key</span>
+</div>
+<div class="font-code-lg text-code-lg font-bold text-on-surface font-mono">id_producto</div>
+<div class="font-code-sm text-code-sm text-outline mt-1 font-mono">VARCHAR(10) PK NOT NULL</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Clave Foránea</span>
+<span class="material-symbols-outlined text-primary text-[20px]">link</span>
+</div>
+<div class="font-code-lg text-code-lg font-bold text-primary font-mono truncate">id_categoria → categorias</div>
+<div class="font-code-sm text-code-sm text-outline mt-1 font-mono">REFERENCES public.categorias(id)</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Moneda y Precisión</span>
+<span class="material-symbols-outlined text-primary text-[20px]">payments</span>
+</div>
+<div class="font-code-lg text-code-lg font-bold text-on-surface font-mono">PEN (S/)</div>
+<div class="font-code-sm text-code-sm text-outline mt-1 font-mono">precio NUMERIC(10, 2) CHECK &gt; 0</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Regla de Integridad</span>
+<span class="material-symbols-outlined text-primary text-[20px]">shield</span>
+</div>
+<div class="font-code-lg text-code-lg font-bold text-on-surface font-mono">ON DELETE RESTRICT</div>
+<div class="font-code-sm text-code-sm text-outline mt-1 font-mono">ON UPDATE CASCADE</div>
+</div>
+</section>
+<!-- 5. Barra de búsqueda y filtros -->
+<section class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-space-md mb-space-md">
+<div class="flex flex-1 items-center gap-space-sm max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
+<input class="w-full h-9 pl-9 pr-space-md bg-surface border border-outline-variant rounded text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Buscar por ID, nombre o SKU..." type="text"/>
+</div>
+<div class="relative shrink-0">
+<select class="h-9 px-space-md pr-8 bg-surface border border-outline-variant rounded text-on-surface font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+<option>Todas las Categorías</option>
+<option>CAT_01 · Salchipapas</option>
+<option>CAT_02 · Bebidas</option>
+<option>CAT_03 · Hamburguesas</option>
+<option>CAT_04 · Empanadas</option>
+<option>CAT_05 · Guarniciones</option>
+<option>CAT_06 · Postres</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 pointer-events-none text-outline text-[18px]">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="h-9 px-space-md bg-surface-container border border-outline-variant hover:border-primary text-on-surface rounded font-label-md text-label-md flex items-center gap-space-xs transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">refresh</span>
+<span>Refrescar datos</span>
+</button>
+<button class="h-9 px-space-md bg-surface-container border border-outline-variant hover:border-primary text-on-surface-variant hover:text-on-surface rounded font-label-md text-label-md flex items-center gap-space-xs transition-colors focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span class="material-symbols-outlined text-[16px]">view_column</span>
+<span>Columnas</span>
+</button>
+</div>
+</section>
+<!-- 6. Tabla de datos relacionales (carta peruana de Red Pepper) -->
+<section class="bg-surface-container border border-outline-variant rounded overflow-hidden shadow-sm mb-space-xl">
+<div class="overflow-x-auto">
+<table class="w-full border-collapse text-left">
+<thead>
+<tr class="bg-surface border-b border-outline-variant">
+<th class="py-3 px-space-md font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-semibold">PK / ID</th>
+<th class="py-3 px-space-md font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-semibold">Descripción del Producto</th>
+<th class="py-3 px-space-md font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-semibold">FK / Categoría</th>
+<th class="py-3 px-space-md font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-semibold">Stock</th>
+<th class="py-3 px-space-md font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-semibold">Estado</th>
+<th class="py-3 px-space-md font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-semibold text-right">Precio Unitario</th>
+<th class="py-3 px-space-md font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-semibold text-center">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/60 font-body-md text-body-md">
+<!-- Fila 1 -->
+<tr class="hover:bg-secondary-container/40 transition-colors group">
+<td class="py-3 px-space-md font-code-sm text-code-sm font-semibold text-primary font-mono whitespace-nowrap">PROD_001</td>
+<td class="py-3 px-space-md">
+<div class="font-semibold text-on-surface">Salchipapa clásica</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-md">Papas nativas + frankfurter artesanal</div>
+</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm font-mono text-secondary whitespace-nowrap">CAT_01 · Salchipapas</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm text-on-surface whitespace-nowrap">45 und</td>
+<td class="py-3 px-space-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-code-sm bg-surface-container-high border border-outline-variant text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>Activo
+              </span>
+</td>
+<td class="py-3 px-space-md font-code-md text-code-md text-right font-mono font-medium text-on-surface whitespace-nowrap">S/ 8.00</td>
+<td class="py-3 px-space-md text-center whitespace-nowrap">
+<button class="p-1 rounded text-outline hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary" title="Editar registro" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</td>
+</tr>
+<!-- Fila 2 -->
+<tr class="hover:bg-secondary-container/40 transition-colors group">
+<td class="py-3 px-space-md font-code-sm text-code-sm font-semibold text-primary font-mono whitespace-nowrap">PROD_002</td>
+<td class="py-3 px-space-md">
+<div class="font-semibold text-on-surface">Jugo de Maracuyá 500ml</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-md">Fruta fresca pulpa natural embotellada</div>
+</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm font-mono text-secondary whitespace-nowrap">CAT_02 · Bebidas</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm text-on-surface whitespace-nowrap">80 und</td>
+<td class="py-3 px-space-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-code-sm bg-surface-container-high border border-outline-variant text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>Activo
+              </span>
+</td>
+<td class="py-3 px-space-md font-code-md text-code-md text-right font-mono font-medium text-on-surface whitespace-nowrap">S/ 3.00</td>
+<td class="py-3 px-space-md text-center whitespace-nowrap">
+<button class="p-1 rounded text-outline hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary" title="Editar registro" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</td>
+</tr>
+<!-- Fila 3 -->
+<tr class="hover:bg-secondary-container/40 transition-colors group">
+<td class="py-3 px-space-md font-code-sm text-code-sm font-semibold text-primary font-mono whitespace-nowrap">PROD_003</td>
+<td class="py-3 px-space-md">
+<div class="font-semibold text-on-surface">Hamburguesa simple</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-md">Carne de res 120g, lechuga y tomate</div>
+</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm font-mono text-secondary whitespace-nowrap">CAT_03 · Hamburguesas</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm text-on-surface whitespace-nowrap">32 und</td>
+<td class="py-3 px-space-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-code-sm bg-surface-container-high border border-outline-variant text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>Activo
+              </span>
+</td>
+<td class="py-3 px-space-md font-code-md text-code-md text-right font-mono font-medium text-on-surface whitespace-nowrap">S/ 10.00</td>
+<td class="py-3 px-space-md text-center whitespace-nowrap">
+<button class="p-1 rounded text-outline hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary" title="Editar registro" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</td>
+</tr>
+<!-- Fila 4 -->
+<tr class="hover:bg-secondary-container/40 transition-colors group">
+<td class="py-3 px-space-md font-code-sm text-code-sm font-semibold text-primary font-mono whitespace-nowrap">PROD_004</td>
+<td class="py-3 px-space-md">
+<div class="font-semibold text-on-surface">Empanada de carne</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-md">Masa horneada, relleno criollo tradicional</div>
+</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm font-mono text-secondary whitespace-nowrap">CAT_04 · Empanadas</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm text-on-surface whitespace-nowrap">19 und</td>
+<td class="py-3 px-space-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-code-sm bg-surface-container-high border border-outline-variant text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>Activo
+              </span>
+</td>
+<td class="py-3 px-space-md font-code-md text-code-md text-right font-mono font-medium text-on-surface whitespace-nowrap">S/ 4.50</td>
+<td class="py-3 px-space-md text-center whitespace-nowrap">
+<button class="p-1 rounded text-outline hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary" title="Editar registro" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</td>
+</tr>
+<!-- Fila 5 -->
+<tr class="hover:bg-secondary-container/40 transition-colors group">
+<td class="py-3 px-space-md font-code-sm text-code-sm font-semibold text-primary font-mono whitespace-nowrap">PROD_005</td>
+<td class="py-3 px-space-md">
+<div class="font-semibold text-on-surface">Salchipapa Royal</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-md">Papas nativas, salchicha, huevo frito y queso</div>
+</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm font-mono text-secondary whitespace-nowrap">CAT_01 · Salchipapas</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm text-on-surface whitespace-nowrap">22 und</td>
+<td class="py-3 px-space-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-code-sm bg-surface-container-high border border-outline-variant text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>Activo
+              </span>
+</td>
+<td class="py-3 px-space-md font-code-md text-code-md text-right font-mono font-medium text-on-surface whitespace-nowrap">S/ 12.50</td>
+<td class="py-3 px-space-md text-center whitespace-nowrap">
+<button class="p-1 rounded text-outline hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary" title="Editar registro" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</td>
+</tr>
+<!-- Fila 6 -->
+<tr class="hover:bg-secondary-container/40 transition-colors group">
+<td class="py-3 px-space-md font-code-sm text-code-sm font-semibold text-primary font-mono whitespace-nowrap">PROD_006</td>
+<td class="py-3 px-space-md">
+<div class="font-semibold text-on-surface">Chicha Morada Clásica</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-md">Maíz morado con piña, manzana y canela</div>
+</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm font-mono text-secondary whitespace-nowrap">CAT_02 · Bebidas</td>
+<td class="py-3 px-space-md font-code-sm text-code-sm text-on-surface whitespace-nowrap">64 und</td>
+<td class="py-3 px-space-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-code-sm bg-surface-container-high border border-outline-variant text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>Activo
+              </span>
+</td>
+<td class="py-3 px-space-md font-code-md text-code-md text-right font-mono font-medium text-on-surface whitespace-nowrap">S/ 3.50</td>
+<td class="py-3 px-space-md text-center whitespace-nowrap">
+<button class="p-1 rounded text-outline hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary" title="Editar registro" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Paginación y ejecución SQL -->
+<div class="p-space-sm bg-surface border-t border-outline-variant flex flex-col md:flex-row items-center justify-between gap-space-sm">
+<div class="font-code-sm text-code-sm text-outline flex items-center gap-space-xs font-mono">
+<span class="text-on-surface-variant">Mostrando 1-10 de 38 registros</span>
+<span>•</span>
+<span class="text-primary truncate">SELECT * FROM productos LIMIT 10 OFFSET 0;</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="p-1 rounded border border-outline-variant text-outline opacity-40 cursor-not-allowed" disabled="" type="button">
+<span class="material-symbols-outlined text-[16px]">first_page</span>
+</button>
+<button class="p-1 rounded border border-outline-variant text-outline opacity-40 cursor-not-allowed" disabled="" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<span class="px-space-sm font-code-sm text-code-sm text-on-surface font-mono">1 / 4</span>
+<button class="p-1 rounded border border-outline-variant text-on-surface hover:border-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+<button class="p-1 rounded border border-outline-variant text-on-surface hover:border-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary" type="button">
+<span class="material-symbols-outlined text-[16px]">last_page</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 7. Barra inferior de navegación de pasos -->
+<section class="flex items-center justify-between pt-space-md border-t border-outline-variant">
+<a class="flex items-center gap-space-xs px-space-lg py-space-sm rounded bg-surface-container border border-outline-variant hover:border-primary text-on-surface font-label-md text-label-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary" data-path="modelo-ddl" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Anterior: Modelo</span>
+</a>
+<a class="flex items-center gap-space-xs px-space-lg py-space-sm rounded bg-primary-container hover:bg-primary-container/90 text-on-primary font-label-md text-label-md font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" data-path="editar-pedidos" href="#">
+<span>Siguiente: Editar pedidos</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</section>
+</div></main></div></body></html>
