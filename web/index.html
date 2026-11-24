@@ -21,10 +21,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&amp;display=block">
-  <link rel="stylesheet" href="estilos.css?v=20261124d">
+  <link rel="stylesheet" href="estilos.css?v=20261124e">
   <script type="module">
     try {
-      await import('./inicio.js?v=20261124d');
+      await import('./inicio.js?v=20261124e');
     } catch (error) {
       document.documentElement.classList.remove('preparando');
       document.getElementById('laboratorio').removeAttribute('aria-busy');
@@ -49,7 +49,7 @@
     <aside class="navegacion" aria-label="Recorrido del laboratorio">
       <nav class="pasos" id="pasos" aria-label="Diapositivas del laboratorio" inert>
         <button class="paso" type="button" data-paso aria-controls="guia" aria-current="step"><span class="icono" aria-hidden="true">route</span><span>Guía de ventas</span></button>
-        <button class="paso" type="button" data-paso aria-controls="modelo"><span class="icono" aria-hidden="true">account_tree</span><span>Modelo</span></button>
+        <button class="paso" type="button" data-paso aria-controls="modelo"><span class="icono" aria-hidden="true">account_tree</span><span>Modelo entidad–relación</span></button>
         <button class="paso" type="button" data-paso aria-controls="tablas"><span class="icono" aria-hidden="true">table_view</span><span>Explorar tablas</span></button>
         <button class="paso" type="button" data-paso aria-controls="editar"><span class="icono" aria-hidden="true">edit_note</span><span>Editar pedidos</span></button>
         <button class="paso" type="button" data-paso aria-controls="resumen"><span class="icono" aria-hidden="true">summarize</span><span>Resumen del pedido</span></button>
@@ -109,19 +109,16 @@
         </div>
       </section>
 
-      <section id="modelo" class="pantalla" aria-label="Modelo de datos" hidden>
-        <dl class="indicadores" aria-label="Resumen de la base de práctica">
-          <div><dt>Tablas relacionadas</dt><dd id="cantidad-tablas">8</dd></div>
-          <div><dt>Productos de la carta</dt><dd id="cantidad-productos">38</dd></div>
-          <div><dt>Pedidos entregados</dt><dd id="cantidad-ventas">100</dd></div>
-        </dl>
+      <section id="modelo" class="pantalla" aria-label="Modelo entidad–relación" hidden>
         <div class="modelo-grid">
           <article class="panel">
-            <div class="panel-cabeza"><h2>Recorrido de una venta</h2><p>Selecciona una entidad para ver sus claves y relaciones.</p></div>
-            <div class="mapa" id="mapa"></div>
+            <div class="panel-cabeza"><h2>Diagrama de relaciones</h2><p>Selecciona una entidad para ver sus campos. Cada conexión indica la clave foránea y cuántas filas pueden enlazarse.</p></div>
+            <ul class="mapa" id="mapa" aria-label="Relaciones entre entidades"></ul>
+            <p class="leyenda-modelo">Cada producto pertenece a un solo subtipo entre snacks, bebidas y hamburguesas.</p>
           </article>
-          <article class="panel inspector" id="inspector" aria-label="Inspector de tabla"></article>
+          <article class="panel inspector" id="inspector" aria-label="Campos de la entidad seleccionada"></article>
         </div>
+        <p class="leyenda-modelo"><strong>PK</strong> clave primaria · <strong>FK</strong> clave foránea · <strong>0..N</strong> cero o muchas filas · <strong>0..1</strong> cero o una fila</p>
       </section>
 
       <section id="tablas" class="pantalla" aria-label="Explorar tablas" hidden>

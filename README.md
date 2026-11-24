@@ -3,6 +3,7 @@
 Laboratorio de base de datos para la carta de Red Pepper y el recorrido de sus pedidos. El informe documenta la normalización, el catálogo, la instalación y los resultados.
 
 - [Tablas y relaciones](#tablas-y-relaciones)
+- [Guía paso a paso y comandos](#paso-a-paso)
 - [Informe técnico](informe/informe_red_pepper.pdf)
 - [Excel de los 100 pedidos de muestra](outputs/red-pepper/ventas_red_pepper.xlsx)
 - [Portal de demostración](https://nexlabsgroup.com/basededatos/)
@@ -11,90 +12,83 @@ Laboratorio de base de datos para la carta de Red Pepper y el recorrido de sus p
 
 ## Tablas y relaciones
 
-El esquema `salchipaperia` tiene ocho tablas. **PK** identifica la clave primaria, **FK** marca una clave foránea y **UK** indica una restricción de unicidad.
+El [modelo entidad–relación](MODELO_ENTIDAD_RELACION.md) reúne el diagrama de las ocho tablas, las claves y las cardinalidades. También puedes abrir el [modelo interactivo del portal](https://nexlabsgroup.com/basededatos/#modelo).
 
-```mermaid
-erDiagram
-    clientes ||..o{ pedidos : realiza
-    pedidos ||--o{ detalle_pedido : contiene
-    productos ||--o{ detalle_pedido : aparece_en
-    categorias ||..o{ productos : agrupa
-    productos ||--o| snacks : clasifica_como
-    productos ||--o| bebidas : clasifica_como
-    productos ||--o| hamburguesas : clasifica_como
+## Paso a paso
 
-    clientes {
-        bigint id_cliente PK
-        varchar nombres
-        varchar apellidos
-    }
-    pedidos {
-        bigint id_pedido PK
-        bigint id_cliente FK
-        timestamptz fecha_pedido
-        text tipo_pedido
-        text estado
-    }
-    detalle_pedido {
-        bigint id_pedido PK, FK
-        bigint id_producto PK, FK
-        integer cantidad
-        numeric precio_unitario
-    }
-    productos {
-        bigint id_producto PK
-        varchar id_categoria FK
-        varchar nombre
-        numeric precio
-        boolean disponible
-    }
-    categorias {
-        varchar id_categoria PK
-        varchar nombre UK
-        varchar descripcion
-    }
-    snacks {
-        bigint id_producto PK, FK
-        varchar porcion
-        boolean incluye_cremas
-    }
-    bebidas {
-        bigint id_producto PK, FK
-        text tipo_bebida
-        varchar envase
-    }
-    hamburguesas {
-        bigint id_producto PK, FK
-        text tipo_carne
-        boolean incluye_papas
-    }
-```
+### 1. Clonar el repositorio
 
-- Cada pedido corresponde a un cliente y puede tener varias líneas. `detalle_pedido` conecta pedidos y productos. Su clave compuesta permite una fila por producto en cada pedido.
-- Cada producto pertenece a una categoría. La combinación `id_categoria` y `nombre` es única en `productos`.
-- Cada producto tiene exactamente un subtipo. Las tres relaciones opcionales del diagrama son excluyentes entre `snacks`, `bebidas` y `hamburguesas`.
-
-Puedes seleccionar una entidad para ver sus claves y abrir sus filas en el [modelo interactivo](https://nexlabsgroup.com/basededatos/#modelo). El archivo [de consultas para DataGrip](sql/07_validar_datagrip.sql) incluye el inventario de tablas y ejemplos de detalle y totales.
-
-## 1. Base de datos
-
-Para reproducir el esquema y la muestra desde cero, ejecutar desde la raíz del repositorio en una base de pruebas vacía. Los primeros scripts recrean la carga histórica. La migración `10` produce el esquema vigente.
+El repositorio es privado. Usa una cuenta de GitHub con acceso y ejecuta estos comandos en PowerShell o en una terminal con Git.
 
 ```sh
-psql -X -v ON_ERROR_STOP=1 -f sql/01_modelo.sql
-psql -X -v ON_ERROR_STOP=1 -f sql/02_datos_demo.sql
-psql -X -v ON_ERROR_STOP=1 -f sql/03_consultas.sql
-psql -X -v ON_ERROR_STOP=1 -f sql/04_pruebas.sql
-psql -X -v ON_ERROR_STOP=1 -f sql/06_catalogo_y_ventas.sql
-psql -X -v ON_ERROR_STOP=1 -f sql/08_nombres_ficticios.sql
-psql -X -v ON_ERROR_STOP=1 -f sql/09_presentaciones_y_celulares.sql
-psql -X -v ON_ERROR_STOP=1 -f sql/10_simplificar_pedidos.sql
-psql -X -v ON_ERROR_STOP=1 -f sql/07_validar_datagrip.sql
+git clone https://github.com/Quetzalq4321q/base-de-datos.git
+cd base-de-datos
 ```
 
-`psql` usa los parámetros de conexión del entorno. Para Supabase, tomar host, usuario y puerto de **Connect**, descargar su CA desde **Database Settings** y usar `sslmode=verify-full`. En un esquema original que ya contiene la muestra y las correcciones hasta `09`, respaldar primero `salchipaperia` y aplicar solo `10`. La migración se ejecuta como una transacción. El script `07` se puede ejecutar por bloques después de migrar.
+Si ya lo clonaste, ejecuta este comando dentro del proyecto para traer los cambios.
 
-### Resultados en PostgreSQL local y Supabase
+```sh
+git pull --ff-only
+```
+
+### 2. Abrir el portal en tu equipo
+
+Desde la carpeta del proyecto, inicia el servidor con Python 3.
+
+```sh
+python -m http.server 8000 --bind 127.0.0.1 --directory web
+```
+
+En Windows también puedes usar `py -3` en lugar de `python`. Abre la [guía local](http://127.0.0.1:8000/) o el [modelo entidad–relación local](http://127.0.0.1:8000/#modelo). Para detener el servidor pulsa Ctrl+C.
+
+### 3. Crear una base local de prueba
+
+Con PostgreSQL iniciado y las herramientas `createdb` y `psql` instaladas, crea una base nueva. Usa tu usuario de PostgreSQL si es distinto de `postgres`.
+
+```sh
+createdb -h localhost -U postgres red_pepper_prueba
+psql -X -h localhost -U postgres -d red_pepper_prueba -v ON_ERROR_STOP=1
+```
+
+Dentro de `psql`, ejecuta los siguientes comandos desde la carpeta del proyecto. Los primeros scripts preparan la muestra y el `10` deja el esquema vigente.
+
+```text
+\encoding UTF8
+\i sql/01_modelo.sql
+\i sql/02_datos_demo.sql
+\i sql/03_consultas.sql
+\i sql/04_pruebas.sql
+\i sql/06_catalogo_y_ventas.sql
+\i sql/08_nombres_ficticios.sql
+\i sql/09_presentaciones_y_celulares.sql
+\i sql/10_simplificar_pedidos.sql
+\i sql/07_validar_datagrip.sql
+```
+
+Para actualizar una copia histórica que ya tiene las cargas hasta `09`, respalda `salchipaperia` y ejecuta solo `10` antes de consultar con `07`.
+
+### 4. Consultar tablas y relaciones
+
+En `psql`, `\dt` lista las tablas y `\d` muestra las columnas y claves de una tabla.
+
+```text
+\dt salchipaperia.*
+\d salchipaperia.detalle_pedido
+\q
+```
+
+En **DataGrip**, abre la conexión a Supabase, selecciona el esquema `salchipaperia` y sincronízalo. Ejecuta en la consola SQL la consulta de inventario.
+
+```sql
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'salchipaperia' AND table_type = 'BASE TABLE'
+ORDER BY table_name;
+```
+
+Ejecuta por bloques [07_validar_datagrip.sql](sql/07_validar_datagrip.sql) para ver el catálogo, las líneas y el total de los pedidos. La base de Supabase ya contiene el esquema vigente. Para configurar una conexión nueva, toma el host, el usuario y el puerto de **Connect** y usa la CA descargada de **Database Settings** con `sslmode=verify-full`.
+
+## Resultados en PostgreSQL local y Supabase
 
 | Muestra | Productos de carta | Pedidos | Líneas | Importe |
 | --- | ---: | ---: | ---: | ---: |
@@ -106,11 +100,7 @@ La carta aporta los precios de venta sin membresía. El total se calcula multipl
 
 El Excel enlaza las hojas Ventas y Detalle por su código de muestra y la hoja Clientes por el identificador interno de cada cliente. Sus códigos de pedido identifican filas de la muestra de Excel. DataGrip usa la identidad de cada pedido de PostgreSQL.
 
-### Ver el esquema en DataGrip
-
-En **Database Explorer**, seleccionar la conexión Supabase de NexLabs y sincronizar `salchipaperia`. La base es `postgres`. Abrir una consola y ejecutar `sql/07_validar_datagrip.sql` por bloques. La consulta de inventario devuelve ocho tablas. El bloque de la muestra devuelve 100 pedidos, 186 líneas y S/ 2,303.50. Las consultas de detalle y total usan las tablas directamente.
-
-## 2. Portal en cPanel
+## Portal en cPanel
 
 El directorio público es `public_html/basededatos`. Publicar allí los archivos de `web/`, incluido `.htaccess`, y una copia de `informe/informe_red_pepper.pdf` con el nombre `informe-red-pepper.pdf`. Las rutas de navegación son `/basededatos/` y `/basededatos/informe`. La interfaz puede abrirse en un servidor estático local desde la carpeta `web`. La ruta del informe utiliza el rewrite de Apache o LiteSpeed.
 
@@ -120,13 +110,14 @@ La cabecera permite alternar entre tema claro y oscuro. El portal sigue la prefe
 
 El recorrido abre en **Guía de ventas**. Las tarjetas muestran el cliente, el pedido, el detalle y su total. Para practicar, pulsa **Nuevo pedido**, elige cliente y modalidad, agrega un producto y edita su cantidad. El panel **Qué cambió en los datos** compara las filas antes y después de la última operación. Puedes mover una línea, borrarla o deshacer el último cambio durante la sesión.
 
-**Modelo** explica las relaciones de las ocho tablas. **Explorar tablas** permite buscar y seguir claves foráneas. **Editar pedidos** permite cambiar los datos de una comanda, sus líneas y su estado. **Resumen del pedido** muestra las unidades y el total. En el directorio `diseno/stitch/` se conserva el diseño histórico.
+**Modelo entidad–relación** muestra los campos, claves y cardinalidades de las ocho tablas. **Explorar tablas** permite buscar y seguir claves foráneas. **Editar pedidos** permite cambiar los datos de una comanda, sus líneas y su estado. **Resumen del pedido** muestra las unidades y el total. En `diseno/stitch/` se conserva el diseño histórico.
 
-## 3. Archivos y verificación
+## Archivos y verificación
 
 | Ruta | Contenido |
 | --- | --- |
-| `sql/` | Modelo, datos ficticios, vistas, consultas y pruebas |
+| `MODELO_ENTIDAD_RELACION.md` | Diagrama y reglas de las ocho entidades |
+| `sql/` | Esquema, migraciones, datos ficticios, consultas y pruebas |
 | `BRANDING.md` | Tokens de color, tipografía, iconos y brief usado en Stitch |
 | `diseno/stitch/` | Exportaciones de las pantallas y de los dos temas de Stitch |
 | `web/` | Portal, operaciones del laboratorio y datos de práctica |

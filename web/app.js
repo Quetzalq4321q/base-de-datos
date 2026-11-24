@@ -1,9 +1,9 @@
 import { crearBase, estados, modalidades } from './datos.js?v=20261124d';
-import { esquema, lineasDe, operar, totalLineas } from './modelo.js?v=20261124d';
+import { esquema, lineasDe, operar, relacionesModelo, totalLineas } from './modelo.js?v=20261124e';
 
 const pasos = [
   ['Guía de ventas', 'Crea una comanda, agrega productos y revisa cómo se calcula su importe.', 'route', 'guia', 'Guía de ventas', mostrarGuia],
-  ['Modelo de datos', 'Sigue un pedido desde el cliente hasta los productos de la carta.', 'account_tree', 'modelo', 'Modelo', mostrarModelo],
+  ['Modelo entidad–relación', 'Explora las ocho entidades de salchipaperia y cómo se relacionan sus claves.', 'account_tree', 'modelo', 'Entidad–relación', mostrarModelo],
   ['Explorar tablas', 'Busca registros en las ocho tablas y sigue sus claves foráneas.', 'table_view', 'tablas', 'Explorar tablas', mostrarTablas],
   ['Editar pedidos', 'Practica con una comanda y observa qué filas cambian en el modelo.', 'edit_note', 'editar', 'Editar pedidos', mostrarPedido],
   ['Resumen del pedido', 'Comprueba las cantidades, el precio aplicado y el total de la comanda.', 'summarize', 'resumen', 'Resumen del pedido', mostrarResumen],
@@ -158,51 +158,57 @@ function elegirTabla(tabla, clave = null) {
 }
 
 function mostrarModelo() {
-  id('cantidad-tablas').textContent = Object.keys(esquema).length;
-  id('cantidad-productos').textContent = base.tablas.productos.length;
-  id('cantidad-ventas').textContent = base.tablas.pedidos.filter((pedido) => pedido.estado === 'Entregado').length;
   for (const control of id('mapa').querySelectorAll('[data-tabla]')) {
     control.setAttribute('aria-pressed', String(control.dataset.tabla === tablaModelo));
   }
   const ficha = esquema[tablaModelo];
-  const datos = nodo('dl', '', 'claves');
-  datos.append(nodo('dt', 'Clave primaria'), nodo('dd', ficha.clave.join(' + '), 'codigo'));
+  const foraneas = new Set(relacionesModelo.filter((relacion) => relacion.destino === tablaModelo).map((relacion) => relacion.columna));
+  const campos = nodo('ul', '', 'campos-entidad');
+  for (const campo of ficha.columnas) {
+    const fila = nodo('li');
+    fila.append(nodo('code', campo));
+    if (ficha.clave.includes(campo)) fila.append(nodo('span', 'PK', 'sigla-clave'));
+    if (foraneas.has(campo)) fila.append(nodo('span', 'FK', 'sigla-clave'));
+    campos.append(fila);
+  }
   const relaciones = nodo('ul', '', 'enlaces-tabla');
-  for (const relacion of ficha.relaciones) {
+  for (const { origen, destino, columna, cardinalidad } of relacionesModelo) {
+    if (origen !== tablaModelo && destino !== tablaModelo) continue;
+    const saliente = origen === tablaModelo;
+    const tabla = saliente ? destino : origen;
     const elemento = nodo('li');
-    elemento.append(boton(esquema[relacion.tabla].titulo, () => {
-      tablaModelo = relacion.tabla;
-      mostrarModelo();
-      id('inspector').querySelector('h2').focus();
-    }, null, 'enlace-boton'), nodo('span', `${relacion.columna} · ${relacion.cardinalidad}`, 'codigo'));
+    const alcance = saliente ? `1 a ${cardinalidad}` : `${cardinalidad} a 1`;
+    elemento.append(boton(esquema[tabla].titulo, () => seleccionarEntidad(tabla), null, 'enlace-boton'),
+      nodo('code', `${columna} · ${alcance}`));
     relaciones.append(elemento);
   }
   const titulo = nodo('h2', ficha.titulo);
   titulo.tabIndex = -1;
-  id('inspector').replaceChildren(titulo, nodo('p', tablaModelo, 'codigo'), nodo('p', ficha.texto), datos,
-    nodo('h3', 'Tablas relacionadas'), relaciones, boton('Ver filas', () => elegirTabla(tablaModelo), 'table_view'));
+  id('inspector').replaceChildren(titulo, nodo('p', tablaModelo, 'codigo'), nodo('p', ficha.texto),
+    nodo('h3', 'Campos y claves'), campos, nodo('h3', 'Relaciones de la entidad'), relaciones,
+    boton('Ver filas', () => elegirTabla(tablaModelo), 'table_view'));
+}
+
+function seleccionarEntidad(tabla) {
+  tablaModelo = tabla;
+  mostrarModelo();
+  id('inspector').querySelector('h2').focus();
 }
 
 function crearMapa() {
-  const grupos = [
-    ['De la carta al pedido', ['clientes', 'pedidos', 'detalle_pedido', 'productos'], true],
-    ['Categorías y subtipos', ['categorias', 'snacks', 'bebidas', 'hamburguesas'], false],
-  ];
-  for (const [titulo, tablas, cadena] of grupos) {
-    const grupo = nodo('section', '', 'grupo-mapa');
-    const lista = nodo('div', '', cadena ? 'lineas-flujo' : 'entidades');
-    for (const tabla of tablas) {
-      const f = esquema[tabla];
-      const control = boton(f.titulo, () => { tablaModelo = tabla; mostrarModelo(); }, f.icono, 'opcion');
-      control.dataset.tabla = tabla;
-      if (cadena) {
-        const celda = nodo('div');
-        celda.append(control);
-        lista.append(celda);
-      } else lista.append(control);
-    }
-    grupo.append(nodo('h3', titulo), lista);
-    id('mapa').append(grupo);
+  const entidad = (tabla) => {
+    const ficha = esquema[tabla];
+    const control = boton(ficha.titulo, () => seleccionarEntidad(tabla), ficha.icono, 'opcion');
+    control.dataset.tabla = tabla;
+    control.setAttribute('aria-controls', 'inspector');
+    return control;
+  };
+  for (const { origen, destino, columna, cardinalidad } of relacionesModelo) {
+    const fila = nodo('li', '', 'relacion-modelo');
+    const enlace = nodo('span', '', 'union-modelo');
+    enlace.append(nodo('code', columna), nodo('span', `1 a ${cardinalidad}`));
+    fila.append(entidad(origen), enlace, entidad(destino));
+    id('mapa').append(fila);
   }
 }
 

@@ -26,7 +26,7 @@ sistema.addEventListener('change', actualizarTema);
 actualizarTema();
 botonTema.hidden = false;
 
-await import('./app.js?v=20261124d');
+await import('./app.js?v=20261124e');
 
 raiz.classList.remove('preparando');
 document.getElementById('laboratorio').removeAttribute('aria-busy');

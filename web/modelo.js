@@ -1,16 +1,26 @@
 import { estados, modalidades } from './datos.js?v=20261124d';
 
-const relacion = (tabla, columna, cardinalidad) => ({ tabla, columna, cardinalidad });
+const relacion = (origen, destino, columna, cardinalidad) => ({ origen, destino, columna, cardinalidad });
+
+export const relacionesModelo = [
+  relacion('clientes', 'pedidos', 'id_cliente', '0..N'),
+  relacion('pedidos', 'detalle_pedido', 'id_pedido', '0..N'),
+  relacion('productos', 'detalle_pedido', 'id_producto', '0..N'),
+  relacion('categorias', 'productos', 'id_categoria', '0..N'),
+  relacion('productos', 'snacks', 'id_producto', '0..1'),
+  relacion('productos', 'bebidas', 'id_producto', '0..1'),
+  relacion('productos', 'hamburguesas', 'id_producto', '0..1'),
+];
 
 export const esquema = {
-  clientes: { titulo: 'Clientes', icono: 'groups', clave: ['id_cliente'], columnas: ['id_cliente', 'nombres', 'apellidos'], texto: 'Vincula los pedidos a un cliente mediante su identificador interno.', relaciones: [relacion('pedidos', 'id_cliente', '1 a N')] },
-  categorias: { titulo: 'Categorías', icono: 'category', clave: ['id_categoria'], columnas: ['id_categoria', 'nombre', 'descripcion'], texto: 'Agrupa los productos por sección de la carta.', relaciones: [relacion('productos', 'id_categoria', '1 a N')] },
-  productos: { titulo: 'Productos', icono: 'restaurant_menu', clave: ['id_producto'], columnas: ['id_producto', 'id_categoria', 'nombre', 'precio', 'disponible'], texto: 'Mantiene el precio vigente y enlaza con un solo subtipo. Las líneas conservan el precio aplicado.', relaciones: [relacion('categorias', 'id_categoria', 'N a 1'), relacion('detalle_pedido', 'id_producto', '1 a N'), relacion('snacks', 'id_producto', '1 a 0..1'), relacion('bebidas', 'id_producto', '1 a 0..1'), relacion('hamburguesas', 'id_producto', '1 a 0..1')] },
-  snacks: { titulo: 'Snacks', icono: 'takeout_dining', clave: ['id_producto'], columnas: ['id_producto', 'porcion', 'incluye_cremas'], texto: 'Registra la presentación de los snacks, como cono, al plato o para compartir.', relaciones: [relacion('productos', 'id_producto', '1 a 1')] },
-  bebidas: { titulo: 'Bebidas', icono: 'local_drink', clave: ['id_producto'], columnas: ['id_producto', 'tipo_bebida', 'envase'], texto: 'Clasifica las bebidas como gaseosa o chicha cuando corresponde.', relaciones: [relacion('productos', 'id_producto', '1 a 1')] },
-  hamburguesas: { titulo: 'Hamburguesas', icono: 'lunch_dining', clave: ['id_producto'], columnas: ['id_producto', 'tipo_carne', 'incluye_papas'], texto: 'Distingue las variantes de res y pollo e indica si incluyen papas.', relaciones: [relacion('productos', 'id_producto', '1 a 1')] },
-  pedidos: { titulo: 'Pedidos', icono: 'shopping_bag', clave: ['id_pedido'], columnas: ['id_pedido', 'id_cliente', 'fecha_pedido', 'tipo_pedido', 'estado'], texto: 'Registra cliente, fecha, modalidad y estado de una comanda.', relaciones: [relacion('clientes', 'id_cliente', 'N a 1'), relacion('detalle_pedido', 'id_pedido', '1 a N')] },
-  detalle_pedido: { titulo: 'Detalle del pedido', icono: 'list_alt', clave: ['id_pedido', 'id_producto'], columnas: ['id_pedido', 'id_producto', 'cantidad', 'precio_unitario'], texto: 'Resuelve la relación entre pedidos y productos. Registra la cantidad y el precio aplicado.', relaciones: [relacion('pedidos', 'id_pedido', 'N a 1'), relacion('productos', 'id_producto', 'N a 1')] },
+  clientes: { titulo: 'Clientes', icono: 'groups', clave: ['id_cliente'], columnas: ['id_cliente', 'nombres', 'apellidos'], texto: 'Vincula los pedidos a un cliente mediante su identificador interno.' },
+  categorias: { titulo: 'Categorías', icono: 'category', clave: ['id_categoria'], columnas: ['id_categoria', 'nombre', 'descripcion'], texto: 'Agrupa los productos por sección de la carta.' },
+  productos: { titulo: 'Productos', icono: 'restaurant_menu', clave: ['id_producto'], columnas: ['id_producto', 'id_categoria', 'nombre', 'precio', 'disponible'], texto: 'Mantiene el precio vigente y enlaza con un solo subtipo. Las líneas conservan el precio aplicado.' },
+  snacks: { titulo: 'Snacks', icono: 'takeout_dining', clave: ['id_producto'], columnas: ['id_producto', 'porcion', 'incluye_cremas'], texto: 'Registra la presentación de los snacks, como cono, al plato o para compartir.' },
+  bebidas: { titulo: 'Bebidas', icono: 'local_drink', clave: ['id_producto'], columnas: ['id_producto', 'tipo_bebida', 'envase'], texto: 'Clasifica las bebidas como gaseosa o chicha cuando corresponde.' },
+  hamburguesas: { titulo: 'Hamburguesas', icono: 'lunch_dining', clave: ['id_producto'], columnas: ['id_producto', 'tipo_carne', 'incluye_papas'], texto: 'Distingue las variantes de res y pollo e indica si incluyen papas.' },
+  pedidos: { titulo: 'Pedidos', icono: 'shopping_bag', clave: ['id_pedido'], columnas: ['id_pedido', 'id_cliente', 'fecha_pedido', 'tipo_pedido', 'estado'], texto: 'Registra cliente, fecha, modalidad y estado de una comanda.' },
+  detalle_pedido: { titulo: 'Detalle del pedido', icono: 'list_alt', clave: ['id_pedido', 'id_producto'], columnas: ['id_pedido', 'id_producto', 'cantidad', 'precio_unitario'], texto: 'Resuelve la relación entre pedidos y productos. Registra la cantidad y el precio aplicado.' },
 };
 
 export const totalLineas = (lineas) => lineas.reduce((suma, linea) => suma + linea.cantidad * linea.precio_unitario, 0);
